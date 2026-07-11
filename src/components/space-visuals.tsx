@@ -210,11 +210,11 @@ export function IntroOverlay() {
       setDone(true);
       return;
     }
-    const t1 = setTimeout(() => setFading(true), 2600);
+    const t1 = setTimeout(() => setFading(true), 7000);
     const t2 = setTimeout(() => {
       setDone(true);
       sessionStorage.setItem("orion-intro", "1");
-    }, 3400);
+    }, 8400);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
@@ -226,7 +226,7 @@ export function IntroOverlay() {
   return (
     <div
       aria-hidden
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#050816] transition-opacity duration-700 ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#050816] transition-opacity duration-1000 ${
         fading ? "opacity-0" : "opacity-100"
       }`}
     >
@@ -238,8 +238,18 @@ export function IntroOverlay() {
         <h1 className="text-6xl md:text-8xl font-bold tracking-tight text-gradient drop-shadow-[0_0_40px_rgba(124,58,237,0.5)]">
           ORION
         </h1>
+
         <p className="mt-4 text-sm md:text-base tracking-[0.3em] uppercase text-muted-foreground">
-          Guiando empresas rumo ao futuro
+          Soluções em Tecnologia
+        </p>
+
+        <p className="mt-6 text-lg md:text-2xl font-medium text-foreground">
+          Guiando empresas rumo ao futuro.
+        </p>
+
+        <p className="mt-4 max-w-xl text-sm md:text-base leading-relaxed text-muted-foreground">
+          Desenvolvemos sites, sistemas, automações e Inteligência Artificial
+          para empresas que desejam crescer.
         </p>
       </div>
       <style>{`
