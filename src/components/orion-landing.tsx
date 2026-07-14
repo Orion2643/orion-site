@@ -60,8 +60,7 @@ import {
   Users2,
 } from "lucide-react";
 import { ParticleSphere, Starfield, IntroOverlay } from "./space-visuals";
-import { company, emailUrl, whatsappUrl } from "@/config/company";
-
+import { company, emailUrl, whatsappUrl } from "../config/company";
 /* ---------- NAV ---------- */
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -841,8 +840,12 @@ function EvaluationForm() {
       `*Tipo de serviço:* ${form.service}`,
       `*Descrição do projeto:* ${form.description.trim()}`,
     ].join("\n");
+    
+    const whatsappLink = `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(
+  message,
+)}`;
 
-    window.open(`https://wa.me/${company.phone}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+window.open(whatsappLink, "_blank", "noopener,noreferrer");
 
     setForm({
       name: "",
