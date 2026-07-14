@@ -2,15 +2,65 @@ import { useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
-  Menu, X, ArrowRight, Rocket, Code2, Layout, LayoutDashboard, Building2, Bot,
-  Plug, Search, Compass, Boxes, Sparkles, ShieldCheck, Zap, Gauge, LineChart,
-  Users, MessageCircle, ChevronDown, Github, Linkedin, Instagram, Mail, Phone,
-  MapPin, Cpu, Database, Cloud, GitBranch, Workflow, Brain, Globe, Palette,
-  Server, Terminal, CheckCircle2, Target, Lightbulb, PenTool, TestTube, Rocket as RocketIcon,
-  Repeat, Laptop, Smartphone, Tablet, Monitor, Scissors, Wrench, Hammer,
-  Stethoscope, Truck, Wallet, Package, Users2,
+  Menu,
+  X,
+  ArrowRight,
+  Rocket,
+  Code2,
+  Layout,
+  LayoutDashboard,
+  Building2,
+  Bot,
+  Plug,
+  Search,
+  Compass,
+  Boxes,
+  Sparkles,
+  ShieldCheck,
+  Zap,
+  Gauge,
+  LineChart,
+  Users,
+  MessageCircle,
+  ChevronDown,
+  Github,
+  Linkedin,
+  Instagram,
+  Mail,
+  Phone,
+  MapPin,
+  Cpu,
+  Database,
+  Cloud,
+  GitBranch,
+  Workflow,
+  Brain,
+  Globe,
+  Palette,
+  Server,
+  Terminal,
+  CheckCircle2,
+  Target,
+  Lightbulb,
+  PenTool,
+  TestTube,
+  Rocket as RocketIcon,
+  Repeat,
+  Laptop,
+  Smartphone,
+  Tablet,
+  Monitor,
+  Scissors,
+  Wrench,
+  Hammer,
+  Stethoscope,
+  Truck,
+  Wallet,
+  Package,
+  Users2,
 } from "lucide-react";
 import { ParticleSphere, Starfield, IntroOverlay } from "./space-visuals";
+import { company, emailUrl, whatsappUrl } from "@/config/company";
 
 /* ---------- NAV ---------- */
 function Nav() {
@@ -39,11 +89,13 @@ function Nav() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6">
-        <a href="#top" className="flex items-center gap-2 group">
-          <div className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-[oklch(0.58_0.24_295)] to-[oklch(0.63_0.19_260)] shadow-[var(--shadow-glow-purple)]">
-            <Sparkles className="h-5 w-5 text-white" />
-          </div>
-          <span className="font-display text-xl font-bold tracking-tight">ORION</span>
+        <a href="#top" className="group flex items-center gap-3" aria-label="Voltar ao início">
+          <img
+            src={company.icon}
+            alt="Símbolo da Orion"
+            className="h-10 w-10 rounded-full object-cover shadow-[0_0_24px_rgba(59,130,246,0.45)] transition-transform group-hover:scale-105"
+          />
+          <span className="font-display text-xl font-bold tracking-tight">{company.shortName}</span>
         </a>
         <ul className="hidden md:flex items-center gap-8">
           {links.map(([label, href]) => (
@@ -58,16 +110,14 @@ function Nav() {
           ))}
         </ul>
         <a
-          href="#contato"
+          href={whatsappUrl}
+          target="_blank"
+          rel="noreferrer"
           className="hidden md:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-accent px-5 py-2 text-sm font-medium text-white shadow-[var(--shadow-glow-purple)] transition-transform hover:scale-105"
         >
           Fale conosco <ArrowRight className="h-4 w-4" />
         </a>
-        <button
-          className="md:hidden p-2"
-          onClick={() => setOpen(!open)}
-          aria-label="Abrir menu"
-        >
+        <button className="md:hidden p-2" onClick={() => setOpen(!open)} aria-label="Abrir menu">
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </nav>
@@ -79,7 +129,9 @@ function Nav() {
             </a>
           ))}
           <a
-            href="#contato"
+            href={whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
             onClick={() => setOpen(false)}
             className="mt-2 text-center rounded-full bg-gradient-to-r from-primary to-accent px-4 py-2 text-sm text-white"
           >
@@ -111,17 +163,18 @@ function Hero() {
             Soluções digitais inteligentes
           </div>
           <h1 className="mt-6 font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
-            Transformamos ideias em{" "}
-            <span className="text-gradient">tecnologia inteligente</span>
+            Transformamos ideias em <span className="text-gradient">tecnologia inteligente</span>
           </h1>
           <p className="mt-6 max-w-xl text-base md:text-lg text-muted-foreground leading-relaxed">
             A Orion desenvolve sites profissionais, sistemas personalizados, automações,
-            inteligência artificial e integrações sob medida para empresas que desejam crescer
-            com performance e inovação.
+            inteligência artificial e integrações sob medida para empresas que desejam crescer com
+            performance e inovação.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
-              href="#contato"
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
               className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-accent px-7 py-3.5 text-sm font-medium text-white shadow-[var(--shadow-glow-purple)] transition-all hover:scale-105"
             >
               Solicitar orçamento
@@ -135,9 +188,15 @@ function Hero() {
             </a>
           </div>
           <div className="mt-10 flex flex-wrap gap-8 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> Segurança</div>
-            <div className="flex items-center gap-2"><Zap className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> Performance</div>
-            <div className="flex items-center gap-2"><Brain className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> IA aplicada</div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> Segurança
+            </div>
+            <div className="flex items-center gap-2">
+              <Zap className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> Performance
+            </div>
+            <div className="flex items-center gap-2">
+              <Brain className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> IA aplicada
+            </div>
           </div>
         </motion.div>
 
@@ -165,7 +224,15 @@ function Hero() {
 }
 
 /* ---------- SECTION HEADER ---------- */
-function SectionHeader({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
+function SectionHeader({
+  eyebrow,
+  title,
+  subtitle,
+}: {
+  eyebrow: string;
+  title: string;
+  subtitle?: string;
+}) {
   return (
     <div className="mx-auto max-w-2xl text-center mb-14">
       <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs uppercase tracking-widest text-muted-foreground">
@@ -221,15 +288,51 @@ function About() {
 /* ---------- SERVIÇOS ---------- */
 function Services() {
   const items = [
-    { icon: Layout, title: "Sites Institucionais", desc: "Presença digital profissional que representa sua marca." },
-    { icon: Rocket, title: "Landing Pages", desc: "Páginas de alta conversão para campanhas e produtos." },
-    { icon: LayoutDashboard, title: "Sistemas Web Personalizados", desc: "Software sob medida para operações específicas." },
-    { icon: Building2, title: "Plataformas Empresariais", desc: "Soluções robustas para gestão e operação em escala." },
-    { icon: Bot, title: "Automações com IA e n8n", desc: "Fluxos inteligentes que economizam tempo e recursos." },
-    { icon: Plug, title: "Integrações via API", desc: "Conectamos seus sistemas com qualquer serviço externo." },
-    { icon: Search, title: "SEO e Google Business", desc: "Visibilidade orgânica e presença local otimizada." },
-    { icon: Compass, title: "Consultoria em Tecnologia", desc: "Direção estratégica para escolhas técnicas certas." },
-    { icon: Boxes, title: "Produtos Digitais", desc: "Do MVP ao SaaS escalável com métricas de produto." },
+    {
+      icon: Layout,
+      title: "Sites Institucionais",
+      desc: "Presença digital profissional que representa sua marca.",
+    },
+    {
+      icon: Rocket,
+      title: "Landing Pages",
+      desc: "Páginas de alta conversão para campanhas e produtos.",
+    },
+    {
+      icon: LayoutDashboard,
+      title: "Sistemas Web Personalizados",
+      desc: "Software sob medida para operações específicas.",
+    },
+    {
+      icon: Building2,
+      title: "Plataformas Empresariais",
+      desc: "Soluções robustas para gestão e operação em escala.",
+    },
+    {
+      icon: Bot,
+      title: "Automações com IA e n8n",
+      desc: "Fluxos inteligentes que economizam tempo e recursos.",
+    },
+    {
+      icon: Plug,
+      title: "Integrações via API",
+      desc: "Conectamos seus sistemas com qualquer serviço externo.",
+    },
+    {
+      icon: Search,
+      title: "SEO e Google Business",
+      desc: "Visibilidade orgânica e presença local otimizada.",
+    },
+    {
+      icon: Compass,
+      title: "Consultoria em Tecnologia",
+      desc: "Direção estratégica para escolhas técnicas certas.",
+    },
+    {
+      icon: Boxes,
+      title: "Produtos Digitais",
+      desc: "Do MVP ao SaaS escalável com métricas de produto.",
+    },
   ];
   return (
     <section id="servicos" className="relative py-28">
@@ -266,7 +369,11 @@ function Services() {
 /* ---------- PROCESSO ---------- */
 function Process() {
   const steps = [
-    { icon: Lightbulb, title: "Descoberta", desc: "Entendemos o problema e o contexto do negócio." },
+    {
+      icon: Lightbulb,
+      title: "Descoberta",
+      desc: "Entendemos o problema e o contexto do negócio.",
+    },
     { icon: Target, title: "Planejamento", desc: "Escopo, metas e arquitetura da solução." },
     { icon: PenTool, title: "Design", desc: "Interfaces refinadas e fluxos de uso claros." },
     { icon: Code2, title: "Desenvolvimento", desc: "Código limpo e componentes reutilizáveis." },
@@ -297,7 +404,9 @@ function Process() {
                     <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-primary to-accent text-white">
                       <s.icon className="h-5 w-5" />
                     </div>
-                    <span className="text-xs uppercase tracking-widest text-muted-foreground">Etapa {i + 1}</span>
+                    <span className="text-xs uppercase tracking-widest text-muted-foreground">
+                      Etapa {i + 1}
+                    </span>
                   </div>
                   <h3 className="mt-3 font-display text-xl font-semibold">{s.title}</h3>
                   <p className="mt-2 text-sm text-muted-foreground">{s.desc}</p>
@@ -317,7 +426,12 @@ function Process() {
 function Projects() {
   const projects = [
     { icon: Scissors, title: "Sistema para Barbearia", tag: "Agendamentos", device: "laptop" },
-    { icon: Wrench, title: "Sistema para Oficina Mecânica", tag: "Ordens de serviço", device: "desktop" },
+    {
+      icon: Wrench,
+      title: "Sistema para Oficina Mecânica",
+      tag: "Ordens de serviço",
+      device: "desktop",
+    },
     { icon: Hammer, title: "Sistema para Serralheria", tag: "Orçamentos", device: "tablet" },
     { icon: Stethoscope, title: "Plataforma para Clínicas", tag: "Prontuários", device: "laptop" },
     { icon: Truck, title: "Sistema de Terraplanagem", tag: "Operações", device: "desktop" },
@@ -325,7 +439,12 @@ function Projects() {
     { icon: Package, title: "Gestão de Estoque", tag: "Inventário", device: "tablet" },
     { icon: Users2, title: "CRM Empresarial", tag: "Vendas", device: "laptop" },
   ];
-  const DeviceIcon = { laptop: Laptop, desktop: Monitor, tablet: Tablet, smartphone: Smartphone } as const;
+  const DeviceIcon = {
+    laptop: Laptop,
+    desktop: Monitor,
+    tablet: Tablet,
+    smartphone: Smartphone,
+  } as const;
 
   return (
     <section id="projetos" className="relative py-28">
@@ -350,7 +469,10 @@ function Projects() {
               >
                 <div className="relative aspect-video bg-gradient-to-br from-[oklch(0.16_0.06_265)] to-[oklch(0.14_0.05_268)] flex items-center justify-center overflow-hidden">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_60%,oklch(0.58_0.24_295/0.25),transparent_60%)]" />
-                  <Dev className="h-16 w-16 text-white/70 relative z-10 transition-transform group-hover:scale-110" strokeWidth={1.2} />
+                  <Dev
+                    className="h-16 w-16 text-white/70 relative z-10 transition-transform group-hover:scale-110"
+                    strokeWidth={1.2}
+                  />
                   <div className="absolute bottom-3 right-3 text-[10px] uppercase tracking-widest text-muted-foreground">
                     Conceito
                   </div>
@@ -373,15 +495,24 @@ function Projects() {
 /* ---------- TECNOLOGIAS ---------- */
 function Technologies() {
   const techs = [
-    { icon: Code2, name: "React" }, { icon: Code2, name: "TypeScript" },
-    { icon: Rocket, name: "Next.js" }, { icon: Terminal, name: "Python" },
-    { icon: Server, name: "FastAPI" }, { icon: Cpu, name: "Node.js" },
-    { icon: Boxes, name: "Docker" }, { icon: Database, name: "PostgreSQL" },
-    { icon: Cloud, name: "Cloudflare" }, { icon: Github, name: "GitHub" },
-    { icon: Workflow, name: "n8n" }, { icon: Brain, name: "OpenAI" },
-    { icon: Plug, name: "APIs REST" }, { icon: Sparkles, name: "IA" },
-    { icon: Globe, name: "HTML5" }, { icon: Palette, name: "CSS3" },
-    { icon: GitBranch, name: "Git" }, { icon: Layout, name: "Tailwind CSS" },
+    { icon: Code2, name: "React" },
+    { icon: Code2, name: "TypeScript" },
+    { icon: Rocket, name: "Next.js" },
+    { icon: Terminal, name: "Python" },
+    { icon: Server, name: "FastAPI" },
+    { icon: Cpu, name: "Node.js" },
+    { icon: Boxes, name: "Docker" },
+    { icon: Database, name: "PostgreSQL" },
+    { icon: Cloud, name: "Cloudflare" },
+    { icon: Github, name: "GitHub" },
+    { icon: Workflow, name: "n8n" },
+    { icon: Brain, name: "OpenAI" },
+    { icon: Plug, name: "APIs REST" },
+    { icon: Sparkles, name: "IA" },
+    { icon: Globe, name: "HTML5" },
+    { icon: Palette, name: "CSS3" },
+    { icon: GitBranch, name: "Git" },
+    { icon: Layout, name: "Tailwind CSS" },
   ];
   return (
     <section id="tecnologias" className="relative py-28">
@@ -412,7 +543,9 @@ function AISection() {
   return (
     <section className="relative py-28 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.58_0.24_295/0.2),transparent_70%)]" />
-      <div className="absolute inset-0"><Starfield density={70} /></div>
+      <div className="absolute inset-0">
+        <Starfield density={70} />
+      </div>
       <div className="relative mx-auto max-w-6xl px-6 grid lg:grid-cols-2 gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -427,8 +560,8 @@ function AISection() {
           </h2>
           <p className="mt-5 text-muted-foreground leading-relaxed">
             Agentes inteligentes, automações, assistentes virtuais e análise de dados reduzem
-            custos, aumentam a produtividade e aprimoram a tomada de decisões. Aplicamos IA
-            de forma prática, integrada aos seus processos.
+            custos, aumentam a produtividade e aprimoram a tomada de decisões. Aplicamos IA de forma
+            prática, integrada aos seus processos.
           </p>
           <ul className="mt-6 space-y-3">
             {[
@@ -451,7 +584,9 @@ function AISection() {
           className="relative aspect-square max-w-md mx-auto w-full"
         >
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/30 to-accent/20 blur-3xl animate-pulse-glow" />
-          <div className="relative h-full w-full"><ParticleSphere /></div>
+          <div className="relative h-full w-full">
+            <ParticleSphere />
+          </div>
         </motion.div>
       </div>
     </section>
@@ -461,15 +596,51 @@ function AISection() {
 /* ---------- POR QUE ---------- */
 function WhyUs() {
   const items = [
-    { icon: Gauge, title: "Performance", desc: "Sites e sistemas rápidos, otimizados de ponta a ponta." },
-    { icon: ShieldCheck, title: "Segurança", desc: "Boas práticas, criptografia e proteção de dados." },
-    { icon: LineChart, title: "Escalabilidade", desc: "Arquitetura preparada para crescer com o seu negócio." },
-    { icon: Cpu, title: "Arquitetura moderna", desc: "Stack atual, modular e sustentável no longo prazo." },
-    { icon: Smartphone, title: "Design responsivo", desc: "Experiência impecável em qualquer dispositivo." },
-    { icon: Users, title: "Suporte contínuo", desc: "Acompanhamento próximo depois do lançamento." },
-    { icon: Target, title: "Foco em resultados", desc: "Cada entrega ligada a métricas do seu negócio." },
-    { icon: Plug, title: "Integração de sistemas", desc: "Conectamos ferramentas para operar como um só." },
-    { icon: Sparkles, title: "Inovação constante", desc: "IA e automações aplicadas aos seus processos." },
+    {
+      icon: Gauge,
+      title: "Performance",
+      desc: "Sites e sistemas rápidos, otimizados de ponta a ponta.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Segurança",
+      desc: "Boas práticas, criptografia e proteção de dados.",
+    },
+    {
+      icon: LineChart,
+      title: "Escalabilidade",
+      desc: "Arquitetura preparada para crescer com o seu negócio.",
+    },
+    {
+      icon: Cpu,
+      title: "Arquitetura moderna",
+      desc: "Stack atual, modular e sustentável no longo prazo.",
+    },
+    {
+      icon: Smartphone,
+      title: "Design responsivo",
+      desc: "Experiência impecável em qualquer dispositivo.",
+    },
+    {
+      icon: Users,
+      title: "Suporte contínuo",
+      desc: "Acompanhamento próximo depois do lançamento.",
+    },
+    {
+      icon: Target,
+      title: "Foco em resultados",
+      desc: "Cada entrega ligada a métricas do seu negócio.",
+    },
+    {
+      icon: Plug,
+      title: "Integração de sistemas",
+      desc: "Conectamos ferramentas para operar como um só.",
+    },
+    {
+      icon: Sparkles,
+      title: "Inovação constante",
+      desc: "IA e automações aplicadas aos seus processos.",
+    },
   ];
   return (
     <section className="relative py-28">
@@ -518,7 +689,12 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [inView, to]);
-  return <span ref={ref}>{val}{suffix}</span>;
+  return (
+    <span ref={ref}>
+      {val}
+      {suffix}
+    </span>
+  );
 }
 
 function Metrics() {
@@ -538,7 +714,9 @@ function Metrics() {
               <div className="font-display text-4xl md:text-5xl font-bold text-gradient">
                 <Counter to={s.value} suffix={s.suffix} />
               </div>
-              <div className="mt-2 text-xs uppercase tracking-widest text-muted-foreground">{s.label}</div>
+              <div className="mt-2 text-xs uppercase tracking-widest text-muted-foreground">
+                {s.label}
+              </div>
             </div>
           ))}
         </div>
@@ -553,14 +731,38 @@ function Metrics() {
 /* ---------- FAQ ---------- */
 function FAQ() {
   const items = [
-    { q: "Quais são os prazos para desenvolvimento?", a: "Sites institucionais podem levar de 2 a 4 semanas. Sistemas personalizados variam conforme escopo — definimos cronograma detalhado após a descoberta." },
-    { q: "Como funciona a precificação?", a: "Trabalhamos por projeto ou por escopo evolutivo. Após entender suas necessidades, apresentamos uma proposta clara com etapas, valores e entregas." },
-    { q: "Vocês oferecem manutenção?", a: "Sim. Oferecemos planos de manutenção contínua incluindo correções, melhorias, atualizações e suporte técnico." },
-    { q: "A hospedagem está incluída?", a: "Podemos incluir ou orientar você na escolha da melhor infraestrutura, usando Cloudflare, Vercel ou provedores adequados ao projeto." },
-    { q: "É possível desenvolver algo totalmente personalizado?", a: "Sim. Somos especializados em soluções sob medida, do design ao código, adaptadas aos processos únicos do seu negócio." },
-    { q: "Como funciona o suporte pós-entrega?", a: "Todo projeto tem um período de suporte inicial. Depois, oferecemos planos contínuos com SLA definido conforme sua necessidade." },
-    { q: "Vocês fazem integrações com outros sistemas?", a: "Sim. Integramos via APIs REST, webhooks e ferramentas como n8n para conectar tudo o que você já usa." },
-    { q: "Como aplicam Inteligência Artificial e automações?", a: "Criamos agentes, assistentes e fluxos automatizados focados em resultados: redução de custo, ganho de produtividade e melhores decisões." },
+    {
+      q: "Quais são os prazos para desenvolvimento?",
+      a: "Sites institucionais podem levar de 2 a 4 semanas. Sistemas personalizados variam conforme escopo — definimos cronograma detalhado após a descoberta.",
+    },
+    {
+      q: "Como funciona a precificação?",
+      a: "Trabalhamos por projeto ou por escopo evolutivo. Após entender suas necessidades, apresentamos uma proposta clara com etapas, valores e entregas.",
+    },
+    {
+      q: "Vocês oferecem manutenção?",
+      a: "Sim. Oferecemos planos de manutenção contínua incluindo correções, melhorias, atualizações e suporte técnico.",
+    },
+    {
+      q: "A hospedagem está incluída?",
+      a: "Podemos incluir ou orientar você na escolha da melhor infraestrutura, usando Cloudflare, Vercel ou provedores adequados ao projeto.",
+    },
+    {
+      q: "É possível desenvolver algo totalmente personalizado?",
+      a: "Sim. Somos especializados em soluções sob medida, do design ao código, adaptadas aos processos únicos do seu negócio.",
+    },
+    {
+      q: "Como funciona o suporte pós-entrega?",
+      a: "Todo projeto tem um período de suporte inicial. Depois, oferecemos planos contínuos com SLA definido conforme sua necessidade.",
+    },
+    {
+      q: "Vocês fazem integrações com outros sistemas?",
+      a: "Sim. Integramos via APIs REST, webhooks e ferramentas como n8n para conectar tudo o que você já usa.",
+    },
+    {
+      q: "Como aplicam Inteligência Artificial e automações?",
+      a: "Criamos agentes, assistentes e fluxos automatizados focados em resultados: redução de custo, ganho de produtividade e melhores decisões.",
+    },
   ];
   const [open, setOpen] = useState<number | null>(0);
   return (
@@ -576,9 +778,13 @@ function FAQ() {
                 aria-expanded={open === i}
               >
                 <span className="font-medium">{it.q}</span>
-                <ChevronDown className={`h-5 w-5 shrink-0 transition-transform ${open === i ? "rotate-180" : ""}`} />
+                <ChevronDown
+                  className={`h-5 w-5 shrink-0 transition-transform ${open === i ? "rotate-180" : ""}`}
+                />
               </button>
-              <div className={`grid transition-all duration-300 ${open === i ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+              <div
+                className={`grid transition-all duration-300 ${open === i ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+              >
                 <div className="overflow-hidden">
                   <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{it.a}</p>
                 </div>
@@ -598,17 +804,20 @@ function CTA() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="relative overflow-hidden rounded-3xl glass-card p-10 md:p-16 text-center">
           <div className="absolute inset-0 bg-nebula opacity-70" />
-          <div className="absolute inset-0"><Starfield density={60} /></div>
+          <div className="absolute inset-0">
+            <Starfield density={60} />
+          </div>
           <div className="relative">
             <h2 className="font-display text-3xl md:text-5xl font-bold leading-tight">
               Sua empresa está pronta para{" "}
               <span className="text-gradient">dar o próximo passo?</span>
             </h2>
             <p className="mt-5 text-muted-foreground max-w-xl mx-auto">
-              Vamos construir juntos uma solução tecnológica inteligente para transformar o seu negócio.
+              Vamos construir juntos uma solução tecnológica inteligente para transformar o seu
+              negócio.
             </p>
             <a
-              href="https://wa.me/5500000000000"
+              href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
               className="mt-8 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-primary to-accent px-8 py-4 text-sm font-medium text-white shadow-[var(--shadow-glow-purple)] transition-transform hover:scale-105"
@@ -629,24 +838,42 @@ function Footer() {
   return (
     <footer className="relative overflow-hidden pt-24 pb-10 border-t border-white/5">
       <div className="absolute inset-0 bg-nebula opacity-50" />
-      <div className="absolute inset-0"><Starfield density={80} /></div>
+      <div className="absolute inset-0">
+        <Starfield density={80} />
+      </div>
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
-            <a href="#top" className="flex items-center gap-2">
-              <div className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-primary to-accent shadow-[var(--shadow-glow-purple)]">
-                <Sparkles className="h-5 w-5 text-white" />
+            <a href="#top" className="inline-flex items-center gap-3">
+              <img
+                src={company.icon}
+                alt="Símbolo da Orion"
+                className="h-12 w-12 rounded-full object-cover shadow-[0_0_24px_rgba(59,130,246,0.4)]"
+              />
+              <div>
+                <span className="block font-display text-xl font-bold">{company.shortName}</span>
+                <span className="text-xs text-muted-foreground">Soluções em Tecnologia</span>
               </div>
-              <span className="font-display text-xl font-bold">ORION</span>
             </a>
             <p className="mt-4 text-sm text-muted-foreground max-w-sm">
               Guiando empresas rumo ao futuro com sites, sistemas, inteligência artificial e
               automações sob medida.
             </p>
             <div className="mt-5 flex gap-3">
-              {[Github, Linkedin, Instagram].map((I, i) => (
-                <a key={i} href="#" aria-label="Rede social" className="grid h-9 w-9 place-items-center rounded-full glass hover:bg-white/10 transition-colors">
-                  <I className="h-4 w-4" />
+              {[
+                { icon: Github, href: company.github, label: "GitHub da Orion" },
+                { icon: Linkedin, href: company.linkedin, label: "LinkedIn da Orion" },
+                { icon: Instagram, href: company.instagram, label: "Instagram da Orion" },
+              ].map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
+                  className="grid h-9 w-9 place-items-center rounded-full glass transition-colors hover:bg-white/10"
+                >
+                  <Icon className="h-4 w-4" />
                 </a>
               ))}
             </div>
@@ -654,23 +881,54 @@ function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Navegação</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              {[["Sobre","#sobre"],["Serviços","#servicos"],["Projetos","#projetos"],["FAQ","#faq"]].map(([l,h]) => (
-                <li key={h}><a href={h} className="hover:text-foreground transition-colors">{l}</a></li>
+              {[
+                ["Sobre", "#sobre"],
+                ["Serviços", "#servicos"],
+                ["Projetos", "#projetos"],
+                ["FAQ", "#faq"],
+              ].map(([l, h]) => (
+                <li key={h}>
+                  <a href={h} className="hover:text-foreground transition-colors">
+                    {l}
+                  </a>
+                </li>
               ))}
             </ul>
           </div>
           <div>
             <h4 className="font-semibold mb-4">Contato</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> contato@orion.tec</li>
-              <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> +55 (00) 00000-0000</li>
-              <li className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Brasil</li>
+              <li className="flex items-center gap-2">
+                <Mail className="h-4 w-4 shrink-0" />
+                <a href={emailUrl} className="transition-colors hover:text-foreground">
+                  {company.email}
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="h-4 w-4 shrink-0" />
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition-colors hover:text-foreground"
+                >
+                  {company.phoneDisplay}
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 shrink-0" /> {company.city}
+              </li>
+              <li className="flex items-center gap-2">
+                <Globe className="h-4 w-4 shrink-0" /> {company.serviceArea}
+              </li>
             </ul>
           </div>
         </div>
         <div className="mt-14 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <div>© {new Date().getFullYear()} Orion Soluções em Tecnologia. Todos os direitos reservados.</div>
-          <div>Guiando empresas rumo ao futuro.</div>
+          <div>
+            © {new Date().getFullYear()} {company.name}. Todos os direitos reservados.
+          </div>
+          <div>{company.slogan}</div>
         </div>
       </div>
     </footer>

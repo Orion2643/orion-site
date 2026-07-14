@@ -14,7 +14,7 @@ export function Starfield({ density = 120 }: { density?: number }) {
     let h = 0;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    type Star = { x: number; y: number; r: number; a: number; s: number; };
+    type Star = { x: number; y: number; r: number; a: number; s: number };
     let stars: Star[] = [];
 
     const resize = () => {
@@ -123,9 +123,9 @@ export function ParticleSphere() {
       const sinX = Math.sin(rotX);
 
       const projected = points.map((p) => {
-        let x = p.x * cosY - p.z * sinY;
+        const x = p.x * cosY - p.z * sinY;
         let z = p.x * sinY + p.z * cosY;
-        let y = p.y * cosX - z * sinX;
+        const y = p.y * cosX - z * sinX;
         z = p.y * sinX + z * cosX;
         const depth = (z + 1.5) / 2.5;
         return {
@@ -205,19 +205,26 @@ export function IntroOverlay() {
       setDone(true);
       return;
     }
+
     const seen = sessionStorage.getItem("orion-intro");
     if (seen) {
       setDone(true);
       return;
     }
-    const t1 = setTimeout(() => setFading(true), 7000);
-    const t2 = setTimeout(() => {
+
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const introDuration = isMobile ? 15000 : 12000;
+    const fadeDuration = 1200;
+
+    const fadeTimer = window.setTimeout(() => setFading(true), introDuration);
+    const finishTimer = window.setTimeout(() => {
       setDone(true);
       sessionStorage.setItem("orion-intro", "1");
-    }, 8400);
+    }, introDuration + fadeDuration);
+
     return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
+      window.clearTimeout(fadeTimer);
+      window.clearTimeout(finishTimer);
     };
   }, []);
 
@@ -226,34 +233,35 @@ export function IntroOverlay() {
   return (
     <div
       aria-hidden
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#050816] transition-opacity duration-1000 ${
-        fading ? "opacity-0" : "opacity-100"
+      className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-[#050816] transition-all duration-[1200ms] ${
+        fading ? "scale-[0.98] opacity-0 blur-sm" : "scale-100 opacity-100 blur-0"
       }`}
     >
       <div className="absolute inset-0 bg-nebula opacity-0 animate-[fadeIn_2s_ease-out_forwards]" />
       <div className="absolute inset-0">
-        <Starfield density={140} />
+        <Starfield density={160} />
       </div>
-      <div className="relative z-10 text-center opacity-0 animate-[fadeUp_1.4s_ease-out_0.8s_forwards]">
-        <h1 className="text-6xl md:text-8xl font-bold tracking-tight text-gradient drop-shadow-[0_0_40px_rgba(124,58,237,0.5)]">
-          ORION
-        </h1>
 
-        <p className="mt-4 text-sm md:text-base tracking-[0.3em] uppercase text-muted-foreground">
-          Soluções em Tecnologia
-        </p>
-
-        <p className="mt-6 text-lg md:text-2xl font-medium text-foreground">
+      <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 text-center">
+        <img
+          src="/brand/logo-orion.jpeg"
+          alt=""
+          className="h-auto w-[min(72vw,430px)] rounded-3xl object-cover opacity-0 shadow-[0_0_70px_rgba(59,130,246,0.28)] animate-[logoReveal_1.6s_ease-out_0.4s_forwards]"
+        />
+        <p className="mt-6 text-lg font-medium text-foreground opacity-0 animate-[fadeUp_1.1s_ease-out_2.2s_forwards] md:text-2xl">
           Guiando empresas rumo ao futuro.
         </p>
-
-        <p className="mt-4 max-w-xl text-sm md:text-base leading-relaxed text-muted-foreground">
-          Desenvolvemos sites, sistemas, automações e Inteligência Artificial
-          para empresas que desejam crescer.
+        <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground opacity-0 animate-[fadeUp_1.1s_ease-out_3.2s_forwards] md:text-base">
+          Sites, sistemas, automações e Inteligência Artificial para empresas que desejam crescer.
         </p>
       </div>
+
       <style>{`
         @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes logoReveal {
+          from { opacity: 0; transform: scale(0.92); filter: blur(10px); }
+          to { opacity: 1; transform: scale(1); filter: blur(0); }
+        }
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }

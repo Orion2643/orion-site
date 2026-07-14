@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { company } from "../config/company";
 
 function NotFoundComponent() {
   return (
@@ -86,12 +87,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Orion Soluções em Tecnologia" },
       {
         property: "og:description",
-        content: "Guiando empresas rumo ao futuro com sites, sistemas, IA e automações inteligentes.",
+        content:
+          "Guiando empresas rumo ao futuro com sites, sistemas, IA e automações inteligentes.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Orion" },
+      { property: "og:locale", content: "pt_BR" },
+      { property: "og:url", content: company.website },
+      { property: "og:image", content: `${company.website}/og-image.jpg` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Orion Soluções em Tecnologia" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Orion Soluções em Tecnologia" },
+      { name: "twitter:image", content: `${company.website}/og-image.jpg` },
       {
         name: "twitter:description",
         content: "Sites, sistemas, IA e automações que impulsionam empresas.",
@@ -100,6 +109,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png", sizes: "64x64" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "canonical", href: company.website },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -113,10 +126,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "Orion Soluções em Tecnologia",
-          slogan: "Guiando empresas rumo ao futuro",
+          name: company.name,
+          slogan: company.slogan,
           description:
             "Desenvolvimento de sites, sistemas personalizados, automações com IA e integrações sob medida.",
+          url: company.website,
+          logo: `${company.website}${company.icon}`,
+          email: company.email,
+          telephone: company.phoneDisplay,
+          areaServed: "Brasil",
+          sameAs: [company.instagram, company.linkedin, company.github],
         }),
       },
     ],
