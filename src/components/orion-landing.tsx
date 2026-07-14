@@ -797,6 +797,169 @@ function FAQ() {
   );
 }
 
+/* ---------- FORMULÁRIO DE AVALIAÇÃO ---------- */
+function EvaluationForm() {
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    location: "",
+    service: "",
+    description: "",
+  });
+  const [error, setError] = useState("");
+
+  const services = [
+    "Site institucional",
+    "Landing page",
+    "Sistema web personalizado",
+    "Automação com n8n",
+    "Inteligência Artificial",
+    "SEO e presença no Google",
+    "Consultoria em tecnologia",
+    "Outro serviço",
+  ];
+
+  const updateField = (field: keyof typeof form, value: string) => {
+    setForm((current) => ({ ...current, [field]: value }));
+    if (error) setError("");
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!form.name.trim() || !form.phone.trim() || !form.service || !form.description.trim()) {
+      setError("Preencha nome, telefone, tipo de serviço e descrição do projeto.");
+      return;
+    }
+
+    const message = [
+      "Olá! Vim pelo site da Orion e gostaria de solicitar uma avaliação.",
+      "",
+      `*Nome:* ${form.name.trim()}`,
+      `*Telefone:* ${form.phone.trim()}`,
+      `*Cidade ou bairro:* ${form.location.trim() || "Não informado"}`,
+      `*Tipo de serviço:* ${form.service}`,
+      `*Descrição do projeto:* ${form.description.trim()}`,
+    ].join("\n");
+
+    window.open(`https://wa.me/${company.phone}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+
+    setForm({
+      name: "",
+      phone: "",
+      location: "",
+      service: "",
+      description: "",
+    });
+    setError("");
+  };
+
+  const inputClass =
+    "w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary/70 focus:ring-2 focus:ring-primary/20 placeholder:text-muted-foreground/60";
+
+  return (
+    <section id="avaliacao" className="relative py-28">
+      <div className="mx-auto max-w-5xl px-6">
+        <div className="relative overflow-hidden rounded-3xl glass-card p-6 md:p-10">
+          <div className="absolute inset-0 bg-nebula opacity-35 pointer-events-none" />
+          <div className="relative">
+            <SectionHeader
+              eyebrow="Contato rápido"
+              title="Solicite sua avaliação"
+              subtitle="Preencha os campos e envie sua solicitação diretamente pelo WhatsApp."
+            />
+
+            <form onSubmit={handleSubmit} className="mx-auto max-w-3xl space-y-5" noValidate>
+              <div className="grid gap-5 md:grid-cols-2">
+                <label className="space-y-2 text-sm font-medium">
+                  <span>Nome *</span>
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={(event) => updateField("name", event.target.value)}
+                    className={inputClass}
+                    autoComplete="name"
+                    placeholder="Seu nome"
+                  />
+                </label>
+
+                <label className="space-y-2 text-sm font-medium">
+                  <span>Telefone *</span>
+                  <input
+                    type="tel"
+                    value={form.phone}
+                    onChange={(event) => updateField("phone", event.target.value)}
+                    className={inputClass}
+                    autoComplete="tel"
+                    placeholder="(15) 99999-9999"
+                  />
+                </label>
+
+                <label className="space-y-2 text-sm font-medium">
+                  <span>Cidade ou bairro</span>
+                  <input
+                    type="text"
+                    value={form.location}
+                    onChange={(event) => updateField("location", event.target.value)}
+                    className={inputClass}
+                    autoComplete="address-level2"
+                    placeholder="Ex.: Sorocaba - SP"
+                  />
+                </label>
+
+                <label className="space-y-2 text-sm font-medium">
+                  <span>Tipo de serviço *</span>
+                  <select
+                    value={form.service}
+                    onChange={(event) => updateField("service", event.target.value)}
+                    className={inputClass}
+                  >
+                    <option value="" className="bg-background">Selecione</option>
+                    {services.map((service) => (
+                      <option key={service} value={service} className="bg-background">
+                        {service}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+
+              <label className="block space-y-2 text-sm font-medium">
+                <span>Descrição do projeto *</span>
+                <textarea
+                  value={form.description}
+                  onChange={(event) => updateField("description", event.target.value)}
+                  className={`${inputClass} min-h-36 resize-y`}
+                  placeholder="Conte brevemente o que sua empresa precisa, seus objetivos e prazo desejado."
+                />
+              </label>
+
+              {error && (
+                <p role="alert" className="rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-200">
+                  {error}
+                </p>
+              )}
+
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  Ao enviar, você será direcionado ao WhatsApp da Orion com as informações preenchidas.
+                </p>
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-accent px-7 py-3.5 text-sm font-medium text-white shadow-[var(--shadow-glow-purple)] transition-all hover:scale-[1.02]"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                  Enviar pelo WhatsApp
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- CTA ---------- */
 function CTA() {
   return (
@@ -952,6 +1115,7 @@ export default function OrionLanding() {
         <WhyUs />
         <Metrics />
         <FAQ />
+        <EvaluationForm />
         <CTA />
       </main>
       <Footer />
