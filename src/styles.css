@@ -225,3 +225,66 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Orion motion design */
+.orion-nav-logo {
+  animation: orionLogoFloat 4.8s ease-in-out infinite, orionLogoGlow 3.2s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform, filter;
+}
+
+.group:hover .orion-nav-logo {
+  animation-duration: 1.5s, 1.5s;
+}
+
+.orion-intro-logo-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.orion-intro-logo {
+  position: relative;
+  z-index: 2;
+  animation: orionIntroFloat 4s ease-in-out infinite, orionLogoGlow 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 24px rgba(0, 166, 255, 0.45));
+}
+
+.orion-intro-glow {
+  position: absolute;
+  inset: 8%;
+  z-index: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(0, 174, 255, 0.34), rgba(91, 69, 255, 0.16) 45%, transparent 72%);
+  filter: blur(32px);
+  animation: orionGlowBreath 3s ease-in-out infinite;
+}
+
+@keyframes orionLogoFloat {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-4px) rotate(2deg); }
+}
+
+@keyframes orionIntroFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-9px) scale(1.018); }
+}
+
+@keyframes orionLogoGlow {
+  0%, 100% { filter: drop-shadow(0 0 12px rgba(0, 166, 255, 0.38)); }
+  50% { filter: drop-shadow(0 0 26px rgba(0, 209, 255, 0.68)); }
+}
+
+@keyframes orionGlowBreath {
+  0%, 100% { opacity: .55; transform: scale(.94); }
+  50% { opacity: .95; transform: scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orion-nav-logo,
+  .orion-intro-logo,
+  .orion-intro-glow {
+    animation: none !important;
+  }
+}

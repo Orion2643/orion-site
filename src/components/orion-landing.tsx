@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import {
   Menu,
   X,
@@ -9,12 +8,8 @@ import {
   Code2,
   Layout,
   LayoutDashboard,
-  Building2,
-  Bot,
-  Plug,
   Search,
   Compass,
-  Boxes,
   Sparkles,
   ShieldCheck,
   Zap,
@@ -33,7 +28,6 @@ import {
   Database,
   Cloud,
   GitBranch,
-  Workflow,
   Brain,
   Globe,
   Palette,
@@ -53,11 +47,7 @@ import {
   Scissors,
   Wrench,
   Hammer,
-  Stethoscope,
-  Truck,
-  Wallet,
   Package,
-  Users2,
 } from "lucide-react";
 import { ParticleSphere, Starfield, IntroOverlay } from "./space-visuals";
 import { company, emailUrl, whatsappUrl } from "../config/company";
@@ -92,7 +82,7 @@ function Nav() {
           <img
             src={company.icon}
             alt="Símbolo da Orion"
-            className="h-10 w-10 rounded-full object-cover shadow-[0_0_24px_rgba(59,130,246,0.45)] transition-transform group-hover:scale-105"
+            className="orion-nav-logo h-10 w-10 rounded-full object-cover shadow-[0_0_24px_rgba(59,130,246,0.45)]"
           />
           <span className="font-display text-xl font-bold tracking-tight">{company.shortName}</span>
         </a>
@@ -165,9 +155,9 @@ function Hero() {
             Transformamos ideias em <span className="text-gradient">tecnologia inteligente</span>
           </h1>
           <p className="mt-6 max-w-xl text-base md:text-lg text-muted-foreground leading-relaxed">
-            A Orion desenvolve sites profissionais, sistemas personalizados, automações,
-            inteligência artificial e integrações sob medida para empresas que desejam crescer com
-            performance e inovação.
+            A Orion desenvolve sites profissionais, sistemas personalizados e soluções digitais
+            sob medida para empresas que desejam organizar processos, fortalecer sua presença online
+            e crescer com tecnologia.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
@@ -194,7 +184,7 @@ function Hero() {
               <Zap className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> Performance
             </div>
             <div className="flex items-center gap-2">
-              <Brain className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> IA aplicada
+              <Users className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> Atendimento próximo
             </div>
           </div>
         </motion.div>
@@ -248,10 +238,10 @@ function SectionHeader({
 /* ---------- SOBRE ---------- */
 function About() {
   const pillars = [
-    { icon: Code2, title: "Desenvolvimento", desc: "Software sob medida com arquitetura moderna." },
-    { icon: Palette, title: "Design", desc: "Interfaces refinadas com foco em experiência." },
-    { icon: Bot, title: "Automação", desc: "Fluxos inteligentes com IA e n8n." },
-    { icon: Brain, title: "Inteligência", desc: "IA aplicada para decisões orientadas a dados." },
+    { icon: Globe, title: "Presença digital", desc: "Sites profissionais alinhados à identidade do seu negócio." },
+    { icon: LayoutDashboard, title: "Sistemas sob medida", desc: "Ferramentas desenvolvidas conforme a rotina de cada empresa." },
+    { icon: Palette, title: "Design responsivo", desc: "Experiências claras e modernas em computadores e celulares." },
+    { icon: Compass, title: "Consultoria", desc: "Orientação prática para escolher e aplicar a tecnologia certa." },
   ];
   return (
     <section id="sobre" className="relative py-28">
@@ -259,17 +249,18 @@ function About() {
         <SectionHeader
           eyebrow="Quem somos"
           title="Tecnologia que impulsiona negócios"
-          subtitle="A Orion é uma empresa especializada em criar soluções tecnológicas que combinam desenvolvimento personalizado, design moderno, automações inteligentes e IA aplicada — com proximidade e competência."
+          subtitle="A Orion cria soluções digitais personalizadas com proximidade, clareza e foco nas necessidades reais de cada cliente."
         />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {pillars.map((p, i) => (
             <motion.div
               key={p.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="glass-card rounded-2xl p-6 transition-transform hover:-translate-y-1"
+              transition={{ delay: i * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -6, scale: 1.015 }}
+              className="glass-card rounded-2xl p-6"
             >
               <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 ring-1 ring-primary/30">
                 <p.icon className="h-5 w-5 text-[oklch(0.82_0.14_200)]" />
@@ -290,47 +281,27 @@ function Services() {
     {
       icon: Layout,
       title: "Sites Institucionais",
-      desc: "Presença digital profissional que representa sua marca.",
+      desc: "Presença digital profissional, responsiva e alinhada à identidade da sua empresa.",
     },
     {
       icon: Rocket,
       title: "Landing Pages",
-      desc: "Páginas de alta conversão para campanhas e produtos.",
+      desc: "Páginas objetivas para apresentar serviços, campanhas e oportunidades de negócio.",
     },
     {
       icon: LayoutDashboard,
       title: "Sistemas Web Personalizados",
-      desc: "Software sob medida para operações específicas.",
-    },
-    {
-      icon: Building2,
-      title: "Plataformas Empresariais",
-      desc: "Soluções robustas para gestão e operação em escala.",
-    },
-    {
-      icon: Bot,
-      title: "Automações com IA e n8n",
-      desc: "Fluxos inteligentes que economizam tempo e recursos.",
-    },
-    {
-      icon: Plug,
-      title: "Integrações via API",
-      desc: "Conectamos seus sistemas com qualquer serviço externo.",
+      desc: "Ferramentas sob medida para organizar rotinas e facilitar o trabalho da sua empresa.",
     },
     {
       icon: Search,
       title: "SEO e Google Business",
-      desc: "Visibilidade orgânica e presença local otimizada.",
+      desc: "Configuração técnica para melhorar sua presença no Google e nas buscas locais.",
     },
     {
       icon: Compass,
       title: "Consultoria em Tecnologia",
-      desc: "Direção estratégica para escolhas técnicas certas.",
-    },
-    {
-      icon: Boxes,
-      title: "Produtos Digitais",
-      desc: "Do MVP ao SaaS escalável com métricas de produto.",
+      desc: "Orientação prática para escolher soluções compatíveis com seus objetivos e orçamento.",
     },
   ];
   return (
@@ -425,18 +396,10 @@ function Process() {
 function Projects() {
   const projects = [
     { icon: Scissors, title: "Sistema para Barbearia", tag: "Agendamentos", device: "laptop" },
-    {
-      icon: Wrench,
-      title: "Sistema para Oficina Mecânica",
-      tag: "Ordens de serviço",
-      device: "desktop",
-    },
+    { icon: Sparkles, title: "Sistema para Manicure", tag: "Agenda e clientes", device: "smartphone" },
+    { icon: Wrench, title: "Sistema para Oficina Mecânica", tag: "Ordens de serviço", device: "desktop" },
     { icon: Hammer, title: "Sistema para Serralheria", tag: "Orçamentos", device: "tablet" },
-    { icon: Stethoscope, title: "Plataforma para Clínicas", tag: "Prontuários", device: "laptop" },
-    { icon: Truck, title: "Sistema de Terraplanagem", tag: "Operações", device: "desktop" },
-    { icon: Wallet, title: "Controle Financeiro", tag: "Fluxo de caixa", device: "smartphone" },
     { icon: Package, title: "Gestão de Estoque", tag: "Inventário", device: "tablet" },
-    { icon: Users2, title: "CRM Empresarial", tag: "Vendas", device: "laptop" },
   ];
   const DeviceIcon = {
     laptop: Laptop,
@@ -452,9 +415,9 @@ function Projects() {
         <SectionHeader
           eyebrow="Projetos"
           title="Soluções que entregam resultado"
-          subtitle="Demonstrações conceituais das nossas capacidades em diferentes segmentos."
+          subtitle="Ideias de sistemas que podem ser desenvolvidos sob medida para diferentes segmentos."
         />
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((p, i) => {
             const Dev = DeviceIcon[p.device as keyof typeof DeviceIcon];
             return (
@@ -496,27 +459,22 @@ function Technologies() {
   const techs = [
     { icon: Code2, name: "React" },
     { icon: Code2, name: "TypeScript" },
-    { icon: Rocket, name: "Next.js" },
     { icon: Terminal, name: "Python" },
     { icon: Server, name: "FastAPI" },
     { icon: Cpu, name: "Node.js" },
-    { icon: Boxes, name: "Docker" },
-    { icon: Database, name: "PostgreSQL" },
+    { icon: Database, name: "SQLite" },
+    { icon: LineChart, name: "Streamlit" },
     { icon: Cloud, name: "Cloudflare" },
     { icon: Github, name: "GitHub" },
-    { icon: Workflow, name: "n8n" },
-    { icon: Brain, name: "OpenAI" },
-    { icon: Plug, name: "APIs REST" },
-    { icon: Sparkles, name: "IA" },
+    { icon: GitBranch, name: "Git" },
     { icon: Globe, name: "HTML5" },
     { icon: Palette, name: "CSS3" },
-    { icon: GitBranch, name: "Git" },
-    { icon: Layout, name: "Tailwind CSS" },
+    { icon: Brain, name: "OpenAI" },
   ];
   return (
     <section id="tecnologias" className="relative py-28">
       <div className="mx-auto max-w-7xl px-6">
-        <SectionHeader eyebrow="Stack" title="Tecnologias que dominamos" />
+        <SectionHeader eyebrow="Stack" title="Tecnologias que utilizamos" subtitle="Ferramentas que já fazem parte do nosso processo de desenvolvimento e aprendizado contínuo." />
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
           {techs.map((t, i) => (
             <motion.div
@@ -555,19 +513,19 @@ function AISection() {
             <Sparkles className="h-3 w-3" /> Inteligência Artificial
           </div>
           <h2 className="mt-5 font-display text-3xl md:text-5xl font-bold leading-tight">
-            A <span className="text-gradient">Inteligência Artificial</span> potencializa empresas
+            Tecnologia com <span className="text-gradient">Inteligência Artificial</span> aplicada com propósito
           </h2>
           <p className="mt-5 text-muted-foreground leading-relaxed">
-            Agentes inteligentes, automações, assistentes virtuais e análise de dados reduzem
-            custos, aumentam a produtividade e aprimoram a tomada de decisões. Aplicamos IA de forma
-            prática, integrada aos seus processos.
+            A Inteligência Artificial já faz parte das ferramentas que utilizamos para apoiar o
+            desenvolvimento, organizar informações e criar soluções digitais mais eficientes. Cada
+            aplicação é avaliada conforme a necessidade e a viabilidade do projeto.
           </p>
           <ul className="mt-6 space-y-3">
             {[
-              "Assistentes virtuais que atendem 24/7",
-              "Automação de tarefas repetitivas",
-              "Análise preditiva com dados do seu negócio",
-              "Integração com ferramentas que você já usa",
+              "Apoio na criação e organização de conteúdos",
+              "Recursos inteligentes em soluções personalizadas",
+              "Análise de possibilidades para cada projeto",
+              "Uso responsável e alinhado à necessidade do cliente",
             ].map((t) => (
               <li key={t} className="flex items-start gap-3 text-sm">
                 <CheckCircle2 className="h-5 w-5 shrink-0 text-[oklch(0.82_0.14_200)]" />
@@ -595,51 +553,15 @@ function AISection() {
 /* ---------- POR QUE ---------- */
 function WhyUs() {
   const items = [
-    {
-      icon: Gauge,
-      title: "Performance",
-      desc: "Sites e sistemas rápidos, otimizados de ponta a ponta.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Segurança",
-      desc: "Boas práticas, criptografia e proteção de dados.",
-    },
-    {
-      icon: LineChart,
-      title: "Escalabilidade",
-      desc: "Arquitetura preparada para crescer com o seu negócio.",
-    },
-    {
-      icon: Cpu,
-      title: "Arquitetura moderna",
-      desc: "Stack atual, modular e sustentável no longo prazo.",
-    },
-    {
-      icon: Smartphone,
-      title: "Design responsivo",
-      desc: "Experiência impecável em qualquer dispositivo.",
-    },
-    {
-      icon: Users,
-      title: "Suporte contínuo",
-      desc: "Acompanhamento próximo depois do lançamento.",
-    },
-    {
-      icon: Target,
-      title: "Foco em resultados",
-      desc: "Cada entrega ligada a métricas do seu negócio.",
-    },
-    {
-      icon: Plug,
-      title: "Integração de sistemas",
-      desc: "Conectamos ferramentas para operar como um só.",
-    },
-    {
-      icon: Sparkles,
-      title: "Inovação constante",
-      desc: "IA e automações aplicadas aos seus processos.",
-    },
+    { icon: Target, title: "Desenvolvimento personalizado", desc: "Cada projeto nasce das necessidades reais do seu negócio." },
+    { icon: MessageCircle, title: "Comunicação transparente", desc: "Você acompanha as etapas e entende o que está sendo desenvolvido." },
+    { icon: CheckCircle2, title: "Entrega organizada", desc: "Planejamento, testes e publicação seguindo um processo claro." },
+    { icon: Smartphone, title: "Design responsivo", desc: "Experiência bem apresentada em computadores, tablets e celulares." },
+    { icon: Search, title: "SEO desde o início", desc: "Estrutura preparada para facilitar a descoberta do site nos buscadores." },
+    { icon: ShieldCheck, title: "Segurança e backup", desc: "Boas práticas e cópias de segurança durante o desenvolvimento." },
+    { icon: Users, title: "Atendimento próximo", desc: "Contato direto, escuta ativa e suporte compatível com o projeto." },
+    { icon: LineChart, title: "Soluções que podem evoluir", desc: "Estrutura pensada para receber melhorias conforme o negócio cresce." },
+    { icon: Sparkles, title: "Aprendizado contínuo", desc: "Acompanhamos novas tecnologias para oferecer soluções cada vez melhores." },
   ];
   return (
     <section className="relative py-28">
@@ -670,58 +592,36 @@ function WhyUs() {
   );
 }
 
-/* ---------- METRICS ---------- */
-function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    const duration = 1400;
-    const start = performance.now();
-    let raf = 0;
-    const tick = (t: number) => {
-      const p = Math.min(1, (t - start) / duration);
-      setVal(Math.floor(p * to));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, to]);
-  return (
-    <span ref={ref}>
-      {val}
-      {suffix}
-    </span>
-  );
-}
-
+/* ---------- COMPROMISSOS ---------- */
 function Metrics() {
-  const stats = [
-    { label: "Projetos conceituais", value: 20, suffix: "+" },
-    { label: "Tecnologias dominadas", value: 18, suffix: "+" },
-    { label: "Disponibilidade de suporte", value: 24, suffix: "/7" },
-    { label: "Foco em satisfação", value: 100, suffix: "%" },
+  const commitments = [
+    { icon: Target, title: "Projetos sob medida", desc: "Soluções pensadas para a realidade de cada cliente." },
+    { icon: Code2, title: "13 tecnologias", desc: "Ferramentas utilizadas em nosso processo de desenvolvimento." },
+    { icon: Users, title: "Atendimento humanizado", desc: "Contato direto e acompanhamento durante o projeto." },
+    { icon: ShieldCheck, title: "Compromisso com a qualidade", desc: "Cuidado com testes, organização e entrega." },
   ];
   return (
     <section className="relative py-20">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="glass-card rounded-3xl p-10 grid grid-cols-2 md:grid-cols-4 gap-8 relative overflow-hidden">
-          <div className="absolute inset-0 bg-nebula opacity-40 pointer-events-none" />
-          {stats.map((s) => (
-            <div key={s.label} className="relative text-center">
-              <div className="font-display text-4xl md:text-5xl font-bold text-gradient">
-                <Counter to={s.value} suffix={s.suffix} />
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {commitments.map((item, i) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ delay: i * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -5 }}
+              className="glass-card rounded-2xl p-6 text-center"
+            >
+              <div className="mx-auto grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 ring-1 ring-white/10">
+                <item.icon className="h-5 w-5 text-[oklch(0.82_0.14_200)]" />
               </div>
-              <div className="mt-2 text-xs uppercase tracking-widest text-muted-foreground">
-                {s.label}
-              </div>
-            </div>
+              <h3 className="mt-4 font-semibold">{item.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
+            </motion.div>
           ))}
         </div>
-        <p className="mt-3 text-center text-[11px] text-muted-foreground/70">
-          Indicadores ilustrativos de posicionamento da empresa.
-        </p>
       </div>
     </section>
   );
@@ -731,36 +631,28 @@ function Metrics() {
 function FAQ() {
   const items = [
     {
-      q: "Quais são os prazos para desenvolvimento?",
-      a: "Sites institucionais podem levar de 2 a 4 semanas. Sistemas personalizados variam conforme escopo — definimos cronograma detalhado após a descoberta.",
+      q: "Quais serviços a Orion oferece?",
+      a: "Desenvolvemos sites profissionais, landing pages, sistemas personalizados, consultoria em tecnologia, SEO e configuração do Google Business.",
+    },
+    {
+      q: "O site será responsivo para celular?",
+      a: "Sim. Todos os sites são preparados para funcionar em computadores, tablets e smartphones.",
+    },
+    {
+      q: "Quanto tempo leva para desenvolver um site?",
+      a: "O prazo depende da complexidade e do conteúdo fornecido. Antes de iniciar, definimos o escopo e uma previsão de entrega para o projeto.",
+    },
+    {
+      q: "Vocês oferecem suporte após a entrega?",
+      a: "Sim. Após a publicação, oferecemos um período de suporte para correções relacionadas ao escopo e podemos combinar manutenção contínua quando necessário.",
     },
     {
       q: "Como funciona a precificação?",
-      a: "Trabalhamos por projeto ou por escopo evolutivo. Após entender suas necessidades, apresentamos uma proposta clara com etapas, valores e entregas.",
-    },
-    {
-      q: "Vocês oferecem manutenção?",
-      a: "Sim. Oferecemos planos de manutenção contínua incluindo correções, melhorias, atualizações e suporte técnico.",
-    },
-    {
-      q: "A hospedagem está incluída?",
-      a: "Podemos incluir ou orientar você na escolha da melhor infraestrutura, usando Cloudflare, Vercel ou provedores adequados ao projeto.",
+      a: "Após entender a necessidade do cliente, apresentamos uma proposta clara com escopo, etapas, prazo e valor do serviço.",
     },
     {
       q: "É possível desenvolver algo totalmente personalizado?",
-      a: "Sim. Somos especializados em soluções sob medida, do design ao código, adaptadas aos processos únicos do seu negócio.",
-    },
-    {
-      q: "Como funciona o suporte pós-entrega?",
-      a: "Todo projeto tem um período de suporte inicial. Depois, oferecemos planos contínuos com SLA definido conforme sua necessidade.",
-    },
-    {
-      q: "Vocês fazem integrações com outros sistemas?",
-      a: "Sim. Integramos via APIs REST, webhooks e ferramentas como n8n para conectar tudo o que você já usa.",
-    },
-    {
-      q: "Como aplicam Inteligência Artificial e automações?",
-      a: "Criamos agentes, assistentes e fluxos automatizados focados em resultados: redução de custo, ganho de produtividade e melhores decisões.",
+      a: "Sim. A proposta da Orion é desenvolver soluções adaptadas à rotina, aos objetivos e ao orçamento de cada negócio.",
     },
   ];
   const [open, setOpen] = useState<number | null>(0);
@@ -811,8 +703,7 @@ function EvaluationForm() {
     "Site institucional",
     "Landing page",
     "Sistema web personalizado",
-    "Automação com n8n",
-    "Inteligência Artificial",
+    "Solução com recursos de IA",
     "SEO e presença no Google",
     "Consultoria em tecnologia",
     "Outro serviço",
