@@ -69,6 +69,7 @@ function Nav() {
     ["Projetos", "#projetos"],
     ["Tecnologias", "#tecnologias"],
     ["FAQ", "#faq"],
+    ["Novo projeto", "/briefing"],
   ];
 
   return (
