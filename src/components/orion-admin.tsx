@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import { downloadProjectAsset, listProjectAssets, type ProjectAsset } from "../lib/project-storage";
+import ProjectTrackingAdmin from "./project-tracking-admin";
 
 type Project = {
   id: string;
@@ -38,6 +39,9 @@ type Project = {
   segment: string | null;
   project_type: string | null;
   status: string | null;
+  progress: number | null;
+  next_step: string | null;
+  status_updated_at: string | null;
   created_at: string;
   updated_at: string | null;
 };
@@ -277,7 +281,7 @@ export default function OrionAdmin() {
     setError("");
     const { data, error: loadError } = await supabase
       .from("projects")
-      .select("id, project_code, company_name, contact_name, phone, email, city, state, segment, project_type, status, created_at, updated_at")
+      .select("id, project_code, company_name, contact_name, phone, email, city, state, segment, project_type, status, progress, next_step, status_updated_at, created_at, updated_at")
       .order("created_at", { ascending: false });
 
     if (loadError) {
@@ -485,6 +489,16 @@ ${technicalSummary}`;
                 <div className="flex gap-3"><MapPin className="mt-0.5 h-5 w-5 text-cyan-300" /><div><p className="text-xs text-muted-foreground">Localização</p><p className="mt-1 text-sm">{selectedProject.city ? `${selectedProject.city}${selectedProject.state ? `/${selectedProject.state}` : ""}` : "Não informada"}</p></div></div>
               </div>
             </div>
+
+            <ProjectTrackingAdmin
+              project={selectedProject}
+              onProjectUpdated={(changes) => {
+                setSelectedProject((current) => current ? { ...current, ...changes } : current);
+                setProjects((current) => current.map((project) =>
+                  project.id === selectedProject.id ? { ...project, ...changes } : project,
+                ));
+              }}
+            />
 
             <section className="rounded-3xl border border-white/10 bg-white/[0.02] p-6">
               <div className="mb-5 flex items-center justify-between gap-3"><div><p className="text-xs uppercase tracking-[0.18em] text-cyan-300">Arquivos do projeto</p><h3 className="mt-1 text-xl font-bold">Logo, fachada e galeria</h3><p className="mt-2 text-sm text-muted-foreground">Visualize ou baixe o arquivo original no padrão Orion.</p></div><Images className="h-7 w-7 text-cyan-300" /></div>

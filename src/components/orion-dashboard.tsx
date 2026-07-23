@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { company } from "../config/company";
 import { Starfield } from "./space-visuals";
+import ProjectTrackingLookup from "./project-tracking-lookup";
 
 type PortalItem = {
   title: string;
@@ -37,7 +38,7 @@ const portalItems: PortalItem[] = [
     title: "Arquivos",
     description: "Central de logos, fachadas e galerias vinculadas aos projetos.",
     icon: FolderOpen,
-    badge: "V3.3",
+    badge: "V3.4",
   },
   {
     title: "Clientes",
@@ -108,6 +109,8 @@ export default function OrionDashboard() {
             ambiente centralizado.
           </p>
         </section>
+
+        <ProjectTrackingLookup />
 
         <section className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {portalItems.map((item) => {
