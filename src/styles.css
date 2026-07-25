@@ -288,3 +288,40 @@
     animation: none !important;
   }
 }
+
+
+/* Orion V4 — experiência cinematográfica */
+.orion-cinematic-hero {
+  isolation: isolate;
+}
+
+.orion-cinematic-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 22%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--background));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orion-cinematic-hero video {
+    display: none;
+  }
+}
+
+/* Orion V5 — campos nativos consistentes no tema escuro */
+select,
+select option,
+select optgroup {
+  color-scheme: dark;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+select option:checked,
+select option:hover,
+select option:focus {
+  background-color: hsl(var(--primary));
+  color: white;
+}

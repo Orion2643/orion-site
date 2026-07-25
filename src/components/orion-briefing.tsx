@@ -590,12 +590,12 @@ ${briefing}`,
     if (step === 0) {
       return (
         <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Nome empresarial / razão social"><input className={inputClass} value={data.companyName} onChange={(e) => update("companyName", e.target.value)} placeholder="Ex.: Empresa Silva Ltda." /></Field>
-          <Field label="Nome fantasia" required><input className={inputClass} value={data.tradeName} onChange={(e) => update("tradeName", e.target.value)} placeholder="Ex.: Silva Auto Center" /></Field>
-          <Field label="Segmento de atuação" required><input className={inputClass} value={data.segment} onChange={(e) => update("segment", e.target.value)} placeholder="Ex.: Oficina mecânica" /></Field>
-          <Field label="Tempo de mercado"><input className={inputClass} value={data.yearsInBusiness} onChange={(e) => update("yearsInBusiness", e.target.value)} placeholder="Ex.: 8 anos" /></Field>
-          <Field label="Cidade" required><input className={inputClass} value={data.city} onChange={(e) => update("city", e.target.value)} placeholder="Ex.: Sorocaba" /></Field>
-          <Field label="Estado"><input className={inputClass} value={data.state} onChange={(e) => update("state", e.target.value)} placeholder="SP" /></Field>
+          <Field label="Nome empresarial / razão social"><input className={inputClass} value={data.companyName} onChange={(e) => update("companyName", e.target.value)} placeholder="Informe a razão social, caso exista" /></Field>
+          <Field label="Nome fantasia" required><input className={inputClass} value={data.tradeName} onChange={(e) => update("tradeName", e.target.value)} placeholder="Informe o nome pelo qual a empresa é conhecida" /></Field>
+          <Field label="Segmento de atuação" required><input className={inputClass} value={data.segment} onChange={(e) => update("segment", e.target.value)} placeholder="Informe o segmento principal da empresa" /></Field>
+          <Field label="Tempo de mercado"><input className={inputClass} value={data.yearsInBusiness} onChange={(e) => update("yearsInBusiness", e.target.value)} placeholder="Informe há quanto tempo a empresa atua" /></Field>
+          <Field label="Cidade" required><input className={inputClass} value={data.city} onChange={(e) => update("city", e.target.value)} placeholder="Informe a cidade" /></Field>
+          <Field label="Estado"><input className={inputClass} value={data.state} onChange={(e) => update("state", e.target.value)} placeholder="Informe o estado" /></Field>
         </div>
       );
     }
@@ -620,10 +620,10 @@ ${briefing}`,
         <div className="space-y-5">
           <Field label="Conte a história da empresa" hint="Como começou, experiência, trajetória e contexto atual."><textarea className={`${inputClass} min-h-32 resize-y`} value={data.story} onChange={(e) => update("story", e.target.value)} /></Field>
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Principais diferenciais"><textarea className={`${inputClass} min-h-28 resize-y`} value={data.differentials} onChange={(e) => update("differentials", e.target.value)} placeholder="Qualidade, rapidez, experiência..." /></Field>
-            <Field label="Valores que deseja transmitir"><textarea className={`${inputClass} min-h-28 resize-y`} value={data.values} onChange={(e) => update("values", e.target.value)} placeholder="Confiança, inovação, segurança..." /></Field>
+            <Field label="Principais diferenciais"><textarea className={`${inputClass} min-h-28 resize-y`} value={data.differentials} onChange={(e) => update("differentials", e.target.value)} placeholder="Descreva os principais diferenciais da empresa" /></Field>
+            <Field label="Valores que deseja transmitir"><textarea className={`${inputClass} min-h-28 resize-y`} value={data.values} onChange={(e) => update("values", e.target.value)} placeholder="Descreva os valores que a marca deseja transmitir" /></Field>
           </div>
-          <Field label="Público-alvo"><input className={inputClass} value={data.targetAudience} onChange={(e) => update("targetAudience", e.target.value)} placeholder="Quem são os clientes ideais?" /></Field>
+          <Field label="Público-alvo"><input className={inputClass} value={data.targetAudience} onChange={(e) => update("targetAudience", e.target.value)} placeholder="Descreva o perfil dos clientes que deseja alcançar" /></Field>
           <div>
             <p className="mb-3 text-sm font-medium">Objetivos principais do site</p>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -640,13 +640,13 @@ ${briefing}`,
     if (step === 3) {
       return (
         <div className="space-y-5">
-          <Field label="Serviços ou produtos" required hint="Informe um por linha. Acrescente uma breve explicação quando possível."><textarea className={`${inputClass} min-h-52 resize-y`} value={data.services} onChange={(e) => update("services", e.target.value)} placeholder={"Troca de óleo — manutenção preventiva\nFreios — revisão e substituição\nSuspensão — diagnóstico e reparo"} /></Field>
+          <Field label="Serviços ou produtos" required hint="Informe um por linha. Acrescente uma breve explicação quando possível."><textarea className={`${inputClass} min-h-52 resize-y`} value={data.services} onChange={(e) => update("services", e.target.value)} placeholder={"Descreva todos os serviços ou produtos oferecidos.\nDigite um item por linha e acrescente uma breve explicação quando necessário."} /></Field>
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Área de atendimento"><input className={inputClass} value={data.serviceArea} onChange={(e) => update("serviceArea", e.target.value)} placeholder="Sorocaba e região / Todo o Brasil" /></Field>
-            <Field label="Horário de funcionamento"><input className={inputClass} value={data.businessHours} onChange={(e) => update("businessHours", e.target.value)} placeholder="Segunda a sexta, 08h às 18h" /></Field>
-            <Field label="Formas de pagamento"><input className={inputClass} value={data.paymentMethods} onChange={(e) => update("paymentMethods", e.target.value)} placeholder="PIX, cartão, dinheiro..." /></Field>
+            <Field label="Área de atendimento"><input className={inputClass} value={data.serviceArea} onChange={(e) => update("serviceArea", e.target.value)} placeholder="Informe as cidades, regiões ou áreas atendidas" /></Field>
+            <Field label="Horário de funcionamento"><input className={inputClass} value={data.businessHours} onChange={(e) => update("businessHours", e.target.value)} placeholder="Informe os dias e horários de funcionamento" /></Field>
+            <Field label="Formas de pagamento"><input className={inputClass} value={data.paymentMethods} onChange={(e) => update("paymentMethods", e.target.value)} placeholder="Informe as formas de pagamento aceitas" /></Field>
             <Field label="Garantia oferecida"><input className={inputClass} value={data.warranty} onChange={(e) => update("warranty", e.target.value)} /></Field>
-            <Field label="Modelo de atendimento"><input className={inputClass} value={data.attendanceModel} onChange={(e) => update("attendanceModel", e.target.value)} placeholder="Agendamento, ordem de chegada..." /></Field>
+            <Field label="Modelo de atendimento"><input className={inputClass} value={data.attendanceModel} onChange={(e) => update("attendanceModel", e.target.value)} placeholder="Descreva como funciona o atendimento" /></Field>
           </div>
         </div>
       );
@@ -710,7 +710,7 @@ ${briefing}`,
             <Field label="Link do Google Maps"><input className={inputClass} value={data.googleMaps} onChange={(e) => update("googleMaps", e.target.value)} placeholder="https://maps.google.com/..." /></Field>
             <Field label="Link para avaliações"><input className={inputClass} value={data.reviewLink} onChange={(e) => update("reviewLink", e.target.value)} placeholder="https://g.page/.../review" /></Field>
             <Field label="Domínio desejado"><input className={inputClass} value={data.desiredDomain} onChange={(e) => update("desiredDomain", e.target.value)} placeholder="empresa.com.br" /></Field>
-            <Field label="Prazo desejado"><input className={inputClass} value={data.deadline} onChange={(e) => update("deadline", e.target.value)} placeholder="Ex.: até 30 dias" /></Field>
+            <Field label="Prazo desejado"><input className={inputClass} value={data.deadline} onChange={(e) => update("deadline", e.target.value)} placeholder="Informe o prazo esperado para o projeto" /></Field>
             <Field label="Faixa de investimento"><select className={inputClass} value={data.budgetRange} onChange={(e) => update("budgetRange", e.target.value)}><option value="">Selecione</option><option>Até R$ 1.000</option><option>R$ 1.000 a R$ 2.000</option><option>R$ 2.000 a R$ 4.000</option><option>Acima de R$ 4.000</option><option>Prefere receber uma proposta</option></select></Field>
           </div>
           <Field label="Observações finais"><textarea className={`${inputClass} min-h-32 resize-y`} value={data.observations} onChange={(e) => update("observations", e.target.value)} placeholder="Tudo que ainda não foi perguntado e pode ser importante." /></Field>

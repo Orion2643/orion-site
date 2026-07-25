@@ -11,6 +11,7 @@ import {
   FileText,
   Eye,
   Images,
+  Layers3,
   LoaderCircle,
   LogOut,
   Mail,
@@ -18,9 +19,17 @@ import {
   Phone,
   RefreshCw,
   Search,
+  TrendingUp,
   Sparkles,
   ShieldCheck,
   UserRound,
+  Users,
+  WalletCards,
+  FolderOpen,
+  Settings,
+  CalendarClock,
+  Activity,
+  FileSignature,
   X,
 } from "lucide-react";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
@@ -56,6 +65,17 @@ type Briefing = {
 
 const inputClass =
   "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/60 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/15";
+
+const adminModules = [
+  { label: "Projetos", description: "Briefings e acompanhamento", icon: Layers3, active: true },
+  { label: "Clientes", description: "Relacionamento e histórico", icon: Users },
+  { label: "Contratos", description: "Propostas e documentos", icon: FileSignature },
+  { label: "Financeiro", description: "Receitas e cobranças", icon: WalletCards },
+  { label: "Arquivos", description: "Materiais dos projetos", icon: FolderOpen },
+  { label: "Agenda", description: "Prazos e compromissos", icon: CalendarClock },
+  { label: "Orion em Movimento", description: "Visão operacional", icon: Activity },
+  { label: "Configurações", description: "Preferências e integrações", icon: Settings },
+];
 
 function formatDate(value?: string | null) {
   if (!value) return "Não informado";
@@ -426,10 +446,17 @@ ${technicalSummary}`;
   };
 
   return (
-    <main className="min-h-dvh bg-background text-foreground">
-      <header className="border-b border-white/10 bg-background/80 backdrop-blur-xl">
+    <main className="relative min-h-dvh overflow-hidden bg-background text-foreground">
+      <div className="pointer-events-none fixed inset-0 bg-hero opacity-70" />
+      <div className="pointer-events-none fixed inset-0 bg-nebula opacity-35" />
+
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-background/70 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4">
-          <div><p className="text-xs uppercase tracking-[0.18em] text-cyan-300">Painel administrativo</p><h1 className="text-xl font-bold">Orion Admin</h1></div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.18em] text-cyan-300">Centro de comando</p>
+            <h1 className="mt-1 font-display text-xl font-bold">Orion Admin</h1>
+            <p className="hidden text-xs text-muted-foreground sm:block">Projetos, briefings, arquivos e acompanhamento em um só lugar.</p>
+          </div>
           <div className="flex items-center gap-2">
             <button type="button" onClick={loadProjects} className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-sm hover:bg-white/[0.06]"><RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /> Atualizar</button>
             <button type="button" onClick={logout} className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-sm hover:bg-white/[0.06]"><LogOut className="h-4 w-4" /> Sair</button>
@@ -437,15 +464,62 @@ ${technicalSummary}`;
         </div>
       </header>
 
-      <section className="mx-auto max-w-7xl px-5 py-8">
+      <section className="relative z-10 mx-auto max-w-7xl px-5 py-8">
+        {!selectedProject && (
+          <nav aria-label="Módulos administrativos" className="mb-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {adminModules.map((module) => {
+              const Icon = module.icon;
+              return (
+                <button
+                  type="button"
+                  key={module.label}
+                  disabled={!module.active}
+                  className={`group flex min-h-24 items-start gap-3 rounded-2xl border p-4 text-left transition ${
+                    module.active
+                      ? "border-cyan-400/30 bg-cyan-400/[0.08] shadow-[0_0_28px_rgba(34,211,238,0.08)]"
+                      : "cursor-default border-white/10 bg-white/[0.025] opacity-75"
+                  }`}
+                >
+                  <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border ${module.active ? "border-cyan-400/25 bg-cyan-400/10" : "border-white/10 bg-white/[0.04]"}`}>
+                    <Icon className={`h-5 w-5 ${module.active ? "text-cyan-300" : "text-muted-foreground"}`} />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-semibold">{module.label}</span>
+                    <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">{module.description}</span>
+                    {!module.active && <span className="mt-2 block text-[10px] uppercase tracking-[0.16em] text-violet-300">Em breve</span>}
+                  </span>
+                </button>
+              );
+            })}
+          </nav>
+        )}
+
         {error && <div role="alert" className="mb-5 rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200">{error}</div>}
 
         {!selectedProject ? (
           <>
             <div className="mb-6 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><p className="text-sm text-muted-foreground">Projetos cadastrados</p><p className="mt-2 text-3xl font-bold">{projects.length}</p></div>
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><p className="text-sm text-muted-foreground">Novos</p><p className="mt-2 text-3xl font-bold">{projects.filter((p) => !p.status || p.status === "new" || p.status === "novo").length}</p></div>
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><p className="text-sm text-muted-foreground">Último protocolo</p><p className="mt-2 font-mono text-xl font-bold">{projects[0]?.project_code ?? "—"}</p></div>
+              <div className="group rounded-3xl border border-cyan-400/15 bg-cyan-400/[0.055] p-5 backdrop-blur-xl transition hover:-translate-y-1 hover:border-cyan-400/30">
+                <div className="flex items-start justify-between gap-3">
+                  <div><p className="text-sm text-muted-foreground">Projetos cadastrados</p><p className="mt-2 font-display text-4xl font-bold">{projects.length}</p></div>
+                  <div className="grid h-11 w-11 place-items-center rounded-2xl border border-cyan-400/20 bg-cyan-400/10"><Layers3 className="h-5 w-5 text-cyan-300" /></div>
+                </div>
+                <p className="mt-3 text-xs text-muted-foreground">Total registrado no Supabase</p>
+              </div>
+              <div className="group rounded-3xl border border-violet-400/15 bg-violet-400/[0.05] p-5 backdrop-blur-xl transition hover:-translate-y-1 hover:border-violet-400/30">
+                <div className="flex items-start justify-between gap-3">
+                  <div><p className="text-sm text-muted-foreground">Novos projetos</p><p className="mt-2 font-display text-4xl font-bold">{projects.filter((p) => !p.status || p.status === "new" || p.status === "novo").length}</p></div>
+                  <div className="grid h-11 w-11 place-items-center rounded-2xl border border-violet-400/20 bg-violet-400/10"><TrendingUp className="h-5 w-5 text-violet-300" /></div>
+                </div>
+                <p className="mt-3 text-xs text-muted-foreground">Aguardando avanço no fluxo</p>
+              </div>
+              <div className="group rounded-3xl border border-emerald-400/15 bg-emerald-400/[0.05] p-5 backdrop-blur-xl transition hover:-translate-y-1 hover:border-emerald-400/30">
+                <div className="flex items-start justify-between gap-3">
+                  <div><p className="text-sm text-muted-foreground">Último protocolo</p><p className="mt-3 font-mono text-xl font-bold text-emerald-200">{projects[0]?.project_code ?? "—"}</p></div>
+                  <div className="grid h-11 w-11 place-items-center rounded-2xl border border-emerald-400/20 bg-emerald-400/10"><ShieldCheck className="h-5 w-5 text-emerald-300" /></div>
+                </div>
+                <p className="mt-4 text-xs text-muted-foreground">Registro mais recente da operação</p>
+              </div>
             </div>
 
             <div className="mb-5 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3"><Search className="h-5 w-5 text-muted-foreground" /><input value={query} onChange={(event) => setQuery(event.target.value)} className="w-full bg-transparent text-sm outline-none" placeholder="Buscar por protocolo, empresa, contato, segmento ou cidade..." /></div>
