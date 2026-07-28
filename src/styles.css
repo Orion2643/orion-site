@@ -5,6 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -32,68 +35,59 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --color-space-black: var(--space-black);
-  --color-space-blue: var(--space-blue);
-  --color-neon-purple: var(--neon-purple);
-  --color-electric-blue: var(--electric-blue);
-  --color-cyan-glow: var(--cyan-glow);
-
-  --font-display: "Space Grotesk", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --color-orion-blue: var(--orion-blue);
+  --color-orion-violet: var(--orion-violet);
+  --color-orion-cyan: var(--orion-cyan);
+  --color-space-deep: var(--space-deep);
+  --color-space-mid: var(--space-mid);
 }
 
 :root {
   --radius: 0.75rem;
 
-  --space-black: oklch(0.09 0.03 275);
-  --space-blue: oklch(0.16 0.06 265);
-  --neon-purple: oklch(0.58 0.24 295);
-  --electric-blue: oklch(0.63 0.19 260);
-  --cyan-glow: oklch(0.82 0.14 200);
-
-  --background: oklch(0.09 0.03 275);
+  --background: oklch(0.14 0.03 265);
   --foreground: oklch(0.98 0.005 250);
-  --card: oklch(0.14 0.05 268);
+
+  --space-deep: oklch(0.09 0.03 265);
+  --space-mid: oklch(0.18 0.05 265);
+
+  --card: oklch(0.17 0.04 265);
   --card-foreground: oklch(0.98 0.005 250);
-  --popover: oklch(0.14 0.05 268);
+
+  --popover: oklch(0.15 0.03 265);
   --popover-foreground: oklch(0.98 0.005 250);
-  --primary: oklch(0.58 0.24 295);
-  --primary-foreground: oklch(0.98 0.005 250);
-  --secondary: oklch(0.2 0.06 265);
+
+  --primary: oklch(0.66 0.22 275);
+  --primary-foreground: oklch(0.99 0 0);
+
+  --secondary: oklch(0.22 0.05 265);
   --secondary-foreground: oklch(0.98 0.005 250);
-  --muted: oklch(0.2 0.05 268);
-  --muted-foreground: oklch(0.72 0.03 260);
-  --accent: oklch(0.63 0.19 260);
-  --accent-foreground: oklch(0.98 0.005 250);
+
+  --muted: oklch(0.22 0.04 265);
+  --muted-foreground: oklch(0.72 0.03 265);
+
+  --accent: oklch(0.7 0.18 250);
+  --accent-foreground: oklch(0.99 0 0);
+
   --destructive: oklch(0.65 0.22 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.28 0.06 268 / 60%);
-  --input: oklch(0.28 0.06 268 / 60%);
-  --ring: oklch(0.58 0.24 295);
+  --destructive-foreground: oklch(0.99 0 0);
 
-  --gradient-hero:
-    radial-gradient(ellipse at top, oklch(0.25 0.15 285 / 0.5), transparent 60%),
-    radial-gradient(ellipse at bottom right, oklch(0.3 0.18 250 / 0.35), transparent 55%);
-  --gradient-nebula:
-    radial-gradient(circle at 30% 40%, oklch(0.58 0.24 295 / 0.25), transparent 45%),
-    radial-gradient(circle at 70% 60%, oklch(0.63 0.19 260 / 0.22), transparent 50%),
-    radial-gradient(circle at 50% 90%, oklch(0.82 0.14 200 / 0.15), transparent 55%);
-  --gradient-text: linear-gradient(
-    135deg,
-    oklch(0.98 0.005 250),
-    oklch(0.82 0.14 200) 50%,
-    oklch(0.58 0.24 295)
-  );
-  --gradient-brand: linear-gradient(135deg, oklch(0.58 0.24 295), oklch(0.63 0.19 260));
+  --border: oklch(0.3 0.04 265 / 0.5);
+  --input: oklch(0.25 0.04 265);
+  --ring: oklch(0.66 0.2 275);
 
-  --shadow-glow-purple: 0 0 60px oklch(0.58 0.24 295 / 0.35);
-  --shadow-glow-blue: 0 0 40px oklch(0.63 0.19 260 / 0.3);
-  --shadow-card: 0 20px 60px -20px oklch(0 0 0 / 0.5), 0 0 0 1px oklch(1 0 0 / 0.05);
-}
+  --orion-blue: oklch(0.72 0.18 250);
+  --orion-violet: oklch(0.66 0.22 295);
+  --orion-cyan: oklch(0.82 0.14 220);
 
-.dark {
-  --background: oklch(0.09 0.03 275);
-  --foreground: oklch(0.98 0.005 250);
+  --gradient-hero: radial-gradient(ellipse at 50% 30%, oklch(0.24 0.12 275 / 0.5), transparent 60%),
+    radial-gradient(ellipse at 80% 60%, oklch(0.24 0.14 295 / 0.35), transparent 55%),
+    linear-gradient(180deg, oklch(0.09 0.03 265), oklch(0.11 0.04 265));
+  --gradient-brand: linear-gradient(135deg, oklch(0.72 0.18 250), oklch(0.66 0.22 295));
+  --gradient-text: linear-gradient(90deg, oklch(0.78 0.16 240), oklch(0.7 0.22 295));
+
+  --shadow-glow: 0 0 40px oklch(0.66 0.22 275 / 0.35);
+  --shadow-card: 0 8px 40px oklch(0.05 0.03 265 / 0.6), 0 0 0 1px oklch(0.3 0.06 265 / 0.4) inset;
 }
 
 @layer base {
@@ -102,7 +96,6 @@
   }
   html {
     scroll-behavior: smooth;
-    color-scheme: dark;
   }
   body {
     background-color: var(--color-background);
@@ -111,217 +104,959 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
-  }
-  ::selection {
-    background: oklch(0.58 0.24 295 / 0.4);
-    color: oklch(0.98 0.005 250);
   }
 }
 
 @utility text-gradient {
   background: var(--gradient-text);
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
 }
 
-@utility text-gradient-brand {
+@utility text-gradient-violet {
+  background: linear-gradient(90deg, oklch(0.7 0.22 295), oklch(0.75 0.2 320));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-blue {
+  background: linear-gradient(90deg, oklch(0.75 0.16 240), oklch(0.82 0.14 220));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility btn-primary-glow {
   background: var(--gradient-brand);
-  background-clip: text;
+  color: oklch(0.99 0 0);
+  box-shadow: 0 8px 24px oklch(0.55 0.22 275 / 0.4), 0 0 0 1px oklch(0.8 0.15 275 / 0.3) inset;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  &:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 12px 32px oklch(0.55 0.22 275 / 0.55), 0 0 0 1px oklch(0.85 0.15 275 / 0.5) inset;
+    transform: translateY(-1px);
+  }
+}
+
+@utility card-space {
+  background: linear-gradient(180deg, oklch(0.16 0.04 265 / 0.9), oklch(0.13 0.03 265 / 0.9));
+  border: 1px solid oklch(0.35 0.06 275 / 0.35);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(8px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  &:hover {
+    transform: translateY(-4px);
+    border-color: oklch(0.6 0.18 275 / 0.55);
+    box-shadow: 0 20px 60px oklch(0.05 0.03 265 / 0.7), 0 0 0 1px oklch(0.6 0.18 275 / 0.4) inset, 0 0 40px oklch(0.55 0.22 275 / 0.15);
+  }
+}
+
+/* Mesmo visual do card-space, sem o "lift" de hover — para containers grandes (formulários, painéis) */
+@utility card-space-static {
+  background: linear-gradient(180deg, oklch(0.16 0.04 265 / 0.9), oklch(0.13 0.03 265 / 0.9));
+  border: 1px solid oklch(0.35 0.06 275 / 0.35);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(8px);
+}
+
+@utility eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 600;
+  background: var(--gradient-brand);
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
 }
 
-@utility glass {
-  background: oklch(0.14 0.05 268 / 0.55);
-  backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid oklch(1 0 0 / 0.08);
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
 }
 
-@utility glass-card {
-  background: linear-gradient(135deg, oklch(0.18 0.06 270 / 0.7), oklch(0.14 0.05 268 / 0.4));
-  backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid oklch(1 0 0 / 0.08);
-  box-shadow: var(--shadow-card);
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 
-@utility glow-purple {
-  box-shadow: var(--shadow-glow-purple);
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@utility glow-blue {
-  box-shadow: var(--shadow-glow-blue);
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px oklch(0.66 0.22 275 / 0.4); }
+  50% { box-shadow: 0 0 40px oklch(0.66 0.22 275 / 0.7); }
 }
 
+@keyframes orion-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes orion-orbit-reverse {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0deg); }
+}
+
+@keyframes scan-vert {
+  0%   { transform: translateY(-40%); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(220%); opacity: 0; }
+}
+
+@keyframes radar-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes node-blink {
+  0%, 100% { opacity: 0.4; box-shadow: 0 0 0 oklch(0.7 0.2 260 / 0); }
+  50%      { opacity: 1;   box-shadow: 0 0 12px oklch(0.7 0.2 260 / 0.6); }
+}
+
+@keyframes dash-flow {
+  to { stroke-dashoffset: -60; }
+}
+
+@keyframes engine-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.15); }
+}
+
+@keyframes nebula-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.5; }
+  50%      { transform: translate3d(20px, -12px, 0) scale(1.05); opacity: 0.75; }
+}
+
+@keyframes dust-drift {
+  from { transform: translate3d(0, 0, 0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  to   { transform: translate3d(60px, -80px, 0); opacity: 0; }
+}
+
+@keyframes shooting {
+  0%   { transform-origin: left center; opacity: 0; transform: translate3d(-40px, 0, 0) rotate(var(--r, 0deg)) scaleX(0.4); }
+  20%  { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(120vw, 30vh, 0) rotate(var(--r, 0deg)) scaleX(1); }
+}
+
+@keyframes wa-ping {
+  0%   { box-shadow: 0 0 0 0 oklch(0.7 0.18 240 / 0.5); }
+  70%  { box-shadow: 0 0 0 18px oklch(0.7 0.18 240 / 0); }
+  100% { box-shadow: 0 0 0 0 oklch(0.7 0.18 240 / 0); }
+}
+
+@keyframes wa-attention {
+  0%, 100% { transform: scale(1); }
+  25%      { transform: scale(1.09); }
+  50%      { transform: scale(1.03); }
+  75%      { transform: scale(1.09); }
+}
+
+.animate-fade-up { animation: fade-up 0.8s ease-out both; }
+.animate-float { animation: float-slow 6s ease-in-out infinite; }
+.animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+
+/* Shine sweep for premium buttons */
+@utility btn-shine {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      transparent 20%,
+      oklch(1 0 0 / 0.18) 45%,
+      oklch(1 0 0 / 0.32) 50%,
+      oklch(1 0 0 / 0.18) 55%,
+      transparent 80%
+    );
+    transform: translateX(-120%);
+    transition: transform 0.7s ease;
+    pointer-events: none;
+  }
+  &:hover::after {
+    transform: translateX(120%);
+  }
+}
+
+
+
+@keyframes project-progress {
+  0%, 100% { transform: scaleX(0.88); transform-origin: left; filter: brightness(0.9); }
+  50% { transform: scaleX(1); transform-origin: left; filter: brightness(1.25); }
+}
+
+@keyframes process-node {
+  0%, 72%, 100% { opacity: 0.72; filter: drop-shadow(0 0 0 transparent); }
+  12%, 28% { opacity: 1; filter: drop-shadow(0 0 8px oklch(0.72 0.18 250 / 0.8)); }
+}
+
+/* Orion V7 readability pass */
+:root {
+  --background: oklch(0.175 0.035 265);
+  --space-deep: oklch(0.12 0.035 265);
+  --space-mid: oklch(0.225 0.055 265);
+  --card: oklch(0.205 0.045 265);
+  --muted-foreground: oklch(0.79 0.025 260);
+  --border: oklch(0.42 0.065 265 / 0.55);
+  --gradient-hero: radial-gradient(ellipse at 50% 28%, oklch(0.31 0.14 275 / 0.58), transparent 62%),
+    radial-gradient(ellipse at 82% 58%, oklch(0.3 0.15 295 / 0.42), transparent 58%),
+    linear-gradient(180deg, oklch(0.125 0.035 265), oklch(0.16 0.045 265));
+  --shadow-card: 0 14px 48px oklch(0.05 0.03 265 / 0.48), 0 0 0 1px oklch(0.45 0.08 265 / 0.35) inset;
+}
+
+@media (max-width: 639px) {
+  h1, h2, h3, h4 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+}
+
+/* Official Orion logo motion */
+@keyframes orion-logo-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-1deg) scale(1); }
+  50% { transform: translate3d(0, -8px, 0) rotate(1deg) scale(1.025); }
+}
+
+@keyframes logo-shine {
+  0%, 18% { transform: translateX(-180%) rotate(12deg); opacity: 0; }
+  30% { opacity: 0.75; }
+  52%, 100% { transform: translateX(520%) rotate(12deg); opacity: 0; }
+}
+
+/* Orion V7 — animated mobile process rail */
+.process-mobile-rail {
+  isolation: isolate;
+}
+
+.process-mobile-line {
+  position: absolute;
+  z-index: -2;
+  top: 1.5rem;
+  bottom: 1.5rem;
+  left: 0.125rem;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    oklch(0.62 0.16 255 / 0.16),
+    oklch(0.67 0.19 277 / 0.55) 18%,
+    oklch(0.61 0.18 252 / 0.42) 82%,
+    oklch(0.62 0.16 255 / 0.12)
+  );
+}
+
+.process-mobile-energy {
+  position: absolute;
+  z-index: -1;
+  top: 1.5rem;
+  left: -0.16rem;
+  width: 0.58rem;
+  height: 4.4rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    oklch(0.82 0.2 225 / 0.95) 24%,
+    oklch(0.69 0.23 250 / 1) 56%,
+    oklch(0.67 0.22 292 / 0.92) 78%,
+    transparent
+  );
+  filter: drop-shadow(0 0 7px oklch(0.74 0.21 240 / 0.95))
+    drop-shadow(0 0 18px oklch(0.65 0.22 275 / 0.72));
+  animation: process-energy-run 3.2s linear infinite;
+}
+
+.process-mobile-node {
+  animation: process-node 3.2s ease-in-out infinite;
+}
+
+@keyframes process-energy-run {
+  0% {
+    top: -1rem;
+    transform: scaleY(0.6);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 4.4rem);
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 430px) {
+  .process-mobile-rail {
+    padding-left: 1.75rem;
+  }
+}
+
+
+
+
+/* Orion V7.6 — desktop motion parity and mobile polish */
+.process-desktop-line {
+  background: linear-gradient(90deg, transparent, oklch(0.7 0.18 275 / 0.62), transparent);
+  box-shadow: 0 0 10px oklch(0.68 0.2 265 / 0.22);
+}
+.process-desktop-energy {
+  background: linear-gradient(90deg, transparent, oklch(0.82 0.2 225 / .98), oklch(0.67 0.22 292 / .96), transparent);
+  filter: drop-shadow(0 0 7px oklch(0.74 0.21 240 / .9)) drop-shadow(0 0 18px oklch(0.65 0.22 275 / .65));
+  animation: process-energy-horizontal 3.2s linear infinite;
+}
+.process-desktop-node {
+  animation: process-node 3.2s ease-in-out infinite;
+}
+@keyframes process-energy-horizontal {
+  0% { left: 8%; opacity: 0; transform: scaleX(.55); }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { left: calc(92% - 6rem); opacity: 0; transform: scaleX(1); }
+}
+.mobile-nav-item { opacity: 0; transform: translateY(8px); }
+.mobile-nav-item-open { animation: mobile-menu-enter .34s ease-out forwards; }
+@keyframes mobile-menu-enter { to { opacity: 1; transform: translateY(0); } }
+
+@media (min-width: 1024px) {
+  .card-space { overflow: visible; }
+  .card-space > div { overflow: hidden; }
+}
+
+
+
+
+/* Orion V7.7 — desktop/mobile content consistency */
+.btn-primary-glow {
+  position: relative;
+  isolation: isolate;
+}
+.btn-primary-glow > * {
+  position: relative;
+  z-index: 2;
+}
+.btn-primary-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.orion-brand-name {
+  text-transform: uppercase;
+  font-variant-caps: all-small-caps;
+}
+
+@media (max-width: 1023px) {
+  .mobile-nav-item {
+    width: 100%;
+    white-space: normal;
+  }
+}
+
+
+/* Orion V7.8 — mobile/desktop parity and a stable mobile CTA */
+.mobile-whatsapp-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  white-space: nowrap;
+  background: linear-gradient(100deg, oklch(0.72 0.17 240), oklch(0.69 0.2 292));
+  box-shadow: 0 10px 30px oklch(0.56 0.22 275 / 0.42), 0 0 0 1px oklch(0.86 0.12 275 / 0.28) inset;
+}
+.mobile-whatsapp-cta::before,
+.mobile-whatsapp-cta::after {
+  content: none !important;
+  display: none !important;
+}
+.mobile-whatsapp-cta > * {
+  position: static !important;
+  z-index: auto !important;
+}
+
+@media (max-width: 1023px) {
+  .orion-brand-name,
+  [data-orion-brand] {
+    text-transform: uppercase !important;
+    font-variant-caps: normal !important;
+    letter-spacing: 0.16em;
+  }
+}
+
+/* ORION V8 — single responsive architecture */
+html.menu-open,
+html.menu-open body {
+  overflow: hidden;
+}
+
+.orion-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  transition: background-color .3s ease, border-color .3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
+}
+.orion-header-active {
+  border-bottom: 1px solid oklch(1 0 0 / .07);
+  background: oklch(0.105 0.035 268 / .9);
+  box-shadow: 0 12px 40px oklch(0.04 0.025 265 / .5);
+  backdrop-filter: blur(22px) saturate(145%);
+}
+.orion-header-inner {
+  position: relative;
+  z-index: 102;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: min(100% - 2.5rem, 80rem);
+  min-height: 4.75rem;
+  margin-inline: auto;
+  transition: min-height .3s ease;
+}
+.orion-header-active .orion-header-inner { min-height: 4.25rem; }
+.orion-desktop-nav { display: none; }
+.orion-nav-link {
+  color: var(--muted-foreground);
+  font-size: .875rem;
+  font-weight: 600;
+  transition: color .2s ease, transform .2s ease;
+}
+.orion-nav-link:hover { color: var(--foreground); transform: translateY(-1px); }
+.orion-header-cta { display: none; }
+.orion-menu-button {
+  display: inline-grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 auto;
+  border: 1px solid oklch(0.48 0.06 270 / .45);
+  border-radius: 999px;
+  background: oklch(0.18 0.04 268 / .56);
+  color: var(--foreground);
+  backdrop-filter: blur(14px);
+  transition: border-color .2s ease, background-color .2s ease, transform .2s ease;
+}
+.orion-menu-button:hover { border-color: oklch(0.7 0.18 270 / .65); transform: scale(1.04); }
+.orion-menu-button svg { width: 1.55rem; height: 1.55rem; }
+
+.orion-mobile-menu {
+  position: fixed;
+  z-index: 101;
+  inset: 0;
+  padding: 5.25rem 1rem 1rem;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  background: oklch(0.07 0.025 270 / .38);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: opacity .24s ease, visibility .24s step-end;
+}
+.orion-mobile-menu.is-open {
+  visibility: visible;
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity .24s ease, visibility 0s step-start;
+}
+.orion-mobile-menu-content {
+  width: min(100%, 40rem);
+  margin-inline: auto;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid oklch(0.55 0.08 270 / .28);
+  border-radius: 1.65rem;
+  background:
+    radial-gradient(circle at 82% 12%, oklch(0.42 0.18 260 / .16), transparent 38%),
+    linear-gradient(145deg, oklch(0.13 0.045 267 / .88), oklch(0.105 0.035 274 / .82));
+  box-shadow:
+    0 24px 80px oklch(0.04 0.03 270 / .62),
+    inset 0 1px 0 oklch(0.9 0.03 260 / .08);
+  -webkit-backdrop-filter: blur(22px) saturate(125%);
+  backdrop-filter: blur(22px) saturate(125%);
+  transform: translateY(-14px) scale(.985);
+  transition: transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.orion-mobile-menu.is-open .orion-mobile-menu-content {
+  transform: translateY(0) scale(1);
+}
+.orion-mobile-nav {
+  display: grid;
+  gap: .15rem;
+}
+.orion-mobile-nav-link {
+  display: flex;
+  align-items: center;
+  min-height: 3.7rem;
+  padding: .9rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+  color: oklch(0.92 0.018 260);
+  font-size: clamp(1.08rem, 4.8vw, 1.32rem);
+  font-weight: 500;
+  letter-spacing: -.015em;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: border-color .2s ease, background-color .2s ease, color .2s ease;
+}
+.orion-mobile-menu.is-open .orion-mobile-nav-link {
+  animation: orion-menu-item-in .34s ease-out forwards;
+  animation-delay: calc(var(--menu-index) * 45ms + 55ms);
+}
+.orion-mobile-nav-link:hover,
+.orion-mobile-nav-link:focus-visible,
+.orion-mobile-nav-link:active {
+  border-color: oklch(0.68 0.18 265 / .24);
+  background: linear-gradient(90deg, oklch(0.36 0.18 255 / .2), oklch(0.35 0.18 292 / .12));
+  color: white;
+  outline: none;
+}
+@keyframes orion-menu-item-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* One process component for every viewport */
+.orion-process {
+  --process-duration: 5s;
+  position: relative;
+  display: grid;
+  gap: 2rem;
+  margin-top: 4rem;
+  padding-left: 4.25rem;
+}
+.orion-process-track {
+  position: absolute;
+  top: 2rem;
+  bottom: 2rem;
+  left: 1.55rem;
+  width: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(180deg, oklch(0.62 0.17 245 / .2), oklch(0.67 0.2 285 / .6), oklch(0.62 0.17 245 / .2));
+  box-shadow: 0 0 14px oklch(0.65 0.2 270 / .2);
+}
+.orion-process-energy {
+  position: absolute;
+  top: -5rem;
+  left: 50%;
+  width: .65rem;
+  height: 5rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, transparent, oklch(0.86 0.18 220), oklch(0.68 0.23 285), transparent);
+  filter: drop-shadow(0 0 8px oklch(0.8 0.2 230 / .95)) drop-shadow(0 0 18px oklch(0.65 0.22 280 / .75));
+  transform: translateX(-50%);
+  animation: orion-energy-vertical var(--process-duration) linear infinite;
+}
+.orion-process-step-wrap {
+  min-width: 0;
+}
+.orion-process-step {
+  position: relative;
+  min-width: 0;
+}
+.orion-process-icon {
+  position: absolute;
+  top: .1rem;
+  left: -4.25rem;
+  display: grid;
+  place-items: center;
+  width: 3.15rem;
+  height: 3.15rem;
+  border: 1px solid oklch(0.67 0.2 275 / .65);
+  border-radius: 999px;
+  background: oklch(0.14 0.04 270 / .95);
+  color: oklch(0.72 0.2 265);
+  box-shadow: 0 0 0 5px oklch(0.12 0.035 270), 0 0 18px oklch(0.64 0.2 275 / .18);
+  animation: orion-process-node var(--process-duration) ease-in-out infinite;
+  animation-delay: calc(var(--step-index) * (var(--process-duration) / 5));
+}
+.orion-process-icon svg { width: 1.25rem; height: 1.25rem; }
+.orion-process-number {
+  color: oklch(0.76 0.06 260);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.orion-process-copy h3 { margin-top: .35rem; font-size: clamp(1.35rem, 5vw, 1.7rem); font-weight: 750; }
+.orion-process-copy p { margin-top: .65rem; color: var(--muted-foreground); font-size: 1rem; line-height: 1.8; }
+@keyframes orion-energy-vertical {
+  0% { top: -5rem; opacity: 0; }
+  8%, 92% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+@keyframes orion-process-node {
+  0%, 14%, 100% { color: oklch(0.68 0.17 270); border-color: oklch(0.55 0.15 275 / .55); box-shadow: 0 0 0 5px oklch(0.12 0.035 270), 0 0 12px transparent; transform: scale(1); }
+  4%, 10% { color: white; border-color: oklch(0.82 0.18 235); box-shadow: 0 0 0 5px oklch(0.12 0.035 270), 0 0 14px oklch(0.78 0.2 235 / .9), 0 0 28px oklch(0.65 0.22 285 / .6); transform: scale(1.07); }
+}
+
+@media (min-width: 1024px) {
+  .orion-header-inner { min-height: 5rem; }
+  .orion-desktop-nav { display: flex; align-items: center; gap: clamp(1.25rem, 2.2vw, 2rem); }
+  .orion-header-cta { display: inline-flex; align-items: center; gap: .5rem; flex: 0 0 auto; padding: .72rem 1.25rem; border-radius: 999px; font-size: .875rem; font-weight: 700; white-space: nowrap; }
+  .orion-menu-button,
+  .orion-mobile-menu { display: none !important; }
+
+  .orion-process {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-top: 5rem;
+    padding: 0;
+  }
+  .orion-process-track {
+    top: 1.65rem;
+    right: 8%;
+    bottom: auto;
+    left: 8%;
+    width: auto;
+    height: 2px;
+  }
+  .orion-process-energy {
+    top: 50%;
+    left: -7rem;
+    width: 7rem;
+    height: .65rem;
+    background: linear-gradient(90deg, transparent, oklch(0.86 0.18 220), oklch(0.68 0.23 285), transparent);
+    transform: translateY(-50%);
+    animation-name: orion-energy-horizontal;
+  }
+  .orion-process-step { padding-top: 4.5rem; text-align: center; }
+  .orion-process-icon {
+    top: 0;
+    left: 50%;
+    width: 3.3rem;
+    height: 3.3rem;
+    transform: translateX(-50%);
+  }
+  .orion-process-copy p { font-size: .93rem; line-height: 1.65; }
+  @keyframes orion-energy-horizontal {
+    0% { left: -7rem; opacity: 0; }
+    8%, 92% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+  }
+  @keyframes orion-process-node {
+    0%, 14%, 100% { color: oklch(0.68 0.17 270); border-color: oklch(0.55 0.15 275 / .55); box-shadow: 0 0 0 5px oklch(0.12 0.035 270), 0 0 12px transparent; transform: translateX(-50%) scale(1); }
+    4%, 10% { color: white; border-color: oklch(0.82 0.18 235); box-shadow: 0 0 0 5px oklch(0.12 0.035 270), 0 0 14px oklch(0.78 0.2 235 / .9), 0 0 28px oklch(0.65 0.22 285 / .6); transform: translateX(-50%) scale(1.08); }
+  }
+}
+
+
+/* Orion V9 — idioma pt-BR e proteção contra tradução automática indevida */
+html.notranslate,
+html.notranslate body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+.orion-process-copy {
+  min-width: 0;
+}
+.orion-process-copy h3,
+.orion-process-copy p {
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+@media (max-width: 420px) {
+  .orion-process {
+    padding-left: 4rem;
+  }
+  .orion-process-icon {
+    left: -4rem;
+  }
+  .orion-process-copy h3 {
+    font-size: 1.35rem;
+  }
+  .orion-process-copy p {
+    font-size: .98rem;
+    line-height: 1.75;
+  }
+}
+
+/* Compatibility layer for the existing Orion internal modules. */
 @utility bg-nebula {
-  background-image: var(--gradient-nebula);
+  background-image:
+    radial-gradient(circle at 30% 40%, oklch(0.58 0.24 295 / 0.25), transparent 45%),
+    radial-gradient(circle at 70% 60%, oklch(0.63 0.19 260 / 0.22), transparent 50%),
+    radial-gradient(circle at 50% 90%, oklch(0.82 0.14 200 / 0.15), transparent 55%);
 }
 
 @utility bg-hero {
   background-image: var(--gradient-hero);
 }
 
-@keyframes pulse-glow {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-}
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-@keyframes twinkle {
-  0%,
-  100% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+/* =========================================================
+   ORION V13 — PREMIUM GLASS DESIGN SYSTEM
+   Fundo cósmico unificado + glassmorphism + tipografia viva
+   ========================================================= */
+:root {
+  --orion-glass: linear-gradient(145deg, rgba(14, 20, 48, .62), rgba(20, 13, 55, .42));
+  --orion-glass-strong: linear-gradient(145deg, rgba(10, 16, 42, .82), rgba(22, 12, 58, .67));
+  --orion-glass-border: rgba(143, 178, 255, .22);
+  --orion-glass-highlight: rgba(255,255,255,.1);
+  --orion-neon: rgba(81, 191, 255, .48);
+  --orion-purple-neon: rgba(157, 92, 255, .42);
 }
 
-@utility animate-float {
-  animation: float 6s ease-in-out infinite;
+html { background: #040611; }
+body {
+  min-height: 100dvh;
+  background:
+    radial-gradient(ellipse at 12% 18%, rgba(21, 126, 205, .28), transparent 38%),
+    radial-gradient(ellipse at 76% 14%, rgba(119, 41, 210, .34), transparent 44%),
+    radial-gradient(ellipse at 55% 72%, rgba(52, 20, 138, .28), transparent 48%),
+    linear-gradient(155deg, #030713 0%, #090824 44%, #060517 100%);
+  background-attachment: fixed;
 }
-@utility animate-pulse-glow {
-  animation: pulse-glow 4s ease-in-out infinite;
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: -12%;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 25% 30%, rgba(45, 164, 255, .18), transparent 28%),
+    radial-gradient(ellipse at 72% 38%, rgba(178, 58, 255, .19), transparent 32%),
+    radial-gradient(ellipse at 48% 85%, rgba(94, 43, 209, .14), transparent 35%);
+  filter: blur(18px);
+  animation: orion-nebula-breathe 18s ease-in-out infinite alternate;
 }
-@utility animate-twinkle {
-  animation: twinkle 3s ease-in-out infinite;
+body::after {
+  z-index: -1;
+  opacity: .55;
+  background-image:
+    radial-gradient(circle at 12% 22%, rgba(255,255,255,.9) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 68% 12%, rgba(158,211,255,.9) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 84% 64%, rgba(255,255,255,.7) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 38% 78%, rgba(193,155,255,.8) 0 1px, transparent 1.5px);
+  background-size: 180px 190px, 260px 240px, 220px 280px, 310px 270px;
+  filter: none;
+  animation: orion-stars-drift 45s linear infinite;
+}
+main.bg-background,
+div.min-h-dvh.bg-background,
+.min-h-dvh.bg-background { background-color: transparent !important; }
+
+.card-space,
+.card-space-static,
+[data-orion-glass],
+.rounded-3xl.border,
+.rounded-2xl.border {
+  background: var(--orion-glass) !important;
+  border-color: var(--orion-glass-border) !important;
+  box-shadow:
+    inset 0 1px 0 var(--orion-glass-highlight),
+    0 18px 50px rgba(0,0,0,.35),
+    0 0 30px rgba(82,112,255,.07) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(135%);
+  backdrop-filter: blur(20px) saturate(135%);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+header, nav, footer {
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(22px) saturate(140%);
 }
 
-/* Orion motion design */
-.orion-nav-logo {
-  animation: orionLogoFloat 4.8s ease-in-out infinite, orionLogoGlow 3.2s ease-in-out infinite;
-  transform-origin: center;
-  will-change: transform, filter;
+input, textarea, select {
+  background: rgba(7, 12, 35, .58) !important;
+  border-color: rgba(128, 165, 255, .2) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+  transition: border-color .25s ease, box-shadow .25s ease, background .25s ease, transform .25s ease;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: rgba(68, 213, 255, .75) !important;
+  box-shadow: 0 0 0 3px rgba(47, 190, 255, .1), 0 0 24px rgba(85, 117, 255, .2) !important;
+  background: rgba(8, 15, 43, .76) !important;
 }
 
-.group:hover .orion-nav-logo {
-  animation-duration: 1.5s, 1.5s;
+h1, h2, h3, h4 {
+  text-wrap: balance;
+  text-shadow: 0 0 24px rgba(125, 151, 255, .12);
 }
-
-.orion-intro-logo-wrap {
+h1 { letter-spacing: -.035em; }
+.eyebrow {
   position: relative;
-  display: grid;
-  place-items: center;
-  isolation: isolate;
+  overflow: hidden;
+  white-space: nowrap;
+  width: max-content;
+  max-width: 100%;
+  animation: orion-typewriter 1.35s steps(24, end) both, orion-caret .75s step-end 3;
 }
 
-.orion-intro-logo {
-  position: relative;
-  z-index: 2;
-  animation: orionIntroFloat 4s ease-in-out infinite, orionLogoGlow 3s ease-in-out infinite;
-  filter: drop-shadow(0 0 24px rgba(0, 166, 255, 0.45));
-}
-
-.orion-intro-glow {
-  position: absolute;
-  inset: 8%;
-  z-index: 1;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(0, 174, 255, 0.34), rgba(91, 69, 255, 0.16) 45%, transparent 72%);
-  filter: blur(32px);
-  animation: orionGlowBreath 3s ease-in-out infinite;
-}
-
-@keyframes orionLogoFloat {
-  0%, 100% { transform: translateY(0) rotate(-2deg); }
-  50% { transform: translateY(-4px) rotate(2deg); }
-}
-
-@keyframes orionIntroFloat {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-9px) scale(1.018); }
-}
-
-@keyframes orionLogoGlow {
-  0%, 100% { filter: drop-shadow(0 0 12px rgba(0, 166, 255, 0.38)); }
-  50% { filter: drop-shadow(0 0 26px rgba(0, 209, 255, 0.68)); }
-}
-
-@keyframes orionGlowBreath {
-  0%, 100% { opacity: .55; transform: scale(.94); }
-  50% { opacity: .95; transform: scale(1.08); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .orion-nav-logo,
-  .orion-intro-logo,
-  .orion-intro-glow {
-    animation: none !important;
+@supports (animation-timeline: view()) {
+  main section h2, main section h3,
+  main section > div > p,
+  .card-space, .card-space-static {
+    animation: orion-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 28%;
   }
 }
 
-
-/* Orion V4 — experiência cinematográfica */
-.orion-cinematic-hero {
-  isolation: isolate;
+.btn-primary-glow,
+button[class*="gradient"],
+a[class*="gradient"] {
+  position: relative;
+  overflow: hidden;
 }
-
-.orion-cinematic-hero::after {
+.btn-primary-glow::after,
+button[class*="gradient"]::after,
+a[class*="gradient"]::after {
   content: "";
   position: absolute;
-  inset: auto 0 0;
-  height: 22%;
+  inset: -80% auto -80% -35%;
+  width: 25%;
+  transform: rotate(18deg);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.42), transparent);
+  animation: orion-button-shine 4.8s ease-in-out infinite;
   pointer-events: none;
-  background: linear-gradient(to bottom, transparent, var(--background));
+}
+
+@keyframes orion-nebula-breathe {
+  0% { transform: translate3d(-1%,0,0) scale(1); opacity: .72; }
+  100% { transform: translate3d(2%,-1.5%,0) scale(1.07); opacity: 1; }
+}
+@keyframes orion-stars-drift { to { transform: translate3d(35px,-45px,0); } }
+@keyframes orion-reveal {
+  from { opacity: 0; transform: translateY(26px) scale(.985); filter: blur(5px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+@keyframes orion-typewriter { from { max-width: 0; } to { max-width: 100%; } }
+@keyframes orion-caret { 50% { border-right-color: transparent; } }
+@keyframes orion-button-shine {
+  0%, 70% { left: -35%; opacity: 0; }
+  76% { opacity: 1; }
+  92%, 100% { left: 125%; opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .orion-cinematic-hero video {
-    display: none;
+  body::before, body::after, .eyebrow,
+  .btn-primary-glow::after,
+  button[class*="gradient"]::after,
+  a[class*="gradient"]::after { animation: none !important; }
+}
+
+/* =========================================================
+   ORION V13.1 — MOBILE PERFORMANCE
+   Mantém a assinatura visual, reduzindo recomposição gráfica
+   em telas menores e dispositivos com preferência por menos movimento.
+   ========================================================= */
+@media (max-width: 767px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  /* Fundo cósmico estático: elimina blur e animação em tela inteira. */
+  body::before {
+    inset: 0;
+    opacity: .58;
+    filter: none;
+    animation: none !important;
+    background:
+      radial-gradient(ellipse at 18% 22%, rgba(45, 164, 255, .13), transparent 34%),
+      radial-gradient(ellipse at 78% 38%, rgba(178, 58, 255, .14), transparent 38%),
+      radial-gradient(ellipse at 48% 84%, rgba(94, 43, 209, .10), transparent 42%);
+  }
+
+  body::after {
+    opacity: .34;
+    animation: none !important;
+    transform: none !important;
+    background-size: 260px 280px, 340px 320px, 300px 360px, 390px 350px;
+  }
+
+  /* Vidro leve no celular: preserva transparência sem sobrecarregar a GPU. */
+  .card-space,
+  .card-space-static,
+  [data-orion-glass],
+  .rounded-3xl.border,
+  .rounded-2xl.border {
+    background: linear-gradient(145deg, rgba(14, 20, 48, .82), rgba(20, 13, 55, .70)) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.07),
+      0 10px 28px rgba(0,0,0,.28),
+      0 0 18px rgba(82,112,255,.045) !important;
+    -webkit-backdrop-filter: blur(7px) saturate(112%);
+    backdrop-filter: blur(7px) saturate(112%);
+  }
+
+  header, nav, footer {
+    -webkit-backdrop-filter: blur(8px) saturate(115%);
+    backdrop-filter: blur(8px) saturate(115%);
+  }
+
+  /* Animações contínuas decorativas ficam estáticas no mobile. */
+  .animate-float,
+  .animate-twinkle,
+  .animate-pulse-glow,
+  [class*="node-blink"],
+  .btn-primary-glow::after,
+  button[class*="gradient"]::after,
+  a[class*="gradient"]::after {
+    animation: none !important;
+  }
+
+  /* A timeline continua viva, porém com menos brilho e custo de composição. */
+  .process-energy,
+  .orion-process-energy,
+  .orion-process-node,
+  .process-node {
+    filter: none !important;
+    box-shadow: 0 0 10px rgba(88, 184, 255, .28) !important;
+  }
+
+  /* Evita blur animado nos textos e reduz sombras extensas. */
+  h1, h2, h3, h4 {
+    text-shadow: 0 0 14px rgba(125, 151, 255, .08);
+  }
+
+  main section {
+    content-visibility: auto;
+    contain-intrinsic-size: 700px;
+  }
+
+}
+
+@media (max-width: 767px) and (hover: none) {
+  a:hover, button:hover {
+    transform: none !important;
   }
 }
 
-/* Orion V5 — campos nativos consistentes no tema escuro */
-select,
-select option,
-select optgroup {
-  color-scheme: dark;
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  @supports (animation-timeline: view()) {
+    main section h2, main section h3,
+    main section > div > p,
+    .card-space, .card-space-static {
+      animation: none !important;
+    }
+  }
 }
 
-select option:checked,
-select option:hover,
-select option:focus {
-  background-color: hsl(var(--primary));
-  color: white;
+@media (max-width: 767px) {
+  a[aria-label="Falar no WhatsApp"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.32), 0 0 18px rgba(16,185,129,.16) !important;
+  }
+  a[aria-label="Falar no WhatsApp"] > span {
+    animation: none !important;
+    filter: none !important;
+  }
 }

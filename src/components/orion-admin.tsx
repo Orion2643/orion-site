@@ -11,7 +11,6 @@ import {
   FileText,
   Eye,
   Images,
-  Layers3,
   LoaderCircle,
   LogOut,
   Mail,
@@ -19,22 +18,18 @@ import {
   Phone,
   RefreshCw,
   Search,
-  TrendingUp,
   Sparkles,
   ShieldCheck,
+  Trash2,
   UserRound,
-  Users,
-  WalletCards,
-  FolderOpen,
-  Settings,
-  CalendarClock,
-  Activity,
-  FileSignature,
   X,
 } from "lucide-react";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
-import { downloadProjectAsset, listProjectAssets, type ProjectAsset } from "../lib/project-storage";
+import { deleteAllProjectAssets, deleteProjectAsset, downloadProjectAsset, listProjectAssets, type ProjectAsset } from "../lib/project-storage";
 import ProjectTrackingAdmin from "./project-tracking-admin";
+import { Logo } from "./orion/Logo";
+import { Starfield } from "./orion/Starfield";
+import { VideoBackdrop } from "./orion/VideoBackdrop";
 
 type Project = {
   id: string;
@@ -65,17 +60,6 @@ type Briefing = {
 
 const inputClass =
   "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/60 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/15";
-
-const adminModules = [
-  { label: "Projetos", description: "Briefings e acompanhamento", icon: Layers3, active: true },
-  { label: "Clientes", description: "Relacionamento e histórico", icon: Users },
-  { label: "Contratos", description: "Propostas e documentos", icon: FileSignature },
-  { label: "Financeiro", description: "Receitas e cobranças", icon: WalletCards },
-  { label: "Arquivos", description: "Materiais dos projetos", icon: FolderOpen },
-  { label: "Agenda", description: "Prazos e compromissos", icon: CalendarClock },
-  { label: "Orion em Movimento", description: "Visão operacional", icon: Activity },
-  { label: "Configurações", description: "Preferências e integrações", icon: Settings },
-];
 
 function formatDate(value?: string | null) {
   if (!value) return "Não informado";
@@ -276,6 +260,8 @@ export default function OrionAdmin() {
   const [projectAssets, setProjectAssets] = useState<ProjectAsset[]>([]);
   const [assetsLoading, setAssetsLoading] = useState(false);
   const [assetFeedback, setAssetFeedback] = useState("");
+  const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (!supabase) {
@@ -341,7 +327,7 @@ export default function OrionAdmin() {
     const term = query.trim().toLowerCase();
     if (!term) return projects;
     return projects.filter((project) =>
-      [project.project_code, project.company_name, project.contact_name, project.segment, project.city]
+      [project.project_code, project.company_name, project.contact_name, project.phone, project.email, project.segment, project.city]
         .filter(Boolean)
         .some((value) => String(value).toLowerCase().includes(term)),
     );
@@ -366,8 +352,10 @@ export default function OrionAdmin() {
 
   if (!isSupabaseConfigured || !supabase) {
     return (
-      <main className="grid min-h-dvh place-items-center bg-background px-5 text-foreground">
-        <div className="max-w-lg rounded-3xl border border-amber-400/20 bg-amber-400/[0.05] p-7 text-center">
+      <main className="relative grid min-h-dvh place-items-center overflow-hidden bg-background px-5 text-foreground">
+        <Starfield count={55} className="opacity-60" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_25%,rgba(50,120,255,0.16),transparent_38%),radial-gradient(circle_at_75%_80%,rgba(143,76,255,0.12),transparent_32%)]" />
+        <div className="relative z-10 max-w-lg rounded-3xl border border-amber-300/25 bg-slate-950/75 p-7 text-center shadow-[0_0_50px_rgba(245,158,11,0.08)] backdrop-blur-xl">
           <CircleAlert className="mx-auto h-10 w-10 text-amber-300" />
           <h1 className="mt-4 text-2xl font-bold">Supabase não configurado</h1>
           <p className="mt-3 text-sm text-muted-foreground">Confira as variáveis VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY.</p>
@@ -377,25 +365,30 @@ export default function OrionAdmin() {
   }
 
   if (checkingSession) {
-    return <main className="grid min-h-dvh place-items-center bg-background text-foreground"><LoaderCircle className="h-8 w-8 animate-spin text-cyan-300" /></main>;
+    return <main className="relative grid min-h-dvh place-items-center overflow-hidden bg-background text-foreground"><Starfield count={45} className="opacity-50" /><LoaderCircle className="relative z-10 h-9 w-9 animate-spin text-cyan-300 drop-shadow-[0_0_14px_rgba(34,211,238,0.7)]" /></main>;
   }
 
   if (!authenticated) {
     return (
       <main className="relative grid min-h-dvh place-items-center overflow-hidden bg-background px-5 py-10 text-foreground">
-        <div className="pointer-events-none absolute inset-0 bg-hero opacity-80" />
-        <section className="relative z-10 w-full max-w-md rounded-3xl border border-white/10 bg-background/80 p-7 backdrop-blur-xl">
-          <div className="flex items-center gap-3">
-            <div className="grid h-12 w-12 place-items-center rounded-2xl border border-cyan-400/20 bg-cyan-400/10"><ShieldCheck className="h-6 w-6 text-cyan-300" /></div>
-            <div><p className="text-xs uppercase tracking-[0.18em] text-cyan-300">Acesso restrito</p><h1 className="text-2xl font-bold">Orion Admin</h1></div>
+        <VideoBackdrop opacity={0.28} tintOpacity={0.9} />
+        <Starfield count={85} className="opacity-70" />
+        <div className="pointer-events-none absolute inset-0 bg-hero opacity-70" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_25%_20%,rgba(56,189,248,0.16),transparent_30%),radial-gradient(circle_at_78%_72%,rgba(139,92,246,0.18),transparent_35%)]" />
+        <section className="relative z-10 w-full max-w-md overflow-hidden rounded-[2rem] border border-cyan-300/20 bg-slate-950/72 p-7 shadow-[0_0_80px_rgba(56,189,248,0.10),0_0_120px_rgba(139,92,246,0.08)] backdrop-blur-2xl">
+          <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
+          <div className="relative flex items-center justify-between gap-4">
+            <Logo />
+            <div className="grid h-12 w-12 place-items-center rounded-2xl border border-cyan-300/25 bg-cyan-300/10 shadow-[0_0_24px_rgba(34,211,238,0.16)]"><ShieldCheck className="h-6 w-6 text-cyan-200" /></div>
           </div>
+          <div className="mt-6"><p className="text-xs uppercase tracking-[0.22em] text-cyan-300">Acesso restrito</p><h1 className="mt-1 text-2xl font-bold">Central de comando</h1></div>
           <p className="mt-5 text-sm leading-relaxed text-muted-foreground">Entre com seu usuário administrativo para visualizar os projetos.</p>
           <div className="mt-6 space-y-4">
             <label className="block space-y-2"><span className="text-sm font-medium">E-mail</span><input className={inputClass} type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" /></label>
             <label className="block space-y-2"><span className="text-sm font-medium">Senha</span><input className={inputClass} type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" onKeyDown={(event) => event.key === "Enter" && void login()} /></label>
           </div>
           {error && <div role="alert" className="mt-4 rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200">{error}</div>}
-          <button type="button" onClick={login} disabled={authLoading} className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-cyan-500 px-5 py-4 font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-60">{authLoading ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <ShieldCheck className="h-5 w-5" />} {authLoading ? "Entrando..." : "Entrar no painel"}</button>
+          <button type="button" onClick={login} disabled={authLoading} className="btn-primary-glow btn-shine mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-5 py-4 font-semibold text-white shadow-[0_0_32px_rgba(59,130,246,0.28)] transition hover:-translate-y-0.5 hover:shadow-[0_0_42px_rgba(139,92,246,0.34)] disabled:opacity-60">{authLoading ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <ShieldCheck className="h-5 w-5" />} {authLoading ? "Entrando..." : "Entrar no painel"}</button>
           <a href="/" className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Voltar ao site</a>
         </section>
       </main>
@@ -445,84 +438,83 @@ ${technicalSummary}`;
     window.setTimeout(() => setAssetFeedback(""), 3500);
   };
 
+
+  const removeProjectCompletely = async (project: Project) => {
+    if (!supabase) return;
+    await deleteAllProjectAssets(supabase, project.project_code);
+    const { error: deleteError } = await supabase.rpc("orion_delete_project", { p_project_id: project.id });
+    if (deleteError) throw new Error(deleteError.message);
+  };
+
+  const deleteSingleProject = async (project: Project) => {
+    if (deleting || !window.confirm(`Excluir definitivamente ${project.project_code} — ${project.company_name}?\n\nO projeto, briefing, timeline e todos os arquivos do Supabase serão removidos.`)) return;
+    setDeleting(true); setError("");
+    try {
+      await removeProjectCompletely(project);
+      setProjects((current) => current.filter((item) => item.id !== project.id));
+      setSelectedProject(null); setBriefing(null); setProjectAssets([]);
+    } catch (deleteError) {
+      setError(`Não foi possível excluir o projeto. ${deleteError instanceof Error ? deleteError.message : "Erro desconhecido."}`);
+    } finally { setDeleting(false); }
+  };
+
+  const deleteSelectedProjects = async () => {
+    const targets = projects.filter((project) => selectedProjectIds.includes(project.id));
+    if (!targets.length || deleting || !window.confirm(`Excluir definitivamente ${targets.length} projeto(s) selecionado(s)?\n\nOs registros e arquivos do Supabase serão apagados.`)) return;
+    setDeleting(true); setError("");
+    try {
+      for (const project of targets) await removeProjectCompletely(project);
+      setProjects((current) => current.filter((project) => !selectedProjectIds.includes(project.id)));
+      setSelectedProjectIds([]);
+    } catch (deleteError) {
+      setError(`A exclusão foi interrompida. ${deleteError instanceof Error ? deleteError.message : "Erro desconhecido."}`);
+      await loadProjects();
+    } finally { setDeleting(false); }
+  };
+
+  const removeAsset = async (asset: ProjectAsset) => {
+    if (!supabase || !window.confirm(`Excluir o arquivo ${asset.originalName} do Supabase?`)) return;
+    setAssetFeedback("Excluindo arquivo...");
+    try {
+      await deleteProjectAsset(supabase, asset.storagePath);
+      setProjectAssets((current) => current.filter((item) => item.storagePath !== asset.storagePath));
+      setAssetFeedback("Arquivo excluído definitivamente do Supabase.");
+    } catch (deleteError) {
+      setAssetFeedback(deleteError instanceof Error ? deleteError.message : "Não foi possível excluir o arquivo.");
+    }
+    window.setTimeout(() => setAssetFeedback(""), 3500);
+  };
+
   return (
     <main className="relative min-h-dvh overflow-hidden bg-background text-foreground">
-      <div className="pointer-events-none fixed inset-0 bg-hero opacity-70" />
-      <div className="pointer-events-none fixed inset-0 bg-nebula opacity-35" />
-
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-background/70 backdrop-blur-2xl">
+      <VideoBackdrop opacity={0.22} tintOpacity={0.85} />
+      <Starfield count={70} className="fixed opacity-35" />
+      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_15%_0%,rgba(14,165,233,0.10),transparent_28%),radial-gradient(circle_at_90%_30%,rgba(124,58,237,0.10),transparent_32%)]" />
+      <header className="relative z-20 border-b border-cyan-300/10 bg-slate-950/72 shadow-[0_10px_40px_rgba(0,0,0,0.18)] backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4">
-          <div>
-            <p className="text-xs uppercase tracking-[0.18em] text-cyan-300">Centro de comando</p>
-            <h1 className="mt-1 font-display text-xl font-bold">Orion Admin</h1>
-            <p className="hidden text-xs text-muted-foreground sm:block">Projetos, briefings, arquivos e acompanhamento em um só lugar.</p>
-          </div>
+          <div className="flex items-center gap-5"><Logo compact /><div className="hidden border-l border-white/10 pl-5 sm:block"><p className="text-xs uppercase tracking-[0.2em] text-cyan-300">Painel administrativo</p><h1 className="text-lg font-bold">Central de comando</h1></div></div>
           <div className="flex items-center gap-2">
-            <button type="button" onClick={loadProjects} className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-sm hover:bg-white/[0.06]"><RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /> Atualizar</button>
-            <button type="button" onClick={logout} className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-sm hover:bg-white/[0.06]"><LogOut className="h-4 w-4" /> Sair</button>
+            <button type="button" onClick={loadProjects} className="inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-white/[0.025] px-4 py-2 text-sm shadow-[0_0_18px_rgba(34,211,238,0.04)] transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07]"><RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /> Atualizar</button>
+            <button type="button" onClick={logout} className="inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-white/[0.025] px-4 py-2 text-sm shadow-[0_0_18px_rgba(34,211,238,0.04)] transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07]"><LogOut className="h-4 w-4" /> Sair</button>
           </div>
         </div>
       </header>
 
       <section className="relative z-10 mx-auto max-w-7xl px-5 py-8">
-        {!selectedProject && (
-          <nav aria-label="Módulos administrativos" className="mb-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {adminModules.map((module) => {
-              const Icon = module.icon;
-              return (
-                <button
-                  type="button"
-                  key={module.label}
-                  disabled={!module.active}
-                  className={`group flex min-h-24 items-start gap-3 rounded-2xl border p-4 text-left transition ${
-                    module.active
-                      ? "border-cyan-400/30 bg-cyan-400/[0.08] shadow-[0_0_28px_rgba(34,211,238,0.08)]"
-                      : "cursor-default border-white/10 bg-white/[0.025] opacity-75"
-                  }`}
-                >
-                  <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border ${module.active ? "border-cyan-400/25 bg-cyan-400/10" : "border-white/10 bg-white/[0.04]"}`}>
-                    <Icon className={`h-5 w-5 ${module.active ? "text-cyan-300" : "text-muted-foreground"}`} />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block text-sm font-semibold">{module.label}</span>
-                    <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">{module.description}</span>
-                    {!module.active && <span className="mt-2 block text-[10px] uppercase tracking-[0.16em] text-violet-300">Em breve</span>}
-                  </span>
-                </button>
-              );
-            })}
-          </nav>
-        )}
-
         {error && <div role="alert" className="mb-5 rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200">{error}</div>}
 
         {!selectedProject ? (
           <>
             <div className="mb-6 grid gap-4 sm:grid-cols-3">
-              <div className="group rounded-3xl border border-cyan-400/15 bg-cyan-400/[0.055] p-5 backdrop-blur-xl transition hover:-translate-y-1 hover:border-cyan-400/30">
-                <div className="flex items-start justify-between gap-3">
-                  <div><p className="text-sm text-muted-foreground">Projetos cadastrados</p><p className="mt-2 font-display text-4xl font-bold">{projects.length}</p></div>
-                  <div className="grid h-11 w-11 place-items-center rounded-2xl border border-cyan-400/20 bg-cyan-400/10"><Layers3 className="h-5 w-5 text-cyan-300" /></div>
-                </div>
-                <p className="mt-3 text-xs text-muted-foreground">Total registrado no Supabase</p>
-              </div>
-              <div className="group rounded-3xl border border-violet-400/15 bg-violet-400/[0.05] p-5 backdrop-blur-xl transition hover:-translate-y-1 hover:border-violet-400/30">
-                <div className="flex items-start justify-between gap-3">
-                  <div><p className="text-sm text-muted-foreground">Novos projetos</p><p className="mt-2 font-display text-4xl font-bold">{projects.filter((p) => !p.status || p.status === "new" || p.status === "novo").length}</p></div>
-                  <div className="grid h-11 w-11 place-items-center rounded-2xl border border-violet-400/20 bg-violet-400/10"><TrendingUp className="h-5 w-5 text-violet-300" /></div>
-                </div>
-                <p className="mt-3 text-xs text-muted-foreground">Aguardando avanço no fluxo</p>
-              </div>
-              <div className="group rounded-3xl border border-emerald-400/15 bg-emerald-400/[0.05] p-5 backdrop-blur-xl transition hover:-translate-y-1 hover:border-emerald-400/30">
-                <div className="flex items-start justify-between gap-3">
-                  <div><p className="text-sm text-muted-foreground">Último protocolo</p><p className="mt-3 font-mono text-xl font-bold text-emerald-200">{projects[0]?.project_code ?? "—"}</p></div>
-                  <div className="grid h-11 w-11 place-items-center rounded-2xl border border-emerald-400/20 bg-emerald-400/10"><ShieldCheck className="h-5 w-5 text-emerald-300" /></div>
-                </div>
-                <p className="mt-4 text-xs text-muted-foreground">Registro mais recente da operação</p>
-              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><p className="text-sm text-muted-foreground">Projetos cadastrados</p><p className="mt-2 text-3xl font-bold">{projects.length}</p></div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><p className="text-sm text-muted-foreground">Novos</p><p className="mt-2 text-3xl font-bold">{projects.filter((p) => !p.status || p.status === "new" || p.status === "novo").length}</p></div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><p className="text-sm text-muted-foreground">Último protocolo</p><p className="mt-2 font-mono text-xl font-bold">{projects[0]?.project_code ?? "—"}</p></div>
             </div>
 
-            <div className="mb-5 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3"><Search className="h-5 w-5 text-muted-foreground" /><input value={query} onChange={(event) => setQuery(event.target.value)} className="w-full bg-transparent text-sm outline-none" placeholder="Buscar por protocolo, empresa, contato, segmento ou cidade..." /></div>
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row">
+              <div className="flex min-w-0 flex-1 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3"><Search className="h-5 w-5 text-muted-foreground" /><input value={query} onChange={(event) => setQuery(event.target.value)} className="w-full bg-transparent text-sm outline-none" placeholder="Buscar por protocolo, empresa, contato, WhatsApp, segmento ou cidade..." /></div>
+              {selectedProjectIds.length > 0 && <button type="button" onClick={() => void deleteSelectedProjects()} disabled={deleting} className="inline-flex items-center justify-center gap-2 rounded-2xl border border-red-400/30 bg-red-500/10 px-5 py-3 text-sm font-semibold text-red-200 shadow-[0_0_22px_rgba(239,68,68,0.10)] transition hover:bg-red-500/20 disabled:opacity-60"><Trash2 className="h-4 w-4" /> Excluir selecionados ({selectedProjectIds.length})</button>}
+            </div>
 
             <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02]">
               {loading && !projects.length ? (
@@ -530,13 +522,16 @@ ${technicalSummary}`;
               ) : filteredProjects.length ? (
                 <div className="divide-y divide-white/10">
                   {filteredProjects.map((project) => (
-                    <button type="button" key={project.id} onClick={() => void openProject(project)} className="grid w-full gap-4 p-5 text-left transition hover:bg-white/[0.04] md:grid-cols-[150px_1fr_180px_130px_24px] md:items-center">
+                    <div key={project.id} className="grid w-full gap-4 p-5 text-left transition hover:bg-white/[0.04] md:grid-cols-[34px_150px_1fr_180px_130px_24px] md:items-center">
+                      <input type="checkbox" aria-label={`Selecionar ${project.project_code}`} checked={selectedProjectIds.includes(project.id)} onChange={(event) => setSelectedProjectIds((current) => event.target.checked ? [...current, project.id] : current.filter((id) => id !== project.id))} className="h-4 w-4 accent-cyan-400" />
+                      <button type="button" onClick={() => void openProject(project)} className="contents">
                       <span className="font-mono text-sm font-semibold text-cyan-300">{project.project_code}</span>
                       <span><strong className="block">{project.company_name}</strong><span className="mt-1 block text-sm text-muted-foreground">{project.segment || "Segmento não informado"}</span></span>
                       <span className="text-sm"><span className="block">{project.contact_name || "Sem responsável"}</span><span className="mt-1 block text-muted-foreground">{project.city ? `${project.city}${project.state ? `/${project.state}` : ""}` : "Cidade não informada"}</span></span>
                       <span className="w-fit rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300">{project.status || "novo"}</span>
                       <ChevronRight className="hidden h-5 w-5 text-muted-foreground md:block" />
-                    </button>
+                      </button>
+                    </div>
                   ))}
                 </div>
               ) : <div className="p-12 text-center text-muted-foreground">Nenhum projeto encontrado.</div>}
@@ -550,9 +545,10 @@ ${technicalSummary}`;
               <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
                 <div><p className="font-mono text-sm font-semibold text-cyan-300">{selectedProject.project_code}</p><h2 className="mt-2 text-3xl font-bold">{selectedProject.company_name}</h2><p className="mt-2 text-muted-foreground">{selectedProject.segment || "Segmento não informado"}</p></div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <button type="button" onClick={() => setSummaryOpen(true)} disabled={!briefing} className="inline-flex items-center gap-2 rounded-full bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-50">
+                  <button type="button" onClick={() => setSummaryOpen(true)} disabled={!briefing} className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-[0_0_22px_rgba(34,211,238,0.16)] transition hover:-translate-y-0.5 hover:from-cyan-300 hover:to-violet-400 disabled:cursor-not-allowed disabled:opacity-50">
                     <Sparkles className="h-4 w-4" /> Gerar Resumo Técnico
                   </button>
+                  <button type="button" onClick={() => void deleteSingleProject(selectedProject)} disabled={deleting} className="inline-flex items-center gap-2 rounded-full border border-red-400/30 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-200 transition hover:bg-red-500/20 disabled:opacity-60"><Trash2 className="h-4 w-4" /> {deleting ? "Excluindo..." : "Excluir projeto"}</button>
                   <span className="w-fit rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-300">{selectedProject.status || "novo"}</span>
                 </div>
               </div>
@@ -580,7 +576,7 @@ ${technicalSummary}`;
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{projectAssets.map((asset, index) => (
                   <article key={asset.storagePath} className="overflow-hidden rounded-2xl border border-white/10 bg-black/20">
                     <button type="button" onClick={() => window.open(asset.signedUrl, "_blank", "noopener,noreferrer")} className="group relative block aspect-video w-full overflow-hidden bg-black/30"><img src={asset.signedUrl} alt={asset.originalName} className="h-full w-full object-cover transition group-hover:scale-105" /><span className="absolute inset-0 grid place-items-center opacity-0 transition group-hover:bg-black/45 group-hover:opacity-100"><Eye className="h-7 w-7 text-white" /></span></button>
-                    <div className="p-4"><p className="truncate text-sm font-semibold">{asset.originalName}</p><p className="mt-1 text-xs text-muted-foreground">{fileCategoryLabel(asset.category)} · {humanFileSize(asset.sizeBytes)}</p><div className="mt-4 grid grid-cols-2 gap-2"><button type="button" onClick={() => window.open(asset.signedUrl, "_blank", "noopener,noreferrer")} className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs"><Eye className="h-4 w-4" /> Visualizar</button><button type="button" onClick={() => void downloadAsset(asset, index)} className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-500 px-3 py-2 text-xs font-semibold text-slate-950"><Download className="h-4 w-4" /> Baixar</button></div></div>
+                    <div className="p-4"><p className="truncate text-sm font-semibold">{asset.originalName}</p><p className="mt-1 text-xs text-muted-foreground">{fileCategoryLabel(asset.category)} · {humanFileSize(asset.sizeBytes)}</p><div className="mt-4 grid grid-cols-3 gap-2"><button type="button" onClick={() => window.open(asset.signedUrl, "_blank", "noopener,noreferrer")} className="inline-flex items-center justify-center gap-1 rounded-xl border border-white/10 px-2 py-2 text-[11px]"><Eye className="h-3.5 w-3.5" /> Ver</button><button type="button" onClick={() => void downloadAsset(asset, index)} className="inline-flex items-center justify-center gap-1 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 px-2 py-2 text-[11px] font-semibold text-slate-950"><Download className="h-3.5 w-3.5" /> Baixar</button><button type="button" onClick={() => void removeAsset(asset)} className="inline-flex items-center justify-center gap-1 rounded-xl border border-red-400/30 bg-red-500/10 px-2 py-2 text-[11px] text-red-200 hover:bg-red-500/20"><Trash2 className="h-3.5 w-3.5" /> Excluir</button></div></div>
                   </article>))}</div>
               ) : <div className="rounded-2xl border border-dashed border-white/10 px-5 py-8 text-center text-sm text-muted-foreground">Nenhuma imagem armazenada para este projeto.</div>}
               <div className="mt-3 min-h-5 text-sm text-emerald-300">{assetFeedback}</div>
@@ -626,7 +622,7 @@ ${technicalSummary}`;
               <pre className="max-h-[55vh] overflow-auto whitespace-pre-wrap break-words rounded-2xl border border-white/10 bg-black/25 p-5 font-mono text-sm leading-relaxed text-foreground">{technicalSummary}</pre>
               <div aria-live="polite" className="mt-3 min-h-6 text-sm text-emerald-300">{copyFeedback && <span className="inline-flex items-center gap-2"><Check className="h-4 w-4" /> {copyFeedback}</span>}</div>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                <button type="button" onClick={() => void copySummary()} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-500 px-5 py-4 font-semibold text-slate-950 transition hover:bg-cyan-400"><ClipboardCopy className="h-5 w-5" /> Copiar para ChatGPT</button>
+                <button type="button" onClick={() => void copySummary()} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-5 py-4 font-semibold text-white shadow-[0_0_28px_rgba(59,130,246,0.20)] transition hover:-translate-y-0.5"><ClipboardCopy className="h-5 w-5" /> Copiar para ChatGPT</button>
                 <button type="button" onClick={downloadSummary} className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-5 py-4 font-semibold transition hover:bg-white/[0.06]"><Download className="h-5 w-5" /> Baixar resumo (.txt)</button>
               </div>
             </div>

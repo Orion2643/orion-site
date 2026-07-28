@@ -49,7 +49,7 @@ import {
   Hammer,
   Package,
 } from "lucide-react";
-import { Starfield } from "./space-visuals";
+import { ParticleSphere, Starfield, IntroOverlay } from "./space-visuals";
 import { company, emailUrl, whatsappUrl } from "../config/company";
 /* ---------- NAV ---------- */
 function Nav() {
@@ -63,11 +63,13 @@ function Nav() {
   }, []);
 
   const links = [
+    ["Sobre", "#sobre"],
     ["Serviços", "#servicos"],
+    ["Processo", "#processo"],
     ["Projetos", "#projetos"],
-    ["Como funciona", "#processo"],
-    ["Começar projeto", "/dashboard"],
-    ["Orion Admin", "/admin"],
+    ["Tecnologias", "#tecnologias"],
+    ["FAQ", "#faq"],
+    ["Portal Orion", "/dashboard"],
   ];
 
   return (
@@ -133,87 +135,79 @@ function Nav() {
 
 /* ---------- HERO ---------- */
 function Hero() {
-  const [videoReady, setVideoReady] = useState(true);
-
   return (
-    <section id="top" className="orion-cinematic-hero relative min-h-dvh overflow-hidden">
-      <div className="absolute inset-0 bg-[#030712]" />
-
-      {videoReady && (
-        <video
-          className="absolute inset-0 h-full w-full object-cover opacity-55"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster="/og-image.jpg"
-          aria-hidden="true"
-          onError={() => setVideoReady(false)}
-        >
-          <source src="/videos/orion-hero.mp4" type="video/mp4" />
-        </video>
-      )}
-
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,6,23,.28)_0%,rgba(2,6,23,.55)_54%,rgba(2,6,23,.96)_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(37,99,235,.20),transparent_34%),radial-gradient(circle_at_72%_30%,rgba(147,51,234,.14),transparent_28%)]" />
-      <div className="absolute inset-0 opacity-70"><Starfield density={120} /></div>
-
-      <div className="relative z-10 mx-auto flex min-h-dvh max-w-7xl items-center justify-center px-6 pb-20 pt-32 text-center">
+    <section id="top" className="relative min-h-dvh overflow-hidden pt-32 pb-20">
+      <div className="absolute inset-0 bg-hero" />
+      <div className="absolute inset-0 bg-nebula opacity-70" />
+      <div className="absolute inset-0">
+        <Starfield density={100} />
+      </div>
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-2">
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-5xl"
+          transition={{ duration: 0.9, ease: "easeOut" }}
         >
-          <motion.img
-            src={company.icon}
-            alt="Símbolo da Orion"
-            initial={{ opacity: 0, scale: 0.82 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.1, delay: 0.15 }}
-            className="mx-auto h-20 w-20 rounded-full object-cover shadow-[0_0_55px_rgba(56,189,248,.38)] md:h-24 md:w-24"
-          />
-
-          <p className="mt-7 text-xs font-medium uppercase tracking-[0.35em] text-cyan-200/80 md:text-sm">
-            Orion Soluções em Tecnologia
-          </p>
-
-          <h1 className="mt-5 font-display text-5xl font-bold leading-[.98] tracking-[-0.045em] md:text-7xl lg:text-8xl">
-            Tecnologia que faz sua empresa
-            <span className="mt-2 block text-gradient">avançar.</span>
+          <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs text-muted-foreground">
+            <span className="h-2 w-2 rounded-full bg-[oklch(0.82_0.14_200)] animate-pulse" />
+            Soluções digitais inteligentes
+          </div>
+          <h1 className="mt-6 font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
+            Transformamos ideias em <span className="text-gradient">tecnologia inteligente</span>
           </h1>
-
-          <p className="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-slate-300 md:text-xl">
-            Sites, sistemas e automações criados para vender melhor, organizar processos e fortalecer sua presença digital.
+          <p className="mt-6 max-w-xl text-base md:text-lg text-muted-foreground leading-relaxed">
+            A Orion desenvolve sites profissionais, sistemas personalizados e soluções digitais
+            sob medida para empresas que desejam organizar processos, fortalecer sua presença online
+            e crescer com tecnologia.
           </p>
-
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="#projetos"
-              className="group inline-flex min-w-56 items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-slate-950 transition hover:scale-[1.03]"
-            >
-              Ver nossos projetos
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
+          <div className="mt-8 flex flex-wrap gap-4">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-w-56 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-xl transition hover:bg-white/[0.12]"
+              className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-accent px-7 py-3.5 text-sm font-medium text-white shadow-[var(--shadow-glow-purple)] transition-all hover:scale-105"
             >
-              Falar com a Orion
+              Solicitar orçamento
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
+            <a
+              href="#projetos"
+              className="inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 text-sm font-medium transition-colors hover:bg-white/10"
+            >
+              Conheça nossos projetos
+            </a>
+          </div>
+          <div className="mt-10 flex flex-wrap gap-8 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> Segurança
+            </div>
+            <div className="flex items-center gap-2">
+              <Zap className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> Performance
+            </div>
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4 text-[oklch(0.82_0.14_200)]" /> Atendimento próximo
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="relative aspect-square w-full max-w-[560px] mx-auto"
+        >
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/30 via-accent/20 to-transparent blur-3xl animate-pulse-glow" />
+          <div className="relative h-full w-full">
+            <ParticleSphere />
           </div>
         </motion.div>
       </div>
-
       <a
-        href="#servicos"
-        aria-label="Conhecer a Orion"
-        className="absolute bottom-7 left-1/2 z-10 -translate-x-1/2 text-white/55 transition hover:text-white"
+        href="#sobre"
+        aria-label="Rolar"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground animate-bounce"
       >
-        <ChevronDown className="h-6 w-6 animate-bounce" />
+        <ChevronDown className="h-5 w-5" />
       </a>
     </section>
   );
@@ -695,38 +689,165 @@ function FAQ() {
   );
 }
 
-/* ---------- CHAMADA PARA NOVO PROJETO ---------- */
+/* ---------- FORMULÁRIO DE AVALIAÇÃO ---------- */
 function EvaluationForm() {
-  const stages = ["Empresa", "Contato", "Essência", "Serviços", "Identidade visual", "Recursos", "Google e projeto", "Resumo"];
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    location: "",
+    service: "",
+    description: "",
+  });
+  const [error, setError] = useState("");
+
+  const services = [
+    "Site institucional",
+    "Landing page",
+    "Sistema web personalizado",
+    "Solução com recursos de IA",
+    "SEO e presença no Google",
+    "Consultoria em tecnologia",
+    "Outro serviço",
+  ];
+
+  const updateField = (field: keyof typeof form, value: string) => {
+    setForm((current) => ({ ...current, [field]: value }));
+    if (error) setError("");
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!form.name.trim() || !form.phone.trim() || !form.service || !form.description.trim()) {
+      setError("Preencha nome, telefone, tipo de serviço e descrição do projeto.");
+      return;
+    }
+
+    const message = [
+      "Olá! Vim pelo site da Orion e gostaria de solicitar uma avaliação.",
+      "",
+      `*Nome:* ${form.name.trim()}`,
+      `*Telefone:* ${form.phone.trim()}`,
+      `*Cidade ou bairro:* ${form.location.trim() || "Não informado"}`,
+      `*Tipo de serviço:* ${form.service}`,
+      `*Descrição do projeto:* ${form.description.trim()}`,
+    ].join("\n");
+    
+    const whatsappLink = `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(
+  message,
+)}`;
+
+window.open(whatsappLink, "_blank", "noopener,noreferrer");
+
+    setForm({
+      name: "",
+      phone: "",
+      location: "",
+      service: "",
+      description: "",
+    });
+    setError("");
+  };
+
+  const inputClass =
+    "w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary/70 focus:ring-2 focus:ring-primary/20 placeholder:text-muted-foreground/60";
 
   return (
     <section id="avaliacao" className="relative py-28">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="relative overflow-hidden rounded-[2rem] border border-cyan-400/15 bg-white/[0.035] p-7 backdrop-blur-2xl md:p-12">
-          <div className="absolute inset-0 bg-nebula opacity-45 pointer-events-none" />
-          <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-violet-500/15 blur-[90px]" />
-          <div className="relative grid items-center gap-10 lg:grid-cols-[1fr_0.9fr]">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/[0.08] px-4 py-2 text-xs font-medium text-cyan-200">
-                <Rocket className="h-4 w-4" /> Método Orion de captação
+      <div className="mx-auto max-w-5xl px-6">
+        <div className="relative overflow-hidden rounded-3xl glass-card p-6 md:p-10">
+          <div className="absolute inset-0 bg-nebula opacity-35 pointer-events-none" />
+          <div className="relative">
+            <SectionHeader
+              eyebrow="Contato rápido"
+              title="Solicite sua avaliação"
+              subtitle="Preencha os campos e envie sua solicitação diretamente pelo WhatsApp."
+            />
+
+            <form onSubmit={handleSubmit} className="mx-auto max-w-3xl space-y-5" noValidate>
+              <div className="grid gap-5 md:grid-cols-2">
+                <label className="space-y-2 text-sm font-medium">
+                  <span>Nome *</span>
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={(event) => updateField("name", event.target.value)}
+                    className={inputClass}
+                    autoComplete="name"
+                    placeholder="Seu nome"
+                  />
+                </label>
+
+                <label className="space-y-2 text-sm font-medium">
+                  <span>Telefone *</span>
+                  <input
+                    type="tel"
+                    value={form.phone}
+                    onChange={(event) => updateField("phone", event.target.value)}
+                    className={inputClass}
+                    autoComplete="tel"
+                    placeholder="(15) 99999-9999"
+                  />
+                </label>
+
+                <label className="space-y-2 text-sm font-medium">
+                  <span>Cidade ou bairro</span>
+                  <input
+                    type="text"
+                    value={form.location}
+                    onChange={(event) => updateField("location", event.target.value)}
+                    className={inputClass}
+                    autoComplete="address-level2"
+                    placeholder="Ex.: Sorocaba - SP"
+                  />
+                </label>
+
+                <label className="space-y-2 text-sm font-medium">
+                  <span>Tipo de serviço *</span>
+                  <select
+                    value={form.service}
+                    onChange={(event) => updateField("service", event.target.value)}
+                    className={inputClass}
+                  >
+                    <option value="" className="bg-background">Selecione</option>
+                    {services.map((service) => (
+                      <option key={service} value={service} className="bg-background">
+                        {service}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
-              <h2 className="mt-6 font-display text-3xl font-bold leading-tight md:text-5xl">Seu projeto começa com as <span className="text-gradient">informações certas.</span></h2>
-              <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">Preencha um levantamento guiado e envie para a Orion tudo o que precisamos para compreender sua empresa, seus objetivos e a solução ideal.</p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <a href="/briefing" className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-primary to-accent px-7 py-4 font-semibold text-white shadow-[var(--shadow-glow-purple)] transition hover:scale-[1.02]">
-                  Iniciar meu projeto <ArrowRight className="h-5 w-5" />
-                </a>
-                <span className="text-xs text-muted-foreground">Sem login • preenchimento guiado • envio ao final</span>
+
+              <label className="block space-y-2 text-sm font-medium">
+                <span>Descrição do projeto *</span>
+                <textarea
+                  value={form.description}
+                  onChange={(event) => updateField("description", event.target.value)}
+                  className={`${inputClass} min-h-36 resize-y`}
+                  placeholder="Conte brevemente o que sua empresa precisa, seus objetivos e prazo desejado."
+                />
+              </label>
+
+              {error && (
+                <p role="alert" className="rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-200">
+                  {error}
+                </p>
+              )}
+
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  Ao enviar, você será direcionado ao WhatsApp da Orion com as informações preenchidas.
+                </p>
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-accent px-7 py-3.5 text-sm font-medium text-white shadow-[var(--shadow-glow-purple)] transition-all hover:scale-[1.02]"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                  Enviar pelo WhatsApp
+                </button>
               </div>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {stages.map((stage, index) => (
-                <div key={stage} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/10 px-4 py-3">
-                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-cyan-400/10 text-xs font-bold text-cyan-200">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="text-sm">{stage}</span>
-                </div>
-              ))}
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -876,12 +997,18 @@ function Footer() {
 export default function OrionLanding() {
   return (
     <div className="relative min-h-dvh bg-background text-foreground overflow-hidden">
+      <IntroOverlay />
       <Nav />
       <main>
         <Hero />
+        <About />
         <Services />
-        <Projects />
         <Process />
+        <Projects />
+        <Technologies />
+        <AISection />
+        <WhyUs />
+        <Metrics />
         <FAQ />
         <EvaluationForm />
         <CTA />

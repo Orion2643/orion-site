@@ -76,6 +76,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "content-language", content: "pt-BR" },
+      { name: "google", content: "notranslate" },
       { name: "theme-color", content: "#050816" },
       { title: "Orion Soluções em Tecnologia — Guiando empresas rumo ao futuro" },
       {
@@ -148,7 +150,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR" className="dark">
+    <html lang="pt-BR" dir="ltr" translate="no" className="dark notranslate">
       <head>
         <HeadContent />
       </head>

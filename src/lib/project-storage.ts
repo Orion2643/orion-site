@@ -28,6 +28,13 @@ function normalizeCategory(category: string): ProjectAssetCategory {
     : "galeria";
 }
 
+function shortUniqueId() {
+  if (typeof globalThis.crypto !== "undefined" && typeof globalThis.crypto.randomUUID === "function") {
+    return globalThis.crypto.randomUUID().slice(0, 8);
+  }
+  return `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`.slice(0, 8);
+}
+
 function safeFileName(name: string) {
   const extension = name.includes(".") ? `.${name.split(".").pop()?.toLowerCase()}` : "";
   const base = name
@@ -50,7 +57,7 @@ export async function uploadProjectAssets(
 
   for (const [index, item] of items.entries()) {
     const category = normalizeCategory(item.category);
-    const uniquePrefix = `${Date.now()}-${index + 1}-${crypto.randomUUID().slice(0, 8)}`;
+    const uniquePrefix = `${Date.now()}-${index + 1}-${shortUniqueId()}`;
     const storagePath = `${projectCode}/${category}/${uniquePrefix}-${safeFileName(item.file.name)}`;
 
     const { error } = await client.storage.from(PROJECT_ASSETS_BUCKET).upload(storagePath, item.file, {
@@ -134,4 +141,27 @@ export async function downloadProjectAsset(
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
+}
+
+
+export async function deleteProjectAsset(client: SupabaseClient, storagePath: string) {
+  const { error } = await client.storage.from(PROJECT_ASSETS_BUCKET).remove([storagePath]);
+  if (error) throw new Error(error.message);
+}
+
+export async function deleteAllProjectAssets(client: SupabaseClient, projectCode: string) {
+  const paths: string[] = [];
+  for (const category of PROJECT_ASSET_CATEGORIES) {
+    const folder = `${projectCode}/${category}`;
+    const { data, error } = await client.storage.from(PROJECT_ASSETS_BUCKET).list(folder, { limit: 1000 });
+    if (error && !/not found/i.test(error.message)) throw new Error(error.message);
+    for (const file of data ?? []) {
+      if (file.name && file.name !== ".emptyFolderPlaceholder") paths.push(`${folder}/${file.name}`);
+    }
+  }
+  if (paths.length) {
+    const { error } = await client.storage.from(PROJECT_ASSETS_BUCKET).remove(paths);
+    if (error) throw new Error(error.message);
+  }
+  return paths.length;
 }

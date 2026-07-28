@@ -18,6 +18,10 @@ import {
 import { company } from "../config/company";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import { uploadProjectAssets } from "../lib/project-storage";
+import { Logo } from "./orion/Logo";
+import { motion, AnimatePresence } from "framer-motion";
+import { EASE_ORION } from "./orion/motion";
+import { VideoBackdrop } from "./orion/VideoBackdrop";
 
 type BriefingData = {
   companyName: string;
@@ -203,12 +207,28 @@ function ColorField({ label, value, onChange }: { label: string; value: string; 
 }
 
 
+function formatBrazilianPhone(value: string) {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+}
+
 type UploadItem = {
   id: string;
   file: File;
   preview?: string;
   category: string;
 };
+
+function createSafeClientId(prefix = "arquivo") {
+  const randomPart =
+    typeof globalThis.crypto !== "undefined" && typeof globalThis.crypto.randomUUID === "function"
+      ? globalThis.crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  return `${prefix}-${randomPart}`;
+}
 
 function UploadBox({
   title,
@@ -243,7 +263,7 @@ function UploadBox({
         <input className="sr-only" type="file" accept={accept} multiple={multiple} onChange={(event) => { onAdd(category, event.target.files, multiple); event.currentTarget.value = ""; }} />
       </label>
       {categoryItems.length > 0 && (
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div className="mt-4 space-y-3"><div className="flex items-center justify-between rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] px-3 py-2 text-xs"><span className="font-medium text-emerald-200">✓ {categoryItems.length} arquivo(s) selecionado(s)</span><span className="text-muted-foreground">Você pode remover antes de enviar</span></div><div className="grid gap-3 sm:grid-cols-2">
           {categoryItems.map((item) => (
             <div key={item.id} className="flex items-center gap-3 rounded-xl border border-white/10 bg-black/20 p-2">
               {item.preview ? <img src={item.preview} alt="Prévia" className="h-14 w-14 rounded-lg object-cover" /> : <FileText className="h-8 w-8 text-muted-foreground" />}
@@ -251,7 +271,7 @@ function UploadBox({
               <button type="button" onClick={() => onRemove(item.id)} className="rounded-full p-2 text-muted-foreground hover:bg-white/10 hover:text-foreground" aria-label="Remover arquivo"><X className="h-4 w-4" /></button>
             </div>
           ))}
-        </div>
+        </div></div>
       )}
     </div>
   );
@@ -302,25 +322,31 @@ export default function OrionBriefing() {
     setUploadError("");
 
     const selected = Array.from(files);
-    const invalidType = selected.find((file) => !["image/png", "image/jpeg", "image/webp"].includes(file.type));
+    const existingKeys = new Set(uploads.filter((item) => item.category === category).map((item) => `${item.file.name}-${item.file.size}-${item.file.lastModified}`));
+    const uniqueSelected = selected.filter((file) => !existingKeys.has(`${file.name}-${file.size}-${file.lastModified}`));
+    if (uniqueSelected.length === 0) {
+      setUploadError("Esses arquivos já foram selecionados.");
+      return;
+    }
+    const invalidType = uniqueSelected.find((file) => !["image/png", "image/jpeg", "image/webp"].includes(file.type));
     if (invalidType) {
       setUploadError(`O arquivo ${invalidType.name} não é uma imagem PNG, JPG ou WEBP.`);
       return;
     }
 
-    const oversized = selected.find((file) => file.size > 10 * 1024 * 1024);
+    const oversized = uniqueSelected.find((file) => file.size > 10 * 1024 * 1024);
     if (oversized) {
       setUploadError(`A imagem ${oversized.name} ultrapassa o limite de 10 MB.`);
       return;
     }
 
-    const limited = category === "galeria" ? selected.slice(0, 20) : selected.slice(0, 1);
-    if (category === "galeria" && selected.length > 20) {
+    const limited = category === "galeria" ? uniqueSelected.slice(0, Math.max(0, 20 - uploads.filter((item) => item.category === category).length)) : uniqueSelected.slice(0, 1);
+    if (category === "galeria" && uniqueSelected.length > limited.length) {
       setUploadError("Foram adicionadas apenas as primeiras 20 imagens da galeria.");
     }
 
     const next = limited.map((file) => ({
-      id: `${category}-${file.name}-${file.lastModified}-${crypto.randomUUID()}`,
+      id: createSafeClientId(`${category}-${file.lastModified}`),
       file,
       category,
       preview: URL.createObjectURL(file),
@@ -509,6 +535,7 @@ ${briefing}`,
     if (!data.city.trim()) missing.push("cidade");
     if (!data.contactName.trim()) missing.push("nome do responsável");
     if (!data.whatsapp.trim()) missing.push("WhatsApp");
+    else if (![10, 11].includes(data.whatsapp.replace(/\D/g, "").length)) missing.push("WhatsApp com DDD válido");
     return missing;
   };
 
@@ -579,7 +606,12 @@ ${briefing}`,
       }
     } catch (error) {
       whatsappWindow?.close();
-      const message = error instanceof Error ? error.message : "Não foi possível registrar a solicitação.";
+      const message =
+        error instanceof Error
+          ? error.message
+          : typeof error === "object" && error && "message" in error
+            ? String((error as { message?: unknown }).message || "Não foi possível registrar a solicitação.")
+            : "Não foi possível registrar a solicitação.";
       setSubmitError(`Não conseguimos salvar seu projeto. ${message}`);
     } finally {
       setIsSubmitting(false);
@@ -590,12 +622,12 @@ ${briefing}`,
     if (step === 0) {
       return (
         <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Nome empresarial / razão social"><input className={inputClass} value={data.companyName} onChange={(e) => update("companyName", e.target.value)} placeholder="Informe a razão social, caso exista" /></Field>
-          <Field label="Nome fantasia" required><input className={inputClass} value={data.tradeName} onChange={(e) => update("tradeName", e.target.value)} placeholder="Informe o nome pelo qual a empresa é conhecida" /></Field>
-          <Field label="Segmento de atuação" required><input className={inputClass} value={data.segment} onChange={(e) => update("segment", e.target.value)} placeholder="Informe o segmento principal da empresa" /></Field>
-          <Field label="Tempo de mercado"><input className={inputClass} value={data.yearsInBusiness} onChange={(e) => update("yearsInBusiness", e.target.value)} placeholder="Informe há quanto tempo a empresa atua" /></Field>
-          <Field label="Cidade" required><input className={inputClass} value={data.city} onChange={(e) => update("city", e.target.value)} placeholder="Informe a cidade" /></Field>
-          <Field label="Estado"><input className={inputClass} value={data.state} onChange={(e) => update("state", e.target.value)} placeholder="Informe o estado" /></Field>
+          <Field label="Nome empresarial / razão social"><input className={inputClass} value={data.companyName} onChange={(e) => update("companyName", e.target.value)} placeholder="Ex.: Empresa Silva Ltda." /></Field>
+          <Field label="Nome fantasia" required><input className={inputClass} value={data.tradeName} onChange={(e) => update("tradeName", e.target.value)} placeholder="Ex.: Silva Auto Center" /></Field>
+          <Field label="Segmento de atuação" required><input className={inputClass} value={data.segment} onChange={(e) => update("segment", e.target.value)} placeholder="Ex.: Oficina mecânica" /></Field>
+          <Field label="Tempo de mercado"><input className={inputClass} value={data.yearsInBusiness} onChange={(e) => update("yearsInBusiness", e.target.value)} placeholder="Ex.: 8 anos" /></Field>
+          <Field label="Cidade" required><input className={inputClass} value={data.city} onChange={(e) => update("city", e.target.value)} placeholder="Ex.: Sorocaba" /></Field>
+          <Field label="Estado"><input className={inputClass} value={data.state} onChange={(e) => update("state", e.target.value)} placeholder="SP" /></Field>
         </div>
       );
     }
@@ -603,8 +635,8 @@ ${briefing}`,
       return (
         <div className="grid gap-5 md:grid-cols-2">
           <Field label="Nome do responsável" required><input className={inputClass} value={data.contactName} onChange={(e) => update("contactName", e.target.value)} /></Field>
-          <Field label="WhatsApp" required><input className={inputClass} value={data.whatsapp} onChange={(e) => update("whatsapp", e.target.value)} placeholder="(15) 99999-9999" /></Field>
-          <Field label="Telefone alternativo"><input className={inputClass} value={data.phone} onChange={(e) => update("phone", e.target.value)} /></Field>
+          <Field label="WhatsApp" required><input className={inputClass} value={data.whatsapp} onChange={(e) => update("whatsapp", formatBrazilianPhone(e.target.value))} inputMode="tel" maxLength={15} placeholder="(15) 99999-9999" /></Field>
+          <Field label="Telefone alternativo"><input className={inputClass} value={data.phone} onChange={(e) => update("phone", formatBrazilianPhone(e.target.value))} inputMode="tel" maxLength={15} placeholder="(15) 3333-4444" /></Field>
           <Field label="E-mail"><input className={inputClass} type="email" value={data.email} onChange={(e) => update("email", e.target.value)} /></Field>
           <Field label="Instagram"><input className={inputClass} value={data.instagram} onChange={(e) => update("instagram", e.target.value)} placeholder="@empresa" /></Field>
           <Field label="Facebook"><input className={inputClass} value={data.facebook} onChange={(e) => update("facebook", e.target.value)} /></Field>
@@ -620,10 +652,10 @@ ${briefing}`,
         <div className="space-y-5">
           <Field label="Conte a história da empresa" hint="Como começou, experiência, trajetória e contexto atual."><textarea className={`${inputClass} min-h-32 resize-y`} value={data.story} onChange={(e) => update("story", e.target.value)} /></Field>
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Principais diferenciais"><textarea className={`${inputClass} min-h-28 resize-y`} value={data.differentials} onChange={(e) => update("differentials", e.target.value)} placeholder="Descreva os principais diferenciais da empresa" /></Field>
-            <Field label="Valores que deseja transmitir"><textarea className={`${inputClass} min-h-28 resize-y`} value={data.values} onChange={(e) => update("values", e.target.value)} placeholder="Descreva os valores que a marca deseja transmitir" /></Field>
+            <Field label="Principais diferenciais"><textarea className={`${inputClass} min-h-28 resize-y`} value={data.differentials} onChange={(e) => update("differentials", e.target.value)} placeholder="Qualidade, rapidez, experiência..." /></Field>
+            <Field label="Valores que deseja transmitir"><textarea className={`${inputClass} min-h-28 resize-y`} value={data.values} onChange={(e) => update("values", e.target.value)} placeholder="Confiança, inovação, segurança..." /></Field>
           </div>
-          <Field label="Público-alvo"><input className={inputClass} value={data.targetAudience} onChange={(e) => update("targetAudience", e.target.value)} placeholder="Descreva o perfil dos clientes que deseja alcançar" /></Field>
+          <Field label="Público-alvo"><input className={inputClass} value={data.targetAudience} onChange={(e) => update("targetAudience", e.target.value)} placeholder="Quem são os clientes ideais?" /></Field>
           <div>
             <p className="mb-3 text-sm font-medium">Objetivos principais do site</p>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -640,14 +672,19 @@ ${briefing}`,
     if (step === 3) {
       return (
         <div className="space-y-5">
-          <Field label="Serviços ou produtos" required hint="Informe um por linha. Acrescente uma breve explicação quando possível."><textarea className={`${inputClass} min-h-52 resize-y`} value={data.services} onChange={(e) => update("services", e.target.value)} placeholder={"Descreva todos os serviços ou produtos oferecidos.\nDigite um item por linha e acrescente uma breve explicação quando necessário."} /></Field>
+          <Field label="Serviços ou produtos" required hint="Informe um por linha. Acrescente uma breve explicação quando possível."><textarea className={`${inputClass} min-h-52 resize-y`} value={data.services} onChange={(e) => update("services", e.target.value)} placeholder={"Exemplos por segmento:\nOficina: troca de óleo, freios, suspensão e diagnóstico\nSerralheria: portões, grades, coberturas e estruturas metálicas\nSalão de beleza: corte, coloração, manicure e tratamentos\nAutopeças: peças automotivas, acessórios e lubrificantes\n\nInforme um serviço ou produto por linha."} /></Field>
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Área de atendimento"><input className={inputClass} value={data.serviceArea} onChange={(e) => update("serviceArea", e.target.value)} placeholder="Informe as cidades, regiões ou áreas atendidas" /></Field>
-            <Field label="Horário de funcionamento"><input className={inputClass} value={data.businessHours} onChange={(e) => update("businessHours", e.target.value)} placeholder="Informe os dias e horários de funcionamento" /></Field>
-            <Field label="Formas de pagamento"><input className={inputClass} value={data.paymentMethods} onChange={(e) => update("paymentMethods", e.target.value)} placeholder="Informe as formas de pagamento aceitas" /></Field>
-            <Field label="Garantia oferecida"><input className={inputClass} value={data.warranty} onChange={(e) => update("warranty", e.target.value)} /></Field>
-            <Field label="Modelo de atendimento"><input className={inputClass} value={data.attendanceModel} onChange={(e) => update("attendanceModel", e.target.value)} placeholder="Descreva como funciona o atendimento" /></Field>
+            <Field label="Área de atendimento"><input list="service-area-options" className={inputClass} value={data.serviceArea} onChange={(e) => update("serviceArea", e.target.value)} placeholder="Selecione ou escreva uma opção" /></Field>
+            <Field label="Horário de funcionamento"><input list="business-hours-options" className={inputClass} value={data.businessHours} onChange={(e) => update("businessHours", e.target.value)} placeholder="Selecione ou escreva uma opção" /></Field>
+            <Field label="Formas de pagamento"><input list="payment-options" className={inputClass} value={data.paymentMethods} onChange={(e) => update("paymentMethods", e.target.value)} placeholder="Selecione ou escreva uma opção" /></Field>
+            <Field label="Garantia oferecida"><input list="warranty-options" className={inputClass} value={data.warranty} onChange={(e) => update("warranty", e.target.value)} placeholder="Selecione ou escreva uma opção" /></Field>
+            <Field label="Modelo de atendimento"><input list="attendance-options" className={inputClass} value={data.attendanceModel} onChange={(e) => update("attendanceModel", e.target.value)} placeholder="Selecione ou escreva uma opção" /></Field>
           </div>
+          <datalist id="service-area-options"><option value="Bairro e região" /><option value="Cidade e região" /><option value="Todo o estado" /><option value="Todo o Brasil" /><option value="Atendimento online" /></datalist>
+          <datalist id="business-hours-options"><option value="Segunda a sexta, 08h às 18h" /><option value="Segunda a sábado, horário comercial" /><option value="Todos os dias" /><option value="Somente com agendamento" /><option value="Plantão 24 horas" /></datalist>
+          <datalist id="payment-options"><option value="PIX, dinheiro e cartão" /><option value="PIX e dinheiro" /><option value="Cartão de crédito e débito" /><option value="Parcelamento no cartão" /><option value="Boleto e transferência" /></datalist>
+          <datalist id="warranty-options"><option value="Não oferece garantia" /><option value="Garantia conforme o serviço" /><option value="30 dias" /><option value="90 dias" /><option value="6 meses" /><option value="1 ano" /></datalist>
+          <datalist id="attendance-options"><option value="Somente com agendamento" /><option value="Agendamento e ordem de chegada" /><option value="Ordem de chegada" /><option value="Atendimento presencial" /><option value="Atendimento online" /><option value="Atendimento em domicílio" /></datalist>
         </div>
       );
     }
@@ -710,7 +747,7 @@ ${briefing}`,
             <Field label="Link do Google Maps"><input className={inputClass} value={data.googleMaps} onChange={(e) => update("googleMaps", e.target.value)} placeholder="https://maps.google.com/..." /></Field>
             <Field label="Link para avaliações"><input className={inputClass} value={data.reviewLink} onChange={(e) => update("reviewLink", e.target.value)} placeholder="https://g.page/.../review" /></Field>
             <Field label="Domínio desejado"><input className={inputClass} value={data.desiredDomain} onChange={(e) => update("desiredDomain", e.target.value)} placeholder="empresa.com.br" /></Field>
-            <Field label="Prazo desejado"><input className={inputClass} value={data.deadline} onChange={(e) => update("deadline", e.target.value)} placeholder="Informe o prazo esperado para o projeto" /></Field>
+            <Field label="Prazo desejado"><input className={inputClass} value={data.deadline} onChange={(e) => update("deadline", e.target.value)} placeholder="Ex.: até 30 dias" /></Field>
             <Field label="Faixa de investimento"><select className={inputClass} value={data.budgetRange} onChange={(e) => update("budgetRange", e.target.value)}><option value="">Selecione</option><option>Até R$ 1.000</option><option>R$ 1.000 a R$ 2.000</option><option>R$ 2.000 a R$ 4.000</option><option>Acima de R$ 4.000</option><option>Prefere receber uma proposta</option></select></Field>
           </div>
           <Field label="Observações finais"><textarea className={`${inputClass} min-h-32 resize-y`} value={data.observations} onChange={(e) => update("observations", e.target.value)} placeholder="Tudo que ainda não foi perguntado e pode ser importante." /></Field>
@@ -734,7 +771,7 @@ ${briefing}`,
             <p className="mt-2 text-xs leading-relaxed text-muted-foreground">Guarde este protocolo. Os dados do briefing já estão salvos. As {uploads.length} imagem(ns) selecionada(s) foram armazenadas com segurança junto ao seu projeto.</p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
-            <button type="button" onClick={() => setSubmitted(false)} className="rounded-2xl border border-white/10 px-5 py-4 font-semibold transition hover:bg-white/[0.06]">Voltar e revisar</button>
+            <button type="button" onClick={() => setSubmitted(false)} className="rounded-2xl border border-border bg-card/40 px-5 py-4 font-semibold text-foreground backdrop-blur transition-all hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/60">Voltar e revisar</button>
             <button type="button" onClick={() => window.open(createWhatsappLink(projectCode), "_blank", "noopener,noreferrer")} className="flex items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-5 py-4 font-semibold text-white transition hover:bg-emerald-400"><MessageCircle className="h-5 w-5" /> Abrir WhatsApp novamente</button>
           </div>
         </div>
@@ -757,56 +794,84 @@ ${briefing}`,
           <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Ao enviar, os dados, o briefing e as imagens serão registrados no Orion Admin. Logo, fachada e galeria ficarão vinculadas ao protocolo oficial do projeto.</p>
         </div>
         {submitError && <div role="alert" className="rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200">{submitError}</div>}
-        <button type="button" onClick={submitRequest} disabled={isSubmitting} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-5 py-4 font-semibold text-white transition hover:bg-emerald-400 disabled:cursor-wait disabled:opacity-60"><MessageCircle className="h-5 w-5" /> {isSubmitting ? "Salvando projeto e imagens..." : "Enviar solicitação"}</button>
+        <button type="button" onClick={submitRequest} disabled={isSubmitting} className="btn-primary-glow btn-shine flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-4 font-semibold disabled:cursor-wait disabled:opacity-60"><MessageCircle className="h-5 w-5" /> {isSubmitting ? "Salvando projeto e imagens..." : "Enviar solicitação"}</button>
       </div>
     );
   };
 
   return (
     <main className="relative min-h-dvh overflow-hidden bg-background text-foreground">
-      <div className="pointer-events-none absolute inset-0 bg-hero opacity-80" />
+      <VideoBackdrop opacity={0.32} tintOpacity={0.9} />
+      <div className="pointer-events-none absolute inset-0 bg-hero opacity-60" />
       <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-primary/10 blur-[140px]" />
-      <header className="relative z-10 border-b border-white/10 bg-background/70 backdrop-blur-xl">
+      <motion.header
+        initial={{ y: -24, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: EASE_ORION }}
+        className="relative z-10 border-b border-border bg-background/70 backdrop-blur-xl"
+      >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4">
-          <a href="/" className="flex items-center gap-3">
-            <img src={company.icon} alt="Orion" className="orion-nav-logo h-10 w-10 rounded-full object-cover" />
-            <div><p className="font-display font-bold">Orion</p><p className="text-xs text-muted-foreground">Portal de Projetos</p></div>
-          </a>
+          <Logo />
           <div className="flex items-center gap-2">
             <span className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex"><Save className="h-4 w-4" /> {saved ? "Progresso salvo" : "Salvamento automático"}</span>
-            <a href="/" className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-sm hover:bg-white/[0.06]"><Home className="h-4 w-4" /> <span className="hidden sm:inline">Voltar ao site</span></a>
+            <a href="/" className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-4 py-2 text-sm font-semibold text-foreground backdrop-blur transition-all hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/60"><Home className="h-4 w-4" /> <span className="hidden sm:inline">Voltar ao site</span></a>
           </div>
         </div>
-      </header>
+      </motion.header>
 
       <section className="relative z-10 mx-auto max-w-7xl px-5 py-10 md:py-14">
-        <div className="mb-8 max-w-3xl">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-1.5 text-xs text-cyan-200"><Rocket className="h-3.5 w-3.5" /> Primeiro módulo do Orion Hub</div>
-          <h1 className="font-display text-3xl font-bold tracking-tight md:text-5xl">Levantamento de <span className="text-gradient">Requisitos</span></h1>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: EASE_ORION }}
+          className="mb-8 max-w-3xl"
+        >
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs text-primary"><Rocket className="h-3.5 w-3.5" /> Primeiro módulo do Orion Hub</div>
+          <h1 className="text-3xl font-bold tracking-tight md:text-5xl">Levantamento de <span className="text-gradient">Requisitos</span></h1>
           <p className="mt-4 text-muted-foreground">Preencha as informações do projeto, envie a logo e as fotos, defina a identidade visual e revise tudo antes de solicitar o desenvolvimento.</p>
-        </div>
+        </motion.div>
 
-        <div className="mb-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2, ease: EASE_ORION }}
+          className="mb-6 rounded-2xl border border-border bg-card/40 backdrop-blur p-4"
+        >
           <div className="mb-3 flex items-center justify-between text-xs"><span>Etapa {step + 1} de {steps.length}</span><span className="text-muted-foreground">{Math.round(((step + 1) / steps.length) * 100)}%</span></div>
-          <div className="h-2 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 transition-all duration-500" style={{ width: `${((step + 1) / steps.length) * 100}%` }} /></div>
-          <div className="mt-4 hidden grid-cols-8 gap-2 lg:grid">{steps.map((item, index) => <button type="button" key={item} onClick={() => setStep(index)} className={`rounded-lg px-2 py-2 text-center text-[11px] transition ${index === step ? "bg-white/10 text-foreground" : index < step ? "text-cyan-300" : "text-muted-foreground hover:bg-white/[0.04]"}`}>{index < step ? "✓ " : ""}{item}</button>)}</div>
-        </div>
+          <div className="h-2 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-violet-400 transition-all duration-500" style={{ width: `${((step + 1) / steps.length) * 100}%` }} /></div>
+          <div className="mt-4 hidden grid-cols-8 gap-2 lg:grid">{steps.map((item, index) => <button type="button" key={item} onClick={() => setStep(index)} className={`rounded-lg px-2 py-2 text-center text-[11px] transition ${index === step ? "border border-primary/30 bg-primary/15 text-primary" : index < step ? "text-cyan-300" : "text-muted-foreground hover:bg-white/[0.04]"}`}>{index < step ? "✓ " : ""}{item}</button>)}</div>
+        </motion.div>
 
-        <div className="rounded-3xl border border-white/10 bg-background/65 p-5 shadow-2xl backdrop-blur-xl md:p-8">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3, ease: EASE_ORION }}
+          className="card-space-static p-5 md:p-8"
+        >
           <div className="mb-7 flex items-center gap-3">
             <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 text-cyan-200">{step === 4 ? <Palette className="h-5 w-5" /> : step === 7 ? <FileText className="h-5 w-5" /> : <Building2 className="h-5 w-5" />}</div>
-            <div><p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Etapa {step + 1}</p><h2 className="font-display text-xl font-semibold md:text-2xl">{steps[step]}</h2></div>
+            <div><p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Etapa {step + 1}</p><h2 className="text-xl font-semibold md:text-2xl">{steps[step]}</h2></div>
           </div>
-          {renderStep()}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -16 }}
+              transition={{ duration: 0.35, ease: EASE_ORION }}
+            >
+              {renderStep()}
+            </motion.div>
+          </AnimatePresence>
 
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-6">
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6">
             <button type="button" onClick={reset} className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-muted-foreground hover:bg-white/[0.05] hover:text-foreground"><RefreshCw className="h-4 w-4" /> Limpar tudo</button>
             <div className="flex gap-3">
-              <button type="button" disabled={step === 0} onClick={() => setStep((current) => Math.max(0, current - 1))} className="inline-flex items-center gap-2 rounded-full border border-white/10 px-5 py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-30 hover:bg-white/[0.06]"><ArrowLeft className="h-4 w-4" /> Voltar</button>
-              {step < steps.length - 1 && <button type="button" onClick={() => setStep((current) => Math.min(steps.length - 1, current + 1))} className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-accent px-6 py-2.5 text-sm font-medium text-white transition hover:scale-[1.02]">Continuar <ArrowRight className="h-4 w-4" /></button>}
+              <button type="button" disabled={step === 0} onClick={() => setStep((current) => Math.max(0, current - 1))} className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-5 py-2.5 text-sm font-semibold text-foreground backdrop-blur transition-all disabled:cursor-not-allowed disabled:opacity-30 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/60"><ArrowLeft className="h-4 w-4" /> Voltar</button>
+              {step < steps.length - 1 && <button type="button" onClick={() => setStep((current) => Math.min(steps.length - 1, current + 1))} className="btn-primary-glow btn-shine inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold">Continuar <ArrowRight className="h-4 w-4" /></button>}
             </div>
           </div>
-        </div>
+        </motion.div>
         <p className="mt-5 text-center text-xs text-muted-foreground">O preenchimento é salvo neste navegador durante a edição. Após o envio, os dados e as imagens são registrados com segurança no Orion Admin.</p>
       </section>
     </main>

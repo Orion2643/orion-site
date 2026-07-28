@@ -133,7 +133,8 @@ export default function ProjectTrackingAdmin({
   };
 
   return (
-    <section className="rounded-3xl border border-violet-400/20 bg-violet-400/[0.04] p-6">
+    <section className="relative overflow-hidden rounded-[2rem] border border-violet-300/25 bg-gradient-to-br from-violet-500/[0.07] via-slate-950/40 to-cyan-400/[0.035] p-6 shadow-[0_0_50px_rgba(139,92,246,0.07)]">
+      <div aria-hidden className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-violet-300/90 to-transparent" />
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
         <div>
           <p className="text-xs uppercase tracking-[0.18em] text-violet-300">Acompanhamento V3.4</p>
@@ -149,7 +150,7 @@ export default function ProjectTrackingAdmin({
       </div>
 
       <div className="mt-5 h-3 overflow-hidden rounded-full bg-white/10">
-        <div className="h-full rounded-full bg-violet-400 transition-all duration-500" style={{ width: `${progress}%` }} />
+        <div className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-blue-400 to-violet-400 shadow-[0_0_18px_rgba(139,92,246,0.55)] transition-all duration-700" style={{ width: `${progress}%` }} />
       </div>
 
       <div className="mt-6 grid gap-5 lg:grid-cols-2">
@@ -205,14 +206,14 @@ export default function ProjectTrackingAdmin({
             type="button"
             onClick={() => void saveTracking()}
             disabled={saving}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-violet-500 px-5 py-4 font-semibold text-white transition hover:bg-violet-400 disabled:opacity-60"
+            className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-5 py-4 font-semibold text-white shadow-[0_0_30px_rgba(59,130,246,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_0_42px_rgba(139,92,246,0.30)] disabled:opacity-60"
           >
             {saving ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
             {saving ? "Salvando..." : "Salvar atualização"}
           </button>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-black/15 p-4">
+        <div className="rounded-2xl border border-violet-300/15 bg-black/20 p-4 shadow-[0_0_25px_rgba(139,92,246,0.04)]">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2"><History className="h-5 w-5 text-violet-300" /><h4 className="font-semibold">Histórico</h4></div>
             <span className="text-xs text-muted-foreground">{timeline.length} registro(s)</span>

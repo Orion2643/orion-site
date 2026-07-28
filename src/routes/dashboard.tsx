@@ -4,10 +4,10 @@ import OrionDashboard from "@/components/orion-dashboard";
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
-      { title: "Área Orion | Iniciar Projeto" },
+      { title: "Portal Orion | Gestão de Projetos" },
       {
         name: "description",
-        content: "Área pública da Orion para iniciar um novo projeto e acessar o painel administrativo.",
+        content: "Portal interno da Orion para iniciar e acompanhar projetos digitais.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],
