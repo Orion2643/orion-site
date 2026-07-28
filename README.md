@@ -37,9 +37,7 @@ Transformamos necessidades em soluções digitais modernas.
 - 🌐 Sites Profissionais
 - 💻 Sistemas Web
 - 📊 Dashboards
-- 🤖 Inteligência Artificial
 - ⚙️ Automações
-- ☁️ Soluções em Nuvem
 
 ---
 
@@ -69,19 +67,7 @@ Projetos modernos desenvolvidos para empresas de diversos segmentos.
 
 ---
 
-# Alguns Trabalhos
 
-<p align="center">
-
-<img src="docs/site-orion.jpg" width="47%">
-
-<img src="docs/dashboard.jpg" width="47%">
-
-<br><br>
-
-<img src="docs/admin.jpg" width="47%">
-
-<img src="docs/landing.jpg" width="47%">
 
 </p>
 
