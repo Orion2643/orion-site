@@ -1,5 +1,5 @@
 {
-  "name": "orion-platform",
+  "name": "tanstack_start_ts",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -12,7 +12,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@hookform/resolvers": "5.2.2",
+    "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-aspect-ratio": "^1.1.8",
@@ -88,7 +88,5 @@
   },
   "optionalDependencies": {
     "@rolldown/binding-linux-x64-gnu": "1.1.5"
-  },
-  "version": "13.1.0",
-  "description": "Plataforma oficial da Orion Soluções em Tecnologia"
+  }
 }
