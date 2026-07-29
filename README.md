@@ -12,7 +12,7 @@ ORION SOLUÇÕES EM TECNOLOGIA
 
 ### Transformando ideias em soluções inteligentes.
 
-Criamos sites profissionais, sistemas web, automações e soluções personalizadas para empresas que desejam crescer através da tecnologia.
+<img src="docs/banner-orion.jpg" width="100%" alt="Orion Soluções em Tecnologia">
 
 </p>
 
