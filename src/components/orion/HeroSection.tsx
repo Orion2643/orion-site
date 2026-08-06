@@ -2,7 +2,7 @@ import { ArrowRight, Play } from "lucide-react";
 import { motion } from "framer-motion";
 import { Magnetic, EASE_ORION } from "./motion";
 
-const headline = ["O", "próximo", "nível", "da"];
+const headline = ["Sites", "profissionais,", "sistemas", "web", "e"];
 
 /**
  * Hero da Orion em duas áreas independentes:
@@ -115,7 +115,7 @@ export function HeroSection() {
                 transition={{ duration: 0.6, delay: 0.42, ease: EASE_ORION }}
                 className="inline-block"
               >
-                sua empresa{" "}
+                automações{" "}
               </motion.span>
               <motion.span
                 initial={{ opacity: 0, y: 18 }}
@@ -124,7 +124,7 @@ export function HeroSection() {
                 transition={{ duration: 0.6, delay: 0.5, ease: EASE_ORION }}
                 className="text-gradient inline-block"
               >
-                começa aqui.
+                para sua empresa.
               </motion.span>
             </h1>
 
@@ -135,7 +135,7 @@ export function HeroSection() {
               transition={{ duration: 0.7, delay: 0.55, ease: EASE_ORION }}
               className="mt-6 max-w-2xl text-[1.02rem] leading-7 text-muted-foreground/85 sm:text-lg sm:leading-8"
             >
-              Tecnologia, estratégia e criatividade para impulsionar seu negócio para o futuro.
+              A Orion desenvolve soluções digitais sob medida para organizar processos, fortalecer sua presença online e transformar tecnologia em resultados.
             </motion.p>
 
             <motion.div

@@ -12,21 +12,41 @@ import { ScrollProgressBar } from "@/components/orion/motion";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Orion — Soluções em Tecnologia" },
+      {
+        title:
+          "Orion Soluções em Tecnologia | Sites Profissionais, Sistemas Web, Automação e IA",
+      },
       {
         name: "description",
         content:
-          "Tecnologia, estratégia e criatividade para impulsionar seu negócio para o futuro. Sites, sistemas web, automações e consultoria pela Orion.",
+          "A Orion desenvolve sites profissionais, sistemas web personalizados, automações com inteligência artificial, integrações e soluções digitais para empresas em todo o Brasil.",
       },
-      { property: "og:title", content: "Orion — Soluções em Tecnologia" },
+      {
+        property: "og:title",
+        content: "Orion Soluções em Tecnologia | Sites, Sistemas e Automações",
+      },
       {
         property: "og:description",
         content:
-          "O próximo nível da sua empresa começa aqui. Tecnologia, estratégia e criatividade pela Orion.",
+          "Sites profissionais, sistemas personalizados e automações inteligentes para organizar processos, fortalecer sua presença digital e gerar resultados.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Orion Soluções em Tecnologia" },
+      { property: "og:url", content: "https://orion-sistemas.info" },
+      { property: "og:image", content: "https://orion-sistemas.info/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content: "Orion | Sites Profissionais, Sistemas Web e Automação",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Tecnologia sob medida para empresas que querem crescer, automatizar processos e conquistar mais clientes.",
+      },
+      { name: "twitter:image", content: "https://orion-sistemas.info/og-image.jpg" },
     ],
+    links: [{ rel: "canonical", href: "https://orion-sistemas.info" }],
   }),
   component: LandingPage,
 });

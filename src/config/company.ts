@@ -1,7 +1,7 @@
 export const company = {
   name: "Orion Soluções em Tecnologia",
   shortName: "Orion",
-  slogan: "Guiando empresas rumo ao futuro.",
+  slogan: "Tecnologia inteligente para empresas que querem crescer.",
   icon: "/brand/orion-icon.png",
   phoneDisplay: "+55 (15) 97604-3100",
   phone: "(15) 97604-3100",

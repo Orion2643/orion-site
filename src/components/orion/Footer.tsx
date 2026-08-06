@@ -28,8 +28,7 @@ export function Footer() {
           <StaggerItem y={16}>
             <Logo />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Tecnologia, estratégia e criatividade para impulsionar
-              negócios para o futuro.
+              Sites profissionais, sistemas personalizados e automações inteligentes para empresas que querem crescer com tecnologia.
             </p>
             <div className="mt-6 flex items-center gap-3">
               {[

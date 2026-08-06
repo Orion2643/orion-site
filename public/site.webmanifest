@@ -1,7 +1,7 @@
 {
-  "name": "ORION Soluções em Tecnologia",
-  "short_name": "ORION",
-  "description": "Sites, sistemas, automações e Inteligência Artificial para empresas.",
+  "name": "Orion Soluções em Tecnologia",
+  "short_name": "Orion",
+  "description": "Sites profissionais, sistemas web personalizados e automações inteligentes para empresas.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#050611",

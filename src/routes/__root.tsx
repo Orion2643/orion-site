@@ -79,34 +79,53 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "content-language", content: "pt-BR" },
       { name: "google", content: "notranslate" },
       { name: "theme-color", content: "#050816" },
-      { title: "Orion Soluções em Tecnologia — Guiando empresas rumo ao futuro" },
+      {
+        title:
+          "Orion Soluções em Tecnologia | Sites Profissionais, Sistemas Web, Automação e IA",
+      },
       {
         name: "description",
         content:
-          "Desenvolvemos sites, sistemas personalizados, automações com IA e integrações sob medida para empresas que desejam crescer com tecnologia de ponta.",
+          "A Orion desenvolve sites profissionais, sistemas web personalizados, automações com inteligência artificial, integrações e soluções digitais para empresas em todo o Brasil.",
       },
-      { name: "author", content: "Orion Soluções em Tecnologia" },
-      { property: "og:title", content: "Orion Soluções em Tecnologia" },
+      {
+        name: "keywords",
+        content:
+          "Orion Soluções em Tecnologia, criação de sites, sites profissionais, desenvolvimento web, sistemas web personalizados, automação empresarial, inteligência artificial, integração WhatsApp, SEO, Google Analytics, Cloudflare, Supabase, React, TypeScript",
+      },
+      { name: "author", content: company.name },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      {
+        property: "og:title",
+        content: "Orion Soluções em Tecnologia | Sites, Sistemas e Automações",
+      },
       {
         property: "og:description",
         content:
-          "Guiando empresas rumo ao futuro com sites, sistemas, IA e automações inteligentes.",
+          "Sites profissionais, sistemas personalizados e automações inteligentes para organizar processos, fortalecer sua presença digital e gerar resultados.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "Orion" },
+      { property: "og:site_name", content: company.name },
       { property: "og:locale", content: "pt_BR" },
       { property: "og:url", content: company.website },
       { property: "og:image", content: `${company.website}/og-image.jpg` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Orion Soluções em Tecnologia" },
+      {
+        property: "og:image:alt",
+        content: "Orion Soluções em Tecnologia — sites, sistemas e automações",
+      },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Orion Soluções em Tecnologia" },
-      { name: "twitter:image", content: `${company.website}/og-image.jpg` },
+      {
+        name: "twitter:title",
+        content: "Orion | Sites Profissionais, Sistemas Web e Automação",
+      },
       {
         name: "twitter:description",
-        content: "Sites, sistemas, IA e automações que impulsionam empresas.",
+        content:
+          "Tecnologia sob medida para empresas que querem crescer, automatizar processos e conquistar mais clientes.",
       },
+      { name: "twitter:image", content: `${company.website}/og-image.jpg` },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -127,17 +146,46 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "Organization",
-          name: company.name,
-          slogan: company.slogan,
-          description:
-            "Desenvolvimento de sites, sistemas personalizados, automações com IA e integrações sob medida.",
-          url: company.website,
-          logo: `${company.website}${company.icon}`,
-          email: company.email,
-          telephone: company.phoneDisplay,
-          areaServed: "Brasil",
-          sameAs: [company.instagram, company.linkedin, company.github],
+          "@graph": [
+            {
+              "@type": "WebSite",
+              "@id": `${company.website}/#website`,
+              url: company.website,
+              name: company.name,
+              alternateName: [company.shortName, "Orion Tecnologia"],
+              inLanguage: "pt-BR",
+              publisher: { "@id": `${company.website}/#organization` },
+            },
+            {
+              "@type": ["Organization", "ProfessionalService"],
+              "@id": `${company.website}/#organization`,
+              name: company.name,
+              alternateName: company.shortName,
+              slogan: company.slogan,
+              description:
+                "Empresa de tecnologia especializada em sites profissionais, sistemas web personalizados, automações, inteligência artificial, integrações e soluções digitais.",
+              url: company.website,
+              logo: {
+                "@type": "ImageObject",
+                url: `${company.website}${company.icon}`,
+              },
+              image: `${company.website}/og-image.jpg`,
+              email: company.email,
+              telephone: `+${company.whatsapp}`,
+              priceRange: "$$",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Sorocaba",
+                addressRegion: "SP",
+                addressCountry: "BR",
+              },
+              areaServed: {
+                "@type": "Country",
+                name: "Brasil",
+              },
+              sameAs: [company.instagram, company.linkedin, company.github],
+            },
+          ],
         }),
       },
     ],
