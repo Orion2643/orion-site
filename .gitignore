@@ -33,3 +33,8 @@ dist-ssr
 
 # Lovable project metadata
 .lovable/
+
+# Use npm only
+bun.lock
+bun.lockb
+bunfig.toml
