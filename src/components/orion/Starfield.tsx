@@ -65,7 +65,9 @@ export function Starfield({ count = 80, className = "", layered = true }: Starfi
       className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}
     >
       {stars.map((s) => {
-        const parallax = layered ? scrollY * (s.layer === 0 ? 0.04 : s.layer === 1 ? 0.09 : 0.16) : 0;
+        const parallax = layered
+          ? scrollY * (s.layer === 0 ? 0.04 : s.layer === 1 ? 0.09 : 0.16)
+          : 0;
         return (
           <span
             key={s.id}

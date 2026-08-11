@@ -31,7 +31,11 @@ export function HeroSection() {
             poster="/video/orion-top-logo-poster.webp"
             aria-label="Animação institucional da Orion Soluções em Tecnologia"
           >
-            <source media="(max-width: 767px)" src="/video/orion-top-logo-mobile.mp4" type="video/mp4" />
+            <source
+              media="(max-width: 767px)"
+              src="/video/orion-top-logo-mobile.mp4"
+              type="video/mp4"
+            />
             <source src="/video/orion-top-logo.mp4" type="video/mp4" />
             Seu navegador não oferece suporte à reprodução deste vídeo.
           </video>
@@ -135,7 +139,8 @@ export function HeroSection() {
               transition={{ duration: 0.7, delay: 0.55, ease: EASE_ORION }}
               className="mt-6 max-w-2xl text-[1.02rem] leading-7 text-muted-foreground/85 sm:text-lg sm:leading-8"
             >
-              A Orion desenvolve soluções digitais sob medida para organizar processos, fortalecer sua presença online e transformar tecnologia em resultados.
+              A Orion desenvolve soluções digitais sob medida para organizar processos, fortalecer
+              sua presença online e transformar tecnologia em resultados.
             </motion.p>
 
             <motion.div

@@ -67,8 +67,6 @@ Projetos modernos desenvolvidos para empresas de diversos segmentos.
 
 ---
 
-
-
 </p>
 
 ---

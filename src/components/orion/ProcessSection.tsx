@@ -31,7 +31,12 @@ const PROCESS_STEPS = [
 
 export function ProcessSection() {
   return (
-    <section id="como-funciona" lang="pt-BR" translate="no" className="notranslate relative overflow-hidden py-24 sm:py-28">
+    <section
+      id="como-funciona"
+      lang="pt-BR"
+      translate="no"
+      className="notranslate relative overflow-hidden py-24 sm:py-28"
+    >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,oklch(0.3_0.12_280/0.2),transparent_60%)]" />
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
@@ -41,7 +46,8 @@ export function ProcessSection() {
             Um processo claro, simples e <span className="text-gradient-violet">eficiente.</span>
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
-            Entendemos, planejamos, desenvolvemos e entregamos com excelência — do primeiro contato ao suporte.
+            Entendemos, planejamos, desenvolvemos e entregamos com excelência — do primeiro contato
+            ao suporte.
           </p>
         </Reveal>
 

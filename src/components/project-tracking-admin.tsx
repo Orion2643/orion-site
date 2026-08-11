@@ -1,12 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  CheckCircle2,
-  Clock3,
-  History,
-  LoaderCircle,
-  Save,
-  Send,
-} from "lucide-react";
+import { CheckCircle2, Clock3, History, LoaderCircle, Save, Send } from "lucide-react";
 import { supabase } from "../lib/supabase";
 
 export const PROJECT_STATUSES = [
@@ -134,7 +127,10 @@ export default function ProjectTrackingAdmin({
 
   return (
     <section className="relative overflow-hidden rounded-[2rem] border border-violet-300/25 bg-gradient-to-br from-violet-500/[0.07] via-slate-950/40 to-cyan-400/[0.035] p-6 shadow-[0_0_50px_rgba(139,92,246,0.07)]">
-      <div aria-hidden className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-violet-300/90 to-transparent" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-violet-300/90 to-transparent"
+      />
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
         <div>
           <p className="text-xs uppercase tracking-[0.18em] text-violet-300">Acompanhamento V3.4</p>
@@ -150,16 +146,25 @@ export default function ProjectTrackingAdmin({
       </div>
 
       <div className="mt-5 h-3 overflow-hidden rounded-full bg-white/10">
-        <div className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-blue-400 to-violet-400 shadow-[0_0_18px_rgba(139,92,246,0.55)] transition-all duration-700" style={{ width: `${progress}%` }} />
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-blue-400 to-violet-400 shadow-[0_0_18px_rgba(139,92,246,0.55)] transition-all duration-700"
+          style={{ width: `${progress}%` }}
+        />
       </div>
 
       <div className="mt-6 grid gap-5 lg:grid-cols-2">
         <div className="space-y-4">
           <label className="block space-y-2">
             <span className="text-sm font-medium">Status do projeto</span>
-            <select className={fieldClass} value={status} onChange={(event) => setStatus(event.target.value)}>
+            <select
+              className={fieldClass}
+              value={status}
+              onChange={(event) => setStatus(event.target.value)}
+            >
               {PROJECT_STATUSES.map((item) => (
-                <option key={item.value} value={item.value}>{item.label} · {item.progress}%</option>
+                <option key={item.value} value={item.value}>
+                  {item.label} · {item.progress}%
+                </option>
               ))}
             </select>
           </label>
@@ -199,8 +204,17 @@ export default function ProjectTrackingAdmin({
             </span>
           </label>
 
-          {error && <div role="alert" className="rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200">{error}</div>}
-          <div aria-live="polite" className="min-h-5 text-sm text-emerald-300">{feedback}</div>
+          {error && (
+            <div
+              role="alert"
+              className="rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200"
+            >
+              {error}
+            </div>
+          )}
+          <div aria-live="polite" className="min-h-5 text-sm text-emerald-300">
+            {feedback}
+          </div>
 
           <button
             type="button"
@@ -208,38 +222,64 @@ export default function ProjectTrackingAdmin({
             disabled={saving}
             className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-5 py-4 font-semibold text-white shadow-[0_0_30px_rgba(59,130,246,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_0_42px_rgba(139,92,246,0.30)] disabled:opacity-60"
           >
-            {saving ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
+            {saving ? (
+              <LoaderCircle className="h-5 w-5 animate-spin" />
+            ) : (
+              <Save className="h-5 w-5" />
+            )}
             {saving ? "Salvando..." : "Salvar atualização"}
           </button>
         </div>
 
         <div className="rounded-2xl border border-violet-300/15 bg-black/20 p-4 shadow-[0_0_25px_rgba(139,92,246,0.04)]">
           <div className="mb-4 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2"><History className="h-5 w-5 text-violet-300" /><h4 className="font-semibold">Histórico</h4></div>
+            <div className="flex items-center gap-2">
+              <History className="h-5 w-5 text-violet-300" />
+              <h4 className="font-semibold">Histórico</h4>
+            </div>
             <span className="text-xs text-muted-foreground">{timeline.length} registro(s)</span>
           </div>
 
           {loading ? (
-            <div className="flex items-center gap-2 py-8 text-sm text-muted-foreground"><LoaderCircle className="h-5 w-5 animate-spin" /> Carregando timeline...</div>
+            <div className="flex items-center gap-2 py-8 text-sm text-muted-foreground">
+              <LoaderCircle className="h-5 w-5 animate-spin" /> Carregando timeline...
+            </div>
           ) : timeline.length ? (
             <div className="max-h-[520px] space-y-3 overflow-y-auto pr-1">
               {timeline.map((item) => (
-                <article key={item.id} className="rounded-xl border border-white/10 bg-white/[0.025] p-4">
+                <article
+                  key={item.id}
+                  className="rounded-xl border border-white/10 bg-white/[0.025] p-4"
+                >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex gap-3">
                       <div className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-violet-400/10 text-violet-200">
-                        {item.progress === 100 ? <CheckCircle2 className="h-4 w-4" /> : <Clock3 className="h-4 w-4" />}
+                        {item.progress === 100 ? (
+                          <CheckCircle2 className="h-4 w-4" />
+                        ) : (
+                          <Clock3 className="h-4 w-4" />
+                        )}
                       </div>
                       <div>
                         <p className="text-sm font-semibold">{item.title}</p>
-                        {item.description && <p className="mt-1 whitespace-pre-wrap text-xs leading-relaxed text-muted-foreground">{item.description}</p>}
+                        {item.description && (
+                          <p className="mt-1 whitespace-pre-wrap text-xs leading-relaxed text-muted-foreground">
+                            {item.description}
+                          </p>
+                        )}
                       </div>
                     </div>
-                    {typeof item.progress === "number" && <span className="rounded-full bg-white/[0.05] px-2 py-1 text-[10px]">{item.progress}%</span>}
+                    {typeof item.progress === "number" && (
+                      <span className="rounded-full bg-white/[0.05] px-2 py-1 text-[10px]">
+                        {item.progress}%
+                      </span>
+                    )}
                   </div>
                   <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-[11px] text-muted-foreground">
                     <span>{formatDate(item.created_at)}</span>
-                    <span className={item.visible_to_client ? "text-emerald-300" : "text-amber-300"}>
+                    <span
+                      className={item.visible_to_client ? "text-emerald-300" : "text-amber-300"}
+                    >
                       {item.visible_to_client ? "Visível ao cliente" : "Somente Orion"}
                     </span>
                   </div>
@@ -247,7 +287,9 @@ export default function ProjectTrackingAdmin({
               ))}
             </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-white/10 px-4 py-8 text-center text-sm text-muted-foreground">Nenhum evento registrado.</div>
+            <div className="rounded-xl border border-dashed border-white/10 px-4 py-8 text-center text-sm text-muted-foreground">
+              Nenhum evento registrado.
+            </div>
           )}
         </div>
       </div>

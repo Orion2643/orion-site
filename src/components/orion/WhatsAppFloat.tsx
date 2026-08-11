@@ -64,8 +64,7 @@ export function WhatsAppFloat() {
         aria-hidden
         className="absolute inset-0 rounded-full opacity-70 blur-xl transition-opacity duration-300 group-hover:opacity-100"
         style={{
-          background:
-            "radial-gradient(circle, oklch(0.55 0.2 240 / 0.55), transparent 70%)",
+          background: "radial-gradient(circle, oklch(0.55 0.2 240 / 0.55), transparent 70%)",
         }}
       />
       <span

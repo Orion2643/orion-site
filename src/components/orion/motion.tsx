@@ -277,8 +277,7 @@ export function EngineFlame({
       <motion.div
         className="absolute left-1/2 top-1/2 h-[36%] w-[36%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[2px]"
         style={{
-          background:
-            "radial-gradient(circle, white, oklch(0.86 0.14 220) 42%, transparent 75%)",
+          background: "radial-gradient(circle, white, oklch(0.86 0.14 220) 42%, transparent 75%)",
         }}
         animate={{
           opacity: [0.7, 1, 0.75, 1, 0.8],

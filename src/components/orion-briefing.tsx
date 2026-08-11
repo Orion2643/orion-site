@@ -161,7 +161,17 @@ const featureOptions = [
   "Redes sociais",
 ];
 
-function Field({ label, required, children, hint }: { label: string; required?: boolean; children: ReactNode; hint?: string }) {
+function Field({
+  label,
+  required,
+  children,
+  hint,
+}: {
+  label: string;
+  required?: boolean;
+  children: ReactNode;
+  hint?: string;
+}) {
   return (
     <label className="block space-y-2">
       <span className="text-sm font-medium text-foreground">
@@ -176,12 +186,22 @@ function Field({ label, required, children, hint }: { label: string; required?: 
 const inputClass =
   "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/60 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/15";
 
-function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
+function ColorField({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+}) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
       <div className="mb-3 flex items-center justify-between gap-3">
         <span className="text-sm font-medium">{label}</span>
-        <span className="rounded-full border border-white/10 bg-black/20 px-3 py-1 font-mono text-xs uppercase">{value}</span>
+        <span className="rounded-full border border-white/10 bg-black/20 px-3 py-1 font-mono text-xs uppercase">
+          {value}
+        </span>
       </div>
       <div className="flex items-center gap-3">
         <input
@@ -206,12 +226,12 @@ function ColorField({ label, value, onChange }: { label: string; value: string; 
   );
 }
 
-
 function formatBrazilianPhone(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
   if (digits.length <= 2) return digits;
   if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-  if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  if (digits.length <= 10)
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
 }
 
@@ -253,25 +273,74 @@ function UploadBox({
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
       <div className="mb-3 flex items-start gap-3">
-        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cyan-400/10 text-cyan-200"><ImagePlus className="h-5 w-5" /></div>
-        <div><p className="font-medium">{title}</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">{description}</p></div>
+        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cyan-400/10 text-cyan-200">
+          <ImagePlus className="h-5 w-5" />
+        </div>
+        <div>
+          <p className="font-medium">{title}</p>
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{description}</p>
+        </div>
       </div>
       <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-cyan-400/30 bg-cyan-400/[0.04] px-4 py-6 text-center transition hover:bg-cyan-400/[0.08]">
         <Upload className="mb-2 h-6 w-6 text-cyan-300" />
-        <span className="text-sm font-medium">Clique para selecionar {multiple ? "arquivos" : "um arquivo"}</span>
-        <span className="mt-1 text-xs text-muted-foreground">PNG, JPG ou WEBP · até 10 MB por imagem</span>
-        <input className="sr-only" type="file" accept={accept} multiple={multiple} onChange={(event) => { onAdd(category, event.target.files, multiple); event.currentTarget.value = ""; }} />
+        <span className="text-sm font-medium">
+          Clique para selecionar {multiple ? "arquivos" : "um arquivo"}
+        </span>
+        <span className="mt-1 text-xs text-muted-foreground">
+          PNG, JPG ou WEBP · até 10 MB por imagem
+        </span>
+        <input
+          className="sr-only"
+          type="file"
+          accept={accept}
+          multiple={multiple}
+          onChange={(event) => {
+            onAdd(category, event.target.files, multiple);
+            event.currentTarget.value = "";
+          }}
+        />
       </label>
       {categoryItems.length > 0 && (
-        <div className="mt-4 space-y-3"><div className="flex items-center justify-between rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] px-3 py-2 text-xs"><span className="font-medium text-emerald-200">✓ {categoryItems.length} arquivo(s) selecionado(s)</span><span className="text-muted-foreground">Você pode remover antes de enviar</span></div><div className="grid gap-3 sm:grid-cols-2">
-          {categoryItems.map((item) => (
-            <div key={item.id} className="flex items-center gap-3 rounded-xl border border-white/10 bg-black/20 p-2">
-              {item.preview ? <img src={item.preview} alt="Prévia" className="h-14 w-14 rounded-lg object-cover" /> : <FileText className="h-8 w-8 text-muted-foreground" />}
-              <div className="min-w-0 flex-1"><p className="truncate text-xs font-medium">{item.file.name}</p><p className="text-[11px] text-muted-foreground">{(item.file.size / 1024 / 1024).toFixed(2)} MB</p></div>
-              <button type="button" onClick={() => onRemove(item.id)} className="rounded-full p-2 text-muted-foreground hover:bg-white/10 hover:text-foreground" aria-label="Remover arquivo"><X className="h-4 w-4" /></button>
-            </div>
-          ))}
-        </div></div>
+        <div className="mt-4 space-y-3">
+          <div className="flex items-center justify-between rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] px-3 py-2 text-xs">
+            <span className="font-medium text-emerald-200">
+              ✓ {categoryItems.length} arquivo(s) selecionado(s)
+            </span>
+            <span className="text-muted-foreground">Você pode remover antes de enviar</span>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {categoryItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center gap-3 rounded-xl border border-white/10 bg-black/20 p-2"
+              >
+                {item.preview ? (
+                  <img
+                    src={item.preview}
+                    alt="Prévia"
+                    className="h-14 w-14 rounded-lg object-cover"
+                  />
+                ) : (
+                  <FileText className="h-8 w-8 text-muted-foreground" />
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-xs font-medium">{item.file.name}</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    {(item.file.size / 1024 / 1024).toFixed(2)} MB
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onRemove(item.id)}
+                  className="rounded-full p-2 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                  aria-label="Remover arquivo"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
@@ -314,7 +383,10 @@ export default function OrionBriefing() {
 
   const toggleList = (key: "mainObjective" | "features", value: string) => {
     const current = data[key];
-    update(key, current.includes(value) ? current.filter((item) => item !== value) : [...current, value]);
+    update(
+      key,
+      current.includes(value) ? current.filter((item) => item !== value) : [...current, value],
+    );
   };
 
   const addUploads = (category: string, files: FileList | null, multiple: boolean) => {
@@ -322,13 +394,21 @@ export default function OrionBriefing() {
     setUploadError("");
 
     const selected = Array.from(files);
-    const existingKeys = new Set(uploads.filter((item) => item.category === category).map((item) => `${item.file.name}-${item.file.size}-${item.file.lastModified}`));
-    const uniqueSelected = selected.filter((file) => !existingKeys.has(`${file.name}-${file.size}-${file.lastModified}`));
+    const existingKeys = new Set(
+      uploads
+        .filter((item) => item.category === category)
+        .map((item) => `${item.file.name}-${item.file.size}-${item.file.lastModified}`),
+    );
+    const uniqueSelected = selected.filter(
+      (file) => !existingKeys.has(`${file.name}-${file.size}-${file.lastModified}`),
+    );
     if (uniqueSelected.length === 0) {
       setUploadError("Esses arquivos já foram selecionados.");
       return;
     }
-    const invalidType = uniqueSelected.find((file) => !["image/png", "image/jpeg", "image/webp"].includes(file.type));
+    const invalidType = uniqueSelected.find(
+      (file) => !["image/png", "image/jpeg", "image/webp"].includes(file.type),
+    );
     if (invalidType) {
       setUploadError(`O arquivo ${invalidType.name} não é uma imagem PNG, JPG ou WEBP.`);
       return;
@@ -340,7 +420,13 @@ export default function OrionBriefing() {
       return;
     }
 
-    const limited = category === "galeria" ? uniqueSelected.slice(0, Math.max(0, 20 - uploads.filter((item) => item.category === category).length)) : uniqueSelected.slice(0, 1);
+    const limited =
+      category === "galeria"
+        ? uniqueSelected.slice(
+            0,
+            Math.max(0, 20 - uploads.filter((item) => item.category === category).length),
+          )
+        : uniqueSelected.slice(0, 1);
     if (category === "galeria" && uniqueSelected.length > limited.length) {
       setUploadError("Foram adicionadas apenas as primeiras 20 imagens da galeria.");
     }
@@ -354,7 +440,9 @@ export default function OrionBriefing() {
 
     setUploads((current) => {
       if (!multiple) {
-        current.filter((item) => item.category === category).forEach((item) => item.preview && URL.revokeObjectURL(item.preview));
+        current
+          .filter((item) => item.category === category)
+          .forEach((item) => item.preview && URL.revokeObjectURL(item.preview));
         return [...current.filter((item) => item.category !== category), ...next];
       }
       return [...current, ...next];
@@ -535,7 +623,8 @@ ${briefing}`,
     if (!data.city.trim()) missing.push("cidade");
     if (!data.contactName.trim()) missing.push("nome do responsável");
     if (!data.whatsapp.trim()) missing.push("WhatsApp");
-    else if (![10, 11].includes(data.whatsapp.replace(/\D/g, "").length)) missing.push("WhatsApp com DDD válido");
+    else if (![10, 11].includes(data.whatsapp.replace(/\D/g, "").length))
+      missing.push("WhatsApp com DDD válido");
     return missing;
   };
 
@@ -610,7 +699,10 @@ ${briefing}`,
         error instanceof Error
           ? error.message
           : typeof error === "object" && error && "message" in error
-            ? String((error as { message?: unknown }).message || "Não foi possível registrar a solicitação.")
+            ? String(
+                (error as { message?: unknown }).message ||
+                  "Não foi possível registrar a solicitação.",
+              )
             : "Não foi possível registrar a solicitação.";
       setSubmitError(`Não conseguimos salvar seu projeto. ${message}`);
     } finally {
@@ -622,46 +714,196 @@ ${briefing}`,
     if (step === 0) {
       return (
         <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Nome empresarial / razão social"><input className={inputClass} value={data.companyName} onChange={(e) => update("companyName", e.target.value)} placeholder="Ex.: Empresa Silva Ltda." /></Field>
-          <Field label="Nome fantasia" required><input className={inputClass} value={data.tradeName} onChange={(e) => update("tradeName", e.target.value)} placeholder="Ex.: Silva Auto Center" /></Field>
-          <Field label="Segmento de atuação" required><input className={inputClass} value={data.segment} onChange={(e) => update("segment", e.target.value)} placeholder="Ex.: Oficina mecânica" /></Field>
-          <Field label="Tempo de mercado"><input className={inputClass} value={data.yearsInBusiness} onChange={(e) => update("yearsInBusiness", e.target.value)} placeholder="Ex.: 8 anos" /></Field>
-          <Field label="Cidade" required><input className={inputClass} value={data.city} onChange={(e) => update("city", e.target.value)} placeholder="Ex.: Sorocaba" /></Field>
-          <Field label="Estado"><input className={inputClass} value={data.state} onChange={(e) => update("state", e.target.value)} placeholder="SP" /></Field>
+          <Field label="Nome empresarial / razão social">
+            <input
+              className={inputClass}
+              value={data.companyName}
+              onChange={(e) => update("companyName", e.target.value)}
+              placeholder="Ex.: Empresa Silva Ltda."
+            />
+          </Field>
+          <Field label="Nome fantasia" required>
+            <input
+              className={inputClass}
+              value={data.tradeName}
+              onChange={(e) => update("tradeName", e.target.value)}
+              placeholder="Ex.: Silva Auto Center"
+            />
+          </Field>
+          <Field label="Segmento de atuação" required>
+            <input
+              className={inputClass}
+              value={data.segment}
+              onChange={(e) => update("segment", e.target.value)}
+              placeholder="Ex.: Oficina mecânica"
+            />
+          </Field>
+          <Field label="Tempo de mercado">
+            <input
+              className={inputClass}
+              value={data.yearsInBusiness}
+              onChange={(e) => update("yearsInBusiness", e.target.value)}
+              placeholder="Ex.: 8 anos"
+            />
+          </Field>
+          <Field label="Cidade" required>
+            <input
+              className={inputClass}
+              value={data.city}
+              onChange={(e) => update("city", e.target.value)}
+              placeholder="Ex.: Sorocaba"
+            />
+          </Field>
+          <Field label="Estado">
+            <input
+              className={inputClass}
+              value={data.state}
+              onChange={(e) => update("state", e.target.value)}
+              placeholder="SP"
+            />
+          </Field>
         </div>
       );
     }
     if (step === 1) {
       return (
         <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Nome do responsável" required><input className={inputClass} value={data.contactName} onChange={(e) => update("contactName", e.target.value)} /></Field>
-          <Field label="WhatsApp" required><input className={inputClass} value={data.whatsapp} onChange={(e) => update("whatsapp", formatBrazilianPhone(e.target.value))} inputMode="tel" maxLength={15} placeholder="(15) 99999-9999" /></Field>
-          <Field label="Telefone alternativo"><input className={inputClass} value={data.phone} onChange={(e) => update("phone", formatBrazilianPhone(e.target.value))} inputMode="tel" maxLength={15} placeholder="(15) 3333-4444" /></Field>
-          <Field label="E-mail"><input className={inputClass} type="email" value={data.email} onChange={(e) => update("email", e.target.value)} /></Field>
-          <Field label="Instagram"><input className={inputClass} value={data.instagram} onChange={(e) => update("instagram", e.target.value)} placeholder="@empresa" /></Field>
-          <Field label="Facebook"><input className={inputClass} value={data.facebook} onChange={(e) => update("facebook", e.target.value)} /></Field>
-          <Field label="LinkedIn"><input className={inputClass} value={data.linkedin} onChange={(e) => update("linkedin", e.target.value)} /></Field>
-          <Field label="TikTok"><input className={inputClass} value={data.tiktok} onChange={(e) => update("tiktok", e.target.value)} /></Field>
-          <Field label="YouTube"><input className={inputClass} value={data.youtube} onChange={(e) => update("youtube", e.target.value)} /></Field>
-          <Field label="Site atual"><input className={inputClass} value={data.currentSite} onChange={(e) => update("currentSite", e.target.value)} placeholder="https://..." /></Field>
+          <Field label="Nome do responsável" required>
+            <input
+              className={inputClass}
+              value={data.contactName}
+              onChange={(e) => update("contactName", e.target.value)}
+            />
+          </Field>
+          <Field label="WhatsApp" required>
+            <input
+              className={inputClass}
+              value={data.whatsapp}
+              onChange={(e) => update("whatsapp", formatBrazilianPhone(e.target.value))}
+              inputMode="tel"
+              maxLength={15}
+              placeholder="(15) 99999-9999"
+            />
+          </Field>
+          <Field label="Telefone alternativo">
+            <input
+              className={inputClass}
+              value={data.phone}
+              onChange={(e) => update("phone", formatBrazilianPhone(e.target.value))}
+              inputMode="tel"
+              maxLength={15}
+              placeholder="(15) 3333-4444"
+            />
+          </Field>
+          <Field label="E-mail">
+            <input
+              className={inputClass}
+              type="email"
+              value={data.email}
+              onChange={(e) => update("email", e.target.value)}
+            />
+          </Field>
+          <Field label="Instagram">
+            <input
+              className={inputClass}
+              value={data.instagram}
+              onChange={(e) => update("instagram", e.target.value)}
+              placeholder="@empresa"
+            />
+          </Field>
+          <Field label="Facebook">
+            <input
+              className={inputClass}
+              value={data.facebook}
+              onChange={(e) => update("facebook", e.target.value)}
+            />
+          </Field>
+          <Field label="LinkedIn">
+            <input
+              className={inputClass}
+              value={data.linkedin}
+              onChange={(e) => update("linkedin", e.target.value)}
+            />
+          </Field>
+          <Field label="TikTok">
+            <input
+              className={inputClass}
+              value={data.tiktok}
+              onChange={(e) => update("tiktok", e.target.value)}
+            />
+          </Field>
+          <Field label="YouTube">
+            <input
+              className={inputClass}
+              value={data.youtube}
+              onChange={(e) => update("youtube", e.target.value)}
+            />
+          </Field>
+          <Field label="Site atual">
+            <input
+              className={inputClass}
+              value={data.currentSite}
+              onChange={(e) => update("currentSite", e.target.value)}
+              placeholder="https://..."
+            />
+          </Field>
         </div>
       );
     }
     if (step === 2) {
       return (
         <div className="space-y-5">
-          <Field label="Conte a história da empresa" hint="Como começou, experiência, trajetória e contexto atual."><textarea className={`${inputClass} min-h-32 resize-y`} value={data.story} onChange={(e) => update("story", e.target.value)} /></Field>
+          <Field
+            label="Conte a história da empresa"
+            hint="Como começou, experiência, trajetória e contexto atual."
+          >
+            <textarea
+              className={`${inputClass} min-h-32 resize-y`}
+              value={data.story}
+              onChange={(e) => update("story", e.target.value)}
+            />
+          </Field>
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Principais diferenciais"><textarea className={`${inputClass} min-h-28 resize-y`} value={data.differentials} onChange={(e) => update("differentials", e.target.value)} placeholder="Qualidade, rapidez, experiência..." /></Field>
-            <Field label="Valores que deseja transmitir"><textarea className={`${inputClass} min-h-28 resize-y`} value={data.values} onChange={(e) => update("values", e.target.value)} placeholder="Confiança, inovação, segurança..." /></Field>
+            <Field label="Principais diferenciais">
+              <textarea
+                className={`${inputClass} min-h-28 resize-y`}
+                value={data.differentials}
+                onChange={(e) => update("differentials", e.target.value)}
+                placeholder="Qualidade, rapidez, experiência..."
+              />
+            </Field>
+            <Field label="Valores que deseja transmitir">
+              <textarea
+                className={`${inputClass} min-h-28 resize-y`}
+                value={data.values}
+                onChange={(e) => update("values", e.target.value)}
+                placeholder="Confiança, inovação, segurança..."
+              />
+            </Field>
           </div>
-          <Field label="Público-alvo"><input className={inputClass} value={data.targetAudience} onChange={(e) => update("targetAudience", e.target.value)} placeholder="Quem são os clientes ideais?" /></Field>
+          <Field label="Público-alvo">
+            <input
+              className={inputClass}
+              value={data.targetAudience}
+              onChange={(e) => update("targetAudience", e.target.value)}
+              placeholder="Quem são os clientes ideais?"
+            />
+          </Field>
           <div>
             <p className="mb-3 text-sm font-medium">Objetivos principais do site</p>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {objectives.map((item) => (
-                <label key={item} className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 text-sm transition ${data.mainObjective.includes(item) ? "border-cyan-400/50 bg-cyan-400/10" : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"}`}>
-                  <input type="checkbox" checked={data.mainObjective.includes(item)} onChange={() => toggleList("mainObjective", item)} className="accent-cyan-400" /> {item}
+                <label
+                  key={item}
+                  className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 text-sm transition ${data.mainObjective.includes(item) ? "border-cyan-400/50 bg-cyan-400/10" : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"}`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={data.mainObjective.includes(item)}
+                    onChange={() => toggleList("mainObjective", item)}
+                    className="accent-cyan-400"
+                  />{" "}
+                  {item}
                 </label>
               ))}
             </div>
@@ -672,19 +914,104 @@ ${briefing}`,
     if (step === 3) {
       return (
         <div className="space-y-5">
-          <Field label="Serviços ou produtos" required hint="Informe um por linha. Acrescente uma breve explicação quando possível."><textarea className={`${inputClass} min-h-52 resize-y`} value={data.services} onChange={(e) => update("services", e.target.value)} placeholder={"Exemplos por segmento:\nOficina: troca de óleo, freios, suspensão e diagnóstico\nSerralheria: portões, grades, coberturas e estruturas metálicas\nSalão de beleza: corte, coloração, manicure e tratamentos\nAutopeças: peças automotivas, acessórios e lubrificantes\n\nInforme um serviço ou produto por linha."} /></Field>
+          <Field
+            label="Serviços ou produtos"
+            required
+            hint="Informe um por linha. Acrescente uma breve explicação quando possível."
+          >
+            <textarea
+              className={`${inputClass} min-h-52 resize-y`}
+              value={data.services}
+              onChange={(e) => update("services", e.target.value)}
+              placeholder={
+                "Exemplos por segmento:\nOficina: troca de óleo, freios, suspensão e diagnóstico\nSerralheria: portões, grades, coberturas e estruturas metálicas\nSalão de beleza: corte, coloração, manicure e tratamentos\nAutopeças: peças automotivas, acessórios e lubrificantes\n\nInforme um serviço ou produto por linha."
+              }
+            />
+          </Field>
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Área de atendimento"><input list="service-area-options" className={inputClass} value={data.serviceArea} onChange={(e) => update("serviceArea", e.target.value)} placeholder="Selecione ou escreva uma opção" /></Field>
-            <Field label="Horário de funcionamento"><input list="business-hours-options" className={inputClass} value={data.businessHours} onChange={(e) => update("businessHours", e.target.value)} placeholder="Selecione ou escreva uma opção" /></Field>
-            <Field label="Formas de pagamento"><input list="payment-options" className={inputClass} value={data.paymentMethods} onChange={(e) => update("paymentMethods", e.target.value)} placeholder="Selecione ou escreva uma opção" /></Field>
-            <Field label="Garantia oferecida"><input list="warranty-options" className={inputClass} value={data.warranty} onChange={(e) => update("warranty", e.target.value)} placeholder="Selecione ou escreva uma opção" /></Field>
-            <Field label="Modelo de atendimento"><input list="attendance-options" className={inputClass} value={data.attendanceModel} onChange={(e) => update("attendanceModel", e.target.value)} placeholder="Selecione ou escreva uma opção" /></Field>
+            <Field label="Área de atendimento">
+              <input
+                list="service-area-options"
+                className={inputClass}
+                value={data.serviceArea}
+                onChange={(e) => update("serviceArea", e.target.value)}
+                placeholder="Selecione ou escreva uma opção"
+              />
+            </Field>
+            <Field label="Horário de funcionamento">
+              <input
+                list="business-hours-options"
+                className={inputClass}
+                value={data.businessHours}
+                onChange={(e) => update("businessHours", e.target.value)}
+                placeholder="Selecione ou escreva uma opção"
+              />
+            </Field>
+            <Field label="Formas de pagamento">
+              <input
+                list="payment-options"
+                className={inputClass}
+                value={data.paymentMethods}
+                onChange={(e) => update("paymentMethods", e.target.value)}
+                placeholder="Selecione ou escreva uma opção"
+              />
+            </Field>
+            <Field label="Garantia oferecida">
+              <input
+                list="warranty-options"
+                className={inputClass}
+                value={data.warranty}
+                onChange={(e) => update("warranty", e.target.value)}
+                placeholder="Selecione ou escreva uma opção"
+              />
+            </Field>
+            <Field label="Modelo de atendimento">
+              <input
+                list="attendance-options"
+                className={inputClass}
+                value={data.attendanceModel}
+                onChange={(e) => update("attendanceModel", e.target.value)}
+                placeholder="Selecione ou escreva uma opção"
+              />
+            </Field>
           </div>
-          <datalist id="service-area-options"><option value="Bairro e região" /><option value="Cidade e região" /><option value="Todo o estado" /><option value="Todo o Brasil" /><option value="Atendimento online" /></datalist>
-          <datalist id="business-hours-options"><option value="Segunda a sexta, 08h às 18h" /><option value="Segunda a sábado, horário comercial" /><option value="Todos os dias" /><option value="Somente com agendamento" /><option value="Plantão 24 horas" /></datalist>
-          <datalist id="payment-options"><option value="PIX, dinheiro e cartão" /><option value="PIX e dinheiro" /><option value="Cartão de crédito e débito" /><option value="Parcelamento no cartão" /><option value="Boleto e transferência" /></datalist>
-          <datalist id="warranty-options"><option value="Não oferece garantia" /><option value="Garantia conforme o serviço" /><option value="30 dias" /><option value="90 dias" /><option value="6 meses" /><option value="1 ano" /></datalist>
-          <datalist id="attendance-options"><option value="Somente com agendamento" /><option value="Agendamento e ordem de chegada" /><option value="Ordem de chegada" /><option value="Atendimento presencial" /><option value="Atendimento online" /><option value="Atendimento em domicílio" /></datalist>
+          <datalist id="service-area-options">
+            <option value="Bairro e região" />
+            <option value="Cidade e região" />
+            <option value="Todo o estado" />
+            <option value="Todo o Brasil" />
+            <option value="Atendimento online" />
+          </datalist>
+          <datalist id="business-hours-options">
+            <option value="Segunda a sexta, 08h às 18h" />
+            <option value="Segunda a sábado, horário comercial" />
+            <option value="Todos os dias" />
+            <option value="Somente com agendamento" />
+            <option value="Plantão 24 horas" />
+          </datalist>
+          <datalist id="payment-options">
+            <option value="PIX, dinheiro e cartão" />
+            <option value="PIX e dinheiro" />
+            <option value="Cartão de crédito e débito" />
+            <option value="Parcelamento no cartão" />
+            <option value="Boleto e transferência" />
+          </datalist>
+          <datalist id="warranty-options">
+            <option value="Não oferece garantia" />
+            <option value="Garantia conforme o serviço" />
+            <option value="30 dias" />
+            <option value="90 dias" />
+            <option value="6 meses" />
+            <option value="1 ano" />
+          </datalist>
+          <datalist id="attendance-options">
+            <option value="Somente com agendamento" />
+            <option value="Agendamento e ordem de chegada" />
+            <option value="Ordem de chegada" />
+            <option value="Atendimento presencial" />
+            <option value="Atendimento online" />
+            <option value="Atendimento em domicílio" />
+          </datalist>
         </div>
       );
     }
@@ -692,19 +1019,83 @@ ${briefing}`,
       return (
         <div className="space-y-6">
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Possui logotipo?"><select className={inputClass} value={data.hasLogo} onChange={(e) => update("hasLogo", e.target.value)}><option>Não informado</option><option>Sim, em boa qualidade</option><option>Sim, mas precisa melhorar</option><option>Não possui</option></select></Field>
-            <Field label="Possui fotos próprias?"><select className={inputClass} value={data.hasPhotos} onChange={(e) => update("hasPhotos", e.target.value)}><option>Não informado</option><option>Sim, profissionais</option><option>Sim, feitas pelo celular</option><option>Não possui</option></select></Field>
+            <Field label="Possui logotipo?">
+              <select
+                className={inputClass}
+                value={data.hasLogo}
+                onChange={(e) => update("hasLogo", e.target.value)}
+              >
+                <option>Não informado</option>
+                <option>Sim, em boa qualidade</option>
+                <option>Sim, mas precisa melhorar</option>
+                <option>Não possui</option>
+              </select>
+            </Field>
+            <Field label="Possui fotos próprias?">
+              <select
+                className={inputClass}
+                value={data.hasPhotos}
+                onChange={(e) => update("hasPhotos", e.target.value)}
+              >
+                <option>Não informado</option>
+                <option>Sim, profissionais</option>
+                <option>Sim, feitas pelo celular</option>
+                <option>Não possui</option>
+              </select>
+            </Field>
           </div>
           <div className="grid gap-4 lg:grid-cols-2">
-            <UploadBox title="Enviar logotipo" description="Envie a melhor versão disponível. Preferencialmente PNG com fundo transparente ou arquivo em alta resolução." category="logo" multiple={false} accept="image/png,image/jpeg,image/webp" items={uploads} onAdd={addUploads} onRemove={removeUpload} />
-            <UploadBox title="Fotos para o site" description="Envie as imagens preferidas para galeria, banners, serviços, fachada, equipe ou produtos." category="galeria" items={uploads} onAdd={addUploads} onRemove={removeUpload} />
-            <UploadBox title="Fachada e ambiente" description="Fotos externas e internas ajudam a transmitir confiança e localização real." category="fachada" items={uploads} onAdd={addUploads} onRemove={removeUpload} />
+            <UploadBox
+              title="Enviar logotipo"
+              description="Envie a melhor versão disponível. Preferencialmente PNG com fundo transparente ou arquivo em alta resolução."
+              category="logo"
+              multiple={false}
+              accept="image/png,image/jpeg,image/webp"
+              items={uploads}
+              onAdd={addUploads}
+              onRemove={removeUpload}
+            />
+            <UploadBox
+              title="Fotos para o site"
+              description="Envie as imagens preferidas para galeria, banners, serviços, fachada, equipe ou produtos."
+              category="galeria"
+              items={uploads}
+              onAdd={addUploads}
+              onRemove={removeUpload}
+            />
+            <UploadBox
+              title="Fachada e ambiente"
+              description="Fotos externas e internas ajudam a transmitir confiança e localização real."
+              category="fachada"
+              items={uploads}
+              onAdd={addUploads}
+              onRemove={removeUpload}
+            />
           </div>
-          {uploadError && <div role="alert" className="rounded-2xl border border-amber-400/25 bg-amber-500/[0.07] p-4 text-sm text-amber-100">{uploadError}</div>}
+          {uploadError && (
+            <div
+              role="alert"
+              className="rounded-2xl border border-amber-400/25 bg-amber-500/[0.07] p-4 text-sm text-amber-100"
+            >
+              {uploadError}
+            </div>
+          )}
           <div className="grid gap-4 md:grid-cols-3">
-            <ColorField label="Cor principal" value={data.primaryColor} onChange={(value) => update("primaryColor", value)} />
-            <ColorField label="Cor secundária" value={data.secondaryColor} onChange={(value) => update("secondaryColor", value)} />
-            <ColorField label="Cor de destaque" value={data.accentColor} onChange={(value) => update("accentColor", value)} />
+            <ColorField
+              label="Cor principal"
+              value={data.primaryColor}
+              onChange={(value) => update("primaryColor", value)}
+            />
+            <ColorField
+              label="Cor secundária"
+              value={data.secondaryColor}
+              onChange={(value) => update("secondaryColor", value)}
+            />
+            <ColorField
+              label="Cor de destaque"
+              value={data.accentColor}
+              onChange={(value) => update("accentColor", value)}
+            />
           </div>
           <div className="overflow-hidden rounded-2xl border border-white/10">
             <div className="grid h-24 grid-cols-3" aria-label="Prévia da paleta escolhida">
@@ -713,25 +1104,83 @@ ${briefing}`,
               <div style={{ backgroundColor: data.accentColor }} />
             </div>
             <div className="grid grid-cols-3 bg-black/30 px-3 py-2 text-center font-mono text-xs">
-              <span>{data.primaryColor}</span><span>{data.secondaryColor}</span><span>{data.accentColor}</span>
+              <span>{data.primaryColor}</span>
+              <span>{data.secondaryColor}</span>
+              <span>{data.accentColor}</span>
             </div>
           </div>
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Estilo visual"><select className={inputClass} value={data.visualStyle} onChange={(e) => update("visualStyle", e.target.value)}>{["Moderno", "Premium", "Minimalista", "Industrial", "Elegante", "Luxuoso", "Tecnológico", "Rústico", "Criativo"].map((item) => <option key={item}>{item}</option>)}</select></Field>
-            <Field label="Tom de comunicação"><select className={inputClass} value={data.communicationTone} onChange={(e) => update("communicationTone", e.target.value)}>{["Profissional e próximo", "Formal e técnico", "Amigável e simples", "Sofisticado", "Direto e comercial", "Inspirador"].map((item) => <option key={item}>{item}</option>)}</select></Field>
+            <Field label="Estilo visual">
+              <select
+                className={inputClass}
+                value={data.visualStyle}
+                onChange={(e) => update("visualStyle", e.target.value)}
+              >
+                {[
+                  "Moderno",
+                  "Premium",
+                  "Minimalista",
+                  "Industrial",
+                  "Elegante",
+                  "Luxuoso",
+                  "Tecnológico",
+                  "Rústico",
+                  "Criativo",
+                ].map((item) => (
+                  <option key={item}>{item}</option>
+                ))}
+              </select>
+            </Field>
+            <Field label="Tom de comunicação">
+              <select
+                className={inputClass}
+                value={data.communicationTone}
+                onChange={(e) => update("communicationTone", e.target.value)}
+              >
+                {[
+                  "Profissional e próximo",
+                  "Formal e técnico",
+                  "Amigável e simples",
+                  "Sofisticado",
+                  "Direto e comercial",
+                  "Inspirador",
+                ].map((item) => (
+                  <option key={item}>{item}</option>
+                ))}
+              </select>
+            </Field>
           </div>
-          <Field label="Sites, marcas ou referências visuais"><textarea className={`${inputClass} min-h-24 resize-y`} value={data.visualReferences} onChange={(e) => update("visualReferences", e.target.value)} placeholder="Cole links ou descreva o que agradou." /></Field>
+          <Field label="Sites, marcas ou referências visuais">
+            <textarea
+              className={`${inputClass} min-h-24 resize-y`}
+              value={data.visualReferences}
+              onChange={(e) => update("visualReferences", e.target.value)}
+              placeholder="Cole links ou descreva o que agradou."
+            />
+          </Field>
         </div>
       );
     }
     if (step === 5) {
       return (
         <div>
-          <p className="mb-4 text-sm text-muted-foreground">Selecione tudo que poderá fazer parte do projeto. A Orion avaliará a necessidade e o escopo final.</p>
+          <p className="mb-4 text-sm text-muted-foreground">
+            Selecione tudo que poderá fazer parte do projeto. A Orion avaliará a necessidade e o
+            escopo final.
+          </p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {featureOptions.map((item) => (
-              <label key={item} className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 text-sm transition ${data.features.includes(item) ? "border-violet-400/50 bg-violet-400/10" : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"}`}>
-                <input type="checkbox" checked={data.features.includes(item)} onChange={() => toggleList("features", item)} className="accent-violet-400" /> {item}
+              <label
+                key={item}
+                className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 text-sm transition ${data.features.includes(item) ? "border-violet-400/50 bg-violet-400/10" : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"}`}
+              >
+                <input
+                  type="checkbox"
+                  checked={data.features.includes(item)}
+                  onChange={() => toggleList("features", item)}
+                  className="accent-violet-400"
+                />{" "}
+                {item}
               </label>
             ))}
           </div>
@@ -742,15 +1191,86 @@ ${briefing}`,
       return (
         <div className="space-y-5">
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Possui Perfil da Empresa no Google?"><select className={inputClass} value={data.googleBusiness} onChange={(e) => update("googleBusiness", e.target.value)}><option>Não informado</option><option>Sim, completo e ativo</option><option>Sim, mas precisa atualizar</option><option>Não possui</option><option>Não sabe</option></select></Field>
-            <Field label="Situação do domínio"><select className={inputClass} value={data.domainStatus} onChange={(e) => update("domainStatus", e.target.value)}><option>Não possui</option><option>Já possui domínio</option><option>Precisa registrar</option><option>Não sabe</option></select></Field>
-            <Field label="Link do Google Maps"><input className={inputClass} value={data.googleMaps} onChange={(e) => update("googleMaps", e.target.value)} placeholder="https://maps.google.com/..." /></Field>
-            <Field label="Link para avaliações"><input className={inputClass} value={data.reviewLink} onChange={(e) => update("reviewLink", e.target.value)} placeholder="https://g.page/.../review" /></Field>
-            <Field label="Domínio desejado"><input className={inputClass} value={data.desiredDomain} onChange={(e) => update("desiredDomain", e.target.value)} placeholder="empresa.com.br" /></Field>
-            <Field label="Prazo desejado"><input className={inputClass} value={data.deadline} onChange={(e) => update("deadline", e.target.value)} placeholder="Ex.: até 30 dias" /></Field>
-            <Field label="Faixa de investimento"><select className={inputClass} value={data.budgetRange} onChange={(e) => update("budgetRange", e.target.value)}><option value="">Selecione</option><option>Até R$ 1.000</option><option>R$ 1.000 a R$ 2.000</option><option>R$ 2.000 a R$ 4.000</option><option>Acima de R$ 4.000</option><option>Prefere receber uma proposta</option></select></Field>
+            <Field label="Possui Perfil da Empresa no Google?">
+              <select
+                className={inputClass}
+                value={data.googleBusiness}
+                onChange={(e) => update("googleBusiness", e.target.value)}
+              >
+                <option>Não informado</option>
+                <option>Sim, completo e ativo</option>
+                <option>Sim, mas precisa atualizar</option>
+                <option>Não possui</option>
+                <option>Não sabe</option>
+              </select>
+            </Field>
+            <Field label="Situação do domínio">
+              <select
+                className={inputClass}
+                value={data.domainStatus}
+                onChange={(e) => update("domainStatus", e.target.value)}
+              >
+                <option>Não possui</option>
+                <option>Já possui domínio</option>
+                <option>Precisa registrar</option>
+                <option>Não sabe</option>
+              </select>
+            </Field>
+            <Field label="Link do Google Maps">
+              <input
+                className={inputClass}
+                value={data.googleMaps}
+                onChange={(e) => update("googleMaps", e.target.value)}
+                placeholder="https://maps.google.com/..."
+              />
+            </Field>
+            <Field label="Link para avaliações">
+              <input
+                className={inputClass}
+                value={data.reviewLink}
+                onChange={(e) => update("reviewLink", e.target.value)}
+                placeholder="https://g.page/.../review"
+              />
+            </Field>
+            <Field label="Domínio desejado">
+              <input
+                className={inputClass}
+                value={data.desiredDomain}
+                onChange={(e) => update("desiredDomain", e.target.value)}
+                placeholder="empresa.com.br"
+              />
+            </Field>
+            <Field label="Prazo desejado">
+              <input
+                className={inputClass}
+                value={data.deadline}
+                onChange={(e) => update("deadline", e.target.value)}
+                placeholder="Ex.: até 30 dias"
+              />
+            </Field>
+            <Field label="Faixa de investimento">
+              <select
+                className={inputClass}
+                value={data.budgetRange}
+                onChange={(e) => update("budgetRange", e.target.value)}
+              >
+                <option value="">Selecione</option>
+                <option>Até R$ 1.000</option>
+                <option>R$ 1.000 a R$ 2.000</option>
+                <option>R$ 2.000 a R$ 4.000</option>
+                <option>Acima de R$ 4.000</option>
+                <option>Prefere receber uma proposta</option>
+              </select>
+            </Field>
           </div>
-          <Field label="Observações finais"><textarea className={`${inputClass} min-h-32 resize-y`} value={data.observations} onChange={(e) => update("observations", e.target.value)} placeholder="Tudo que ainda não foi perguntado e pode ser importante." /></Field>
+          <Field label="Observações finais">
+            <textarea
+              className={`${inputClass} min-h-32 resize-y`}
+              value={data.observations}
+              onChange={(e) => update("observations", e.target.value)}
+              placeholder="Tudo que ainda não foi perguntado e pode ser importante."
+            />
+          </Field>
         </div>
       );
     }
@@ -761,18 +1281,44 @@ ${briefing}`,
             <MessageCircle className="h-10 w-10 text-emerald-300" />
           </div>
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-emerald-300">Solicitação registrada</p>
-            <h3 className="mt-3 font-display text-2xl font-bold md:text-3xl">Seu projeto foi enviado com sucesso! :)</h3>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">Recebemos sua solicitação e ela já está em nossa fila de atendimento. Em breve entraremos em contato para dar continuidade ao seu projeto.</p>
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-emerald-300">
+              Solicitação registrada
+            </p>
+            <h3 className="mt-3 font-display text-2xl font-bold md:text-3xl">
+              Seu projeto foi enviado com sucesso! :)
+            </h3>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              Recebemos sua solicitação e ela já está em nossa fila de atendimento. Em breve
+              entraremos em contato para dar continuidade ao seu projeto.
+            </p>
           </div>
           <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.05] p-5 text-left">
-            <p className="text-xs uppercase tracking-[0.18em] text-emerald-300">Protocolo de atendimento</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-emerald-300">
+              Protocolo de atendimento
+            </p>
             <p className="mt-2 font-mono text-2xl font-bold text-foreground">{projectCode}</p>
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">Guarde este protocolo. Os dados do briefing já estão salvos. As {uploads.length} imagem(ns) selecionada(s) foram armazenadas com segurança junto ao seu projeto.</p>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              Guarde este protocolo. Os dados do briefing já estão salvos. As {uploads.length}{" "}
+              imagem(ns) selecionada(s) foram armazenadas com segurança junto ao seu projeto.
+            </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
-            <button type="button" onClick={() => setSubmitted(false)} className="rounded-2xl border border-border bg-card/40 px-5 py-4 font-semibold text-foreground backdrop-blur transition-all hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/60">Voltar e revisar</button>
-            <button type="button" onClick={() => window.open(createWhatsappLink(projectCode), "_blank", "noopener,noreferrer")} className="flex items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-5 py-4 font-semibold text-white transition hover:bg-emerald-400"><MessageCircle className="h-5 w-5" /> Abrir WhatsApp novamente</button>
+            <button
+              type="button"
+              onClick={() => setSubmitted(false)}
+              className="rounded-2xl border border-border bg-card/40 px-5 py-4 font-semibold text-foreground backdrop-blur transition-all hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/60"
+            >
+              Voltar e revisar
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                window.open(createWhatsappLink(projectCode), "_blank", "noopener,noreferrer")
+              }
+              className="flex items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-5 py-4 font-semibold text-white transition hover:bg-emerald-400"
+            >
+              <MessageCircle className="h-5 w-5" /> Abrir WhatsApp novamente
+            </button>
           </div>
         </div>
       );
@@ -781,20 +1327,52 @@ ${briefing}`,
     return (
       <div className="space-y-6">
         <div className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"><p className="text-xs text-muted-foreground">Cliente</p><p className="mt-1 font-semibold">{companyLabel}</p></div>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"><p className="text-xs text-muted-foreground">Segmento</p><p className="mt-1 font-semibold">{data.segment || "Não informado"}</p></div>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"><p className="text-xs text-muted-foreground">Arquivos selecionados</p><p className="mt-1 font-semibold">{uploads.length}</p></div>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <p className="text-xs text-muted-foreground">Cliente</p>
+            <p className="mt-1 font-semibold">{companyLabel}</p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <p className="text-xs text-muted-foreground">Segmento</p>
+            <p className="mt-1 font-semibold">{data.segment || "Não informado"}</p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <p className="text-xs text-muted-foreground">Arquivos selecionados</p>
+            <p className="mt-1 font-semibold">{uploads.length}</p>
+          </div>
         </div>
         <div className="rounded-2xl border border-cyan-400/20 bg-cyan-500/[0.05] p-5">
-          <div className="mb-4 flex items-center justify-between gap-3"><h3 className="font-display text-lg font-semibold">Confira antes de enviar</h3><FileText className="h-5 w-5 text-cyan-300" /></div>
-          <pre className="max-h-[520px] overflow-auto whitespace-pre-wrap text-xs leading-relaxed text-muted-foreground">{briefing}</pre>
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h3 className="font-display text-lg font-semibold">Confira antes de enviar</h3>
+            <FileText className="h-5 w-5 text-cyan-300" />
+          </div>
+          <pre className="max-h-[520px] overflow-auto whitespace-pre-wrap text-xs leading-relaxed text-muted-foreground">
+            {briefing}
+          </pre>
         </div>
         <div className="rounded-2xl border border-amber-400/20 bg-amber-400/[0.05] p-4 text-sm text-amber-100/90">
           <p className="font-medium">Integração com o Orion Admin</p>
-          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Ao enviar, os dados, o briefing e as imagens serão registrados no Orion Admin. Logo, fachada e galeria ficarão vinculadas ao protocolo oficial do projeto.</p>
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+            Ao enviar, os dados, o briefing e as imagens serão registrados no Orion Admin. Logo,
+            fachada e galeria ficarão vinculadas ao protocolo oficial do projeto.
+          </p>
         </div>
-        {submitError && <div role="alert" className="rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200">{submitError}</div>}
-        <button type="button" onClick={submitRequest} disabled={isSubmitting} className="btn-primary-glow btn-shine flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-4 font-semibold disabled:cursor-wait disabled:opacity-60"><MessageCircle className="h-5 w-5" /> {isSubmitting ? "Salvando projeto e imagens..." : "Enviar solicitação"}</button>
+        {submitError && (
+          <div
+            role="alert"
+            className="rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200"
+          >
+            {submitError}
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={submitRequest}
+          disabled={isSubmitting}
+          className="btn-primary-glow btn-shine flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-4 font-semibold disabled:cursor-wait disabled:opacity-60"
+        >
+          <MessageCircle className="h-5 w-5" />{" "}
+          {isSubmitting ? "Salvando projeto e imagens..." : "Enviar solicitação"}
+        </button>
       </div>
     );
   };
@@ -813,8 +1391,15 @@ ${briefing}`,
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4">
           <Logo />
           <div className="flex items-center gap-2">
-            <span className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex"><Save className="h-4 w-4" /> {saved ? "Progresso salvo" : "Salvamento automático"}</span>
-            <a href="/" className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-4 py-2 text-sm font-semibold text-foreground backdrop-blur transition-all hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/60"><Home className="h-4 w-4" /> <span className="hidden sm:inline">Voltar ao site</span></a>
+            <span className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
+              <Save className="h-4 w-4" /> {saved ? "Progresso salvo" : "Salvamento automático"}
+            </span>
+            <a
+              href="/"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-4 py-2 text-sm font-semibold text-foreground backdrop-blur transition-all hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/60"
+            >
+              <Home className="h-4 w-4" /> <span className="hidden sm:inline">Voltar ao site</span>
+            </a>
           </div>
         </div>
       </motion.header>
@@ -826,9 +1411,16 @@ ${briefing}`,
           transition={{ duration: 0.6, delay: 0.1, ease: EASE_ORION }}
           className="mb-8 max-w-3xl"
         >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs text-primary"><Rocket className="h-3.5 w-3.5" /> Primeiro módulo do Orion Hub</div>
-          <h1 className="text-3xl font-bold tracking-tight md:text-5xl">Levantamento de <span className="text-gradient">Requisitos</span></h1>
-          <p className="mt-4 text-muted-foreground">Preencha as informações do projeto, envie a logo e as fotos, defina a identidade visual e revise tudo antes de solicitar o desenvolvimento.</p>
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs text-primary">
+            <Rocket className="h-3.5 w-3.5" /> Primeiro módulo do Orion Hub
+          </div>
+          <h1 className="text-3xl font-bold tracking-tight md:text-5xl">
+            Levantamento de <span className="text-gradient">Requisitos</span>
+          </h1>
+          <p className="mt-4 text-muted-foreground">
+            Preencha as informações do projeto, envie a logo e as fotos, defina a identidade visual
+            e revise tudo antes de solicitar o desenvolvimento.
+          </p>
         </motion.div>
 
         <motion.div
@@ -837,9 +1429,33 @@ ${briefing}`,
           transition={{ duration: 0.6, delay: 0.2, ease: EASE_ORION }}
           className="mb-6 rounded-2xl border border-border bg-card/40 backdrop-blur p-4"
         >
-          <div className="mb-3 flex items-center justify-between text-xs"><span>Etapa {step + 1} de {steps.length}</span><span className="text-muted-foreground">{Math.round(((step + 1) / steps.length) * 100)}%</span></div>
-          <div className="h-2 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-violet-400 transition-all duration-500" style={{ width: `${((step + 1) / steps.length) * 100}%` }} /></div>
-          <div className="mt-4 hidden grid-cols-8 gap-2 lg:grid">{steps.map((item, index) => <button type="button" key={item} onClick={() => setStep(index)} className={`rounded-lg px-2 py-2 text-center text-[11px] transition ${index === step ? "border border-primary/30 bg-primary/15 text-primary" : index < step ? "text-cyan-300" : "text-muted-foreground hover:bg-white/[0.04]"}`}>{index < step ? "✓ " : ""}{item}</button>)}</div>
+          <div className="mb-3 flex items-center justify-between text-xs">
+            <span>
+              Etapa {step + 1} de {steps.length}
+            </span>
+            <span className="text-muted-foreground">
+              {Math.round(((step + 1) / steps.length) * 100)}%
+            </span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-white/10">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-violet-400 transition-all duration-500"
+              style={{ width: `${((step + 1) / steps.length) * 100}%` }}
+            />
+          </div>
+          <div className="mt-4 hidden grid-cols-8 gap-2 lg:grid">
+            {steps.map((item, index) => (
+              <button
+                type="button"
+                key={item}
+                onClick={() => setStep(index)}
+                className={`rounded-lg px-2 py-2 text-center text-[11px] transition ${index === step ? "border border-primary/30 bg-primary/15 text-primary" : index < step ? "text-cyan-300" : "text-muted-foreground hover:bg-white/[0.04]"}`}
+              >
+                {index < step ? "✓ " : ""}
+                {item}
+              </button>
+            ))}
+          </div>
         </motion.div>
 
         <motion.div
@@ -849,8 +1465,21 @@ ${briefing}`,
           className="card-space-static p-5 md:p-8"
         >
           <div className="mb-7 flex items-center gap-3">
-            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 text-cyan-200">{step === 4 ? <Palette className="h-5 w-5" /> : step === 7 ? <FileText className="h-5 w-5" /> : <Building2 className="h-5 w-5" />}</div>
-            <div><p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Etapa {step + 1}</p><h2 className="text-xl font-semibold md:text-2xl">{steps[step]}</h2></div>
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 text-cyan-200">
+              {step === 4 ? (
+                <Palette className="h-5 w-5" />
+              ) : step === 7 ? (
+                <FileText className="h-5 w-5" />
+              ) : (
+                <Building2 className="h-5 w-5" />
+              )}
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                Etapa {step + 1}
+              </p>
+              <h2 className="text-xl font-semibold md:text-2xl">{steps[step]}</h2>
+            </div>
           </div>
           <AnimatePresence mode="wait">
             <motion.div
@@ -865,14 +1494,38 @@ ${briefing}`,
           </AnimatePresence>
 
           <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6">
-            <button type="button" onClick={reset} className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-muted-foreground hover:bg-white/[0.05] hover:text-foreground"><RefreshCw className="h-4 w-4" /> Limpar tudo</button>
+            <button
+              type="button"
+              onClick={reset}
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-muted-foreground hover:bg-white/[0.05] hover:text-foreground"
+            >
+              <RefreshCw className="h-4 w-4" /> Limpar tudo
+            </button>
             <div className="flex gap-3">
-              <button type="button" disabled={step === 0} onClick={() => setStep((current) => Math.max(0, current - 1))} className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-5 py-2.5 text-sm font-semibold text-foreground backdrop-blur transition-all disabled:cursor-not-allowed disabled:opacity-30 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/60"><ArrowLeft className="h-4 w-4" /> Voltar</button>
-              {step < steps.length - 1 && <button type="button" onClick={() => setStep((current) => Math.min(steps.length - 1, current + 1))} className="btn-primary-glow btn-shine inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold">Continuar <ArrowRight className="h-4 w-4" /></button>}
+              <button
+                type="button"
+                disabled={step === 0}
+                onClick={() => setStep((current) => Math.max(0, current - 1))}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-5 py-2.5 text-sm font-semibold text-foreground backdrop-blur transition-all disabled:cursor-not-allowed disabled:opacity-30 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/60"
+              >
+                <ArrowLeft className="h-4 w-4" /> Voltar
+              </button>
+              {step < steps.length - 1 && (
+                <button
+                  type="button"
+                  onClick={() => setStep((current) => Math.min(steps.length - 1, current + 1))}
+                  className="btn-primary-glow btn-shine inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold"
+                >
+                  Continuar <ArrowRight className="h-4 w-4" />
+                </button>
+              )}
             </div>
           </div>
         </motion.div>
-        <p className="mt-5 text-center text-xs text-muted-foreground">O preenchimento é salvo neste navegador durante a edição. Após o envio, os dados e as imagens são registrados com segurança no Orion Admin.</p>
+        <p className="mt-5 text-center text-xs text-muted-foreground">
+          O preenchimento é salvo neste navegador durante a edição. Após o envio, os dados e as
+          imagens são registrados com segurança no Orion Admin.
+        </p>
       </section>
     </main>
   );

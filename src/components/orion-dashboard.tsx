@@ -128,7 +128,9 @@ export default function OrionDashboard() {
                   )}
                 </div>
                 <h2 className="mt-5 font-display text-xl font-semibold">{item.title}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {item.description}
+                </p>
                 <div className="mt-6 text-sm font-medium text-[oklch(0.82_0.14_200)]">
                   {item.to ? "Acessar agora →" : "Funcionalidade planejada"}
                 </div>

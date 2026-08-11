@@ -25,7 +25,13 @@ import {
   X,
 } from "lucide-react";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
-import { deleteAllProjectAssets, deleteProjectAsset, downloadProjectAsset, listProjectAssets, type ProjectAsset } from "../lib/project-storage";
+import {
+  deleteAllProjectAssets,
+  deleteProjectAsset,
+  downloadProjectAsset,
+  listProjectAssets,
+  type ProjectAsset,
+} from "../lib/project-storage";
 import ProjectTrackingAdmin from "./project-tracking-admin";
 import { Logo } from "./orion/Logo";
 import { Starfield } from "./orion/Starfield";
@@ -170,7 +176,10 @@ function renderAnswerValue(key: string, value: unknown) {
     return (
       <ul className="space-y-2">
         {files.map((file, index) => (
-          <li key={`${file.file_name ?? "arquivo"}-${index}`} className="rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2">
+          <li
+            key={`${file.file_name ?? "arquivo"}-${index}`}
+            className="rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2"
+          >
             <span className="font-medium">{file.file_name || `Arquivo ${index + 1}`}</span>
             <span className="mt-1 block text-xs text-muted-foreground">
               {fileCategoryLabel(file.category)} · {humanFileSize(file.size_bytes)}
@@ -184,12 +193,71 @@ function renderAnswerValue(key: string, value: unknown) {
 }
 
 const summarySections = [
-  { title: "DADOS DO CLIENTE", keys: ["companyName", "tradeName", "segment", "yearsInBusiness", "contactName", "whatsapp", "phone", "email", "city", "state", "currentSite"] },
-  { title: "EMPRESA E POSICIONAMENTO", keys: ["story", "differentials", "values", "targetAudience", "competitors"] },
-  { title: "OBJETIVOS E ESCOPO", keys: ["mainObjective", "services", "serviceArea", "businessHours", "paymentMethods", "warranty", "attendanceModel", "features"] },
-  { title: "IDENTIDADE VISUAL E COMUNICAÇÃO", keys: ["hasLogo", "hasPhotos", "primaryColor", "secondaryColor", "accentColor", "visualStyle", "communicationTone", "visualReferences", "websiteReferences"] },
-  { title: "PRESENÇA DIGITAL E SEO", keys: ["googleBusiness", "googleMaps", "reviewLink", "instagram", "facebook", "linkedin", "tiktok", "youtube", "seoKeywords"] },
-  { title: "DOMÍNIO, PRAZO E INVESTIMENTO", keys: ["domainStatus", "desiredDomain", "deadline", "budgetRange"] },
+  {
+    title: "DADOS DO CLIENTE",
+    keys: [
+      "companyName",
+      "tradeName",
+      "segment",
+      "yearsInBusiness",
+      "contactName",
+      "whatsapp",
+      "phone",
+      "email",
+      "city",
+      "state",
+      "currentSite",
+    ],
+  },
+  {
+    title: "EMPRESA E POSICIONAMENTO",
+    keys: ["story", "differentials", "values", "targetAudience", "competitors"],
+  },
+  {
+    title: "OBJETIVOS E ESCOPO",
+    keys: [
+      "mainObjective",
+      "services",
+      "serviceArea",
+      "businessHours",
+      "paymentMethods",
+      "warranty",
+      "attendanceModel",
+      "features",
+    ],
+  },
+  {
+    title: "IDENTIDADE VISUAL E COMUNICAÇÃO",
+    keys: [
+      "hasLogo",
+      "hasPhotos",
+      "primaryColor",
+      "secondaryColor",
+      "accentColor",
+      "visualStyle",
+      "communicationTone",
+      "visualReferences",
+      "websiteReferences",
+    ],
+  },
+  {
+    title: "PRESENÇA DIGITAL E SEO",
+    keys: [
+      "googleBusiness",
+      "googleMaps",
+      "reviewLink",
+      "instagram",
+      "facebook",
+      "linkedin",
+      "tiktok",
+      "youtube",
+      "seoKeywords",
+    ],
+  },
+  {
+    title: "DOMÍNIO, PRAZO E INVESTIMENTO",
+    keys: ["domainStatus", "desiredDomain", "deadline", "budgetRange"],
+  },
   { title: "OBSERVAÇÕES", keys: ["observations"] },
 ];
 
@@ -211,35 +279,69 @@ function buildTechnicalSummary(project: Project, briefing: Briefing | null) {
     const sectionLines: string[] = [];
     for (const key of section.keys) {
       const value = answers[key];
-      if (value === null || value === undefined || value === "" || (Array.isArray(value) && value.length === 0)) continue;
+      if (
+        value === null ||
+        value === undefined ||
+        value === "" ||
+        (Array.isArray(value) && value.length === 0)
+      )
+        continue;
       included.add(key);
       sectionLines.push(`${readableKey(key)}: ${renderValue(value)}`);
     }
     if (sectionLines.length) {
-      lines.push("------------------------------------------------------------", section.title, "------------------------------------------------------------", ...sectionLines, "");
+      lines.push(
+        "------------------------------------------------------------",
+        section.title,
+        "------------------------------------------------------------",
+        ...sectionLines,
+        "",
+      );
     }
   }
 
   const files = selectedFiles(answers.selected_files);
   included.add("selected_files");
-  lines.push("------------------------------------------------------------", "ARQUIVOS INFORMADOS", "------------------------------------------------------------");
+  lines.push(
+    "------------------------------------------------------------",
+    "ARQUIVOS INFORMADOS",
+    "------------------------------------------------------------",
+  );
   if (files.length) {
-    files.forEach((file, index) => lines.push(`${index + 1}. ${file.file_name || "Arquivo sem nome"} | Categoria: ${fileCategoryLabel(file.category)} | Tipo: ${file.mime_type || "não informado"} | Tamanho: ${humanFileSize(file.size_bytes)}`));
+    files.forEach((file, index) =>
+      lines.push(
+        `${index + 1}. ${file.file_name || "Arquivo sem nome"} | Categoria: ${fileCategoryLabel(file.category)} | Tipo: ${file.mime_type || "não informado"} | Tamanho: ${humanFileSize(file.size_bytes)}`,
+      ),
+    );
   } else {
     lines.push("Nenhum arquivo informado.");
   }
   lines.push("");
 
-  const extras = Object.entries(answers).filter(([key, value]) =>
-    key !== "briefing_text" && !included.has(key) && value !== null && value !== undefined && value !== "" && !(Array.isArray(value) && value.length === 0),
+  const extras = Object.entries(answers).filter(
+    ([key, value]) =>
+      key !== "briefing_text" &&
+      !included.has(key) &&
+      value !== null &&
+      value !== undefined &&
+      value !== "" &&
+      !(Array.isArray(value) && value.length === 0),
   );
   if (extras.length) {
-    lines.push("------------------------------------------------------------", "INFORMAÇÕES COMPLEMENTARES", "------------------------------------------------------------");
+    lines.push(
+      "------------------------------------------------------------",
+      "INFORMAÇÕES COMPLEMENTARES",
+      "------------------------------------------------------------",
+    );
     extras.forEach(([key, value]) => lines.push(`${readableKey(key)}: ${renderValue(value)}`));
     lines.push("");
   }
 
-  lines.push("============================================================", "FIM DO RESUMO TÉCNICO", "============================================================");
+  lines.push(
+    "============================================================",
+    "FIM DO RESUMO TÉCNICO",
+    "============================================================",
+  );
   return lines.join("\n");
 }
 
@@ -287,7 +389,9 @@ export default function OrionAdmin() {
     setError("");
     const { data, error: loadError } = await supabase
       .from("projects")
-      .select("id, project_code, company_name, contact_name, phone, email, city, state, segment, project_type, status, progress, next_step, status_updated_at, created_at, updated_at")
+      .select(
+        "id, project_code, company_name, contact_name, phone, email, city, state, segment, project_type, status, progress, next_step, status_updated_at, created_at, updated_at",
+      )
       .order("created_at", { ascending: false });
 
     if (loadError) {
@@ -309,25 +413,45 @@ export default function OrionAdmin() {
 
   const openProject = async (project: Project) => {
     if (!supabase) return;
-    setSelectedProject(project); setBriefing(null); setProjectAssets([]); setLoading(true); setAssetsLoading(true); setError("");
+    setSelectedProject(project);
+    setBriefing(null);
+    setProjectAssets([]);
+    setLoading(true);
+    setAssetsLoading(true);
+    setError("");
     const [briefingResult, assetsResult] = await Promise.allSettled([
-      supabase.from("briefings").select("id, project_id, answers, completion_percentage, created_at").eq("project_id", project.id).maybeSingle(),
+      supabase
+        .from("briefings")
+        .select("id, project_id, answers, completion_percentage, created_at")
+        .eq("project_id", project.id)
+        .maybeSingle(),
       listProjectAssets(supabase, project.project_code),
     ]);
     if (briefingResult.status === "fulfilled") {
       const { data, error: briefingError } = briefingResult.value;
-      if (briefingError) setError(`Não foi possível abrir o briefing. ${briefingError.message}`); else setBriefing((data as Briefing | null) ?? null);
+      if (briefingError) setError(`Não foi possível abrir o briefing. ${briefingError.message}`);
+      else setBriefing((data as Briefing | null) ?? null);
     } else setError("Não foi possível abrir o briefing deste projeto.");
     if (assetsResult.status === "fulfilled") setProjectAssets(assetsResult.value);
-    else setError((current) => `${current ? `${current} ` : ""}Não foi possível carregar as imagens.`);
-    setAssetsLoading(false); setLoading(false);
+    else
+      setError((current) => `${current ? `${current} ` : ""}Não foi possível carregar as imagens.`);
+    setAssetsLoading(false);
+    setLoading(false);
   };
 
   const filteredProjects = useMemo(() => {
     const term = query.trim().toLowerCase();
     if (!term) return projects;
     return projects.filter((project) =>
-      [project.project_code, project.company_name, project.contact_name, project.phone, project.email, project.segment, project.city]
+      [
+        project.project_code,
+        project.company_name,
+        project.contact_name,
+        project.phone,
+        project.email,
+        project.segment,
+        project.city,
+      ]
         .filter(Boolean)
         .some((value) => String(value).toLowerCase().includes(term)),
     );
@@ -341,7 +465,10 @@ export default function OrionAdmin() {
     }
     setAuthLoading(true);
     setError("");
-    const { error: loginError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    const { error: loginError } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
     if (loginError) setError(`Não foi possível entrar. ${loginError.message}`);
     setAuthLoading(false);
   };
@@ -358,14 +485,21 @@ export default function OrionAdmin() {
         <div className="relative z-10 max-w-lg rounded-3xl border border-amber-300/25 bg-slate-950/75 p-7 text-center shadow-[0_0_50px_rgba(245,158,11,0.08)] backdrop-blur-xl">
           <CircleAlert className="mx-auto h-10 w-10 text-amber-300" />
           <h1 className="mt-4 text-2xl font-bold">Supabase não configurado</h1>
-          <p className="mt-3 text-sm text-muted-foreground">Confira as variáveis VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY.</p>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Confira as variáveis VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY.
+          </p>
         </div>
       </main>
     );
   }
 
   if (checkingSession) {
-    return <main className="relative grid min-h-dvh place-items-center overflow-hidden bg-background text-foreground"><Starfield count={45} className="opacity-50" /><LoaderCircle className="relative z-10 h-9 w-9 animate-spin text-cyan-300 drop-shadow-[0_0_14px_rgba(34,211,238,0.7)]" /></main>;
+    return (
+      <main className="relative grid min-h-dvh place-items-center overflow-hidden bg-background text-foreground">
+        <Starfield count={45} className="opacity-50" />
+        <LoaderCircle className="relative z-10 h-9 w-9 animate-spin text-cyan-300 drop-shadow-[0_0_14px_rgba(34,211,238,0.7)]" />
+      </main>
+    );
   }
 
   if (!authenticated) {
@@ -379,23 +513,75 @@ export default function OrionAdmin() {
           <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
           <div className="relative flex items-center justify-between gap-4">
             <Logo />
-            <div className="grid h-12 w-12 place-items-center rounded-2xl border border-cyan-300/25 bg-cyan-300/10 shadow-[0_0_24px_rgba(34,211,238,0.16)]"><ShieldCheck className="h-6 w-6 text-cyan-200" /></div>
+            <div className="grid h-12 w-12 place-items-center rounded-2xl border border-cyan-300/25 bg-cyan-300/10 shadow-[0_0_24px_rgba(34,211,238,0.16)]">
+              <ShieldCheck className="h-6 w-6 text-cyan-200" />
+            </div>
           </div>
-          <div className="mt-6"><p className="text-xs uppercase tracking-[0.22em] text-cyan-300">Acesso restrito</p><h1 className="mt-1 text-2xl font-bold">Central de comando</h1></div>
-          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">Entre com seu usuário administrativo para visualizar os projetos.</p>
+          <div className="mt-6">
+            <p className="text-xs uppercase tracking-[0.22em] text-cyan-300">Acesso restrito</p>
+            <h1 className="mt-1 text-2xl font-bold">Central de comando</h1>
+          </div>
+          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+            Entre com seu usuário administrativo para visualizar os projetos.
+          </p>
           <div className="mt-6 space-y-4">
-            <label className="block space-y-2"><span className="text-sm font-medium">E-mail</span><input className={inputClass} type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" /></label>
-            <label className="block space-y-2"><span className="text-sm font-medium">Senha</span><input className={inputClass} type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" onKeyDown={(event) => event.key === "Enter" && void login()} /></label>
+            <label className="block space-y-2">
+              <span className="text-sm font-medium">E-mail</span>
+              <input
+                className={inputClass}
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                autoComplete="email"
+              />
+            </label>
+            <label className="block space-y-2">
+              <span className="text-sm font-medium">Senha</span>
+              <input
+                className={inputClass}
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                autoComplete="current-password"
+                onKeyDown={(event) => event.key === "Enter" && void login()}
+              />
+            </label>
           </div>
-          {error && <div role="alert" className="mt-4 rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200">{error}</div>}
-          <button type="button" onClick={login} disabled={authLoading} className="btn-primary-glow btn-shine mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-5 py-4 font-semibold text-white shadow-[0_0_32px_rgba(59,130,246,0.28)] transition hover:-translate-y-0.5 hover:shadow-[0_0_42px_rgba(139,92,246,0.34)] disabled:opacity-60">{authLoading ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <ShieldCheck className="h-5 w-5" />} {authLoading ? "Entrando..." : "Entrar no painel"}</button>
-          <a href="/" className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Voltar ao site</a>
+          {error && (
+            <div
+              role="alert"
+              className="mt-4 rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200"
+            >
+              {error}
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={login}
+            disabled={authLoading}
+            className="btn-primary-glow btn-shine mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-5 py-4 font-semibold text-white shadow-[0_0_32px_rgba(59,130,246,0.28)] transition hover:-translate-y-0.5 hover:shadow-[0_0_42px_rgba(139,92,246,0.34)] disabled:opacity-60"
+          >
+            {authLoading ? (
+              <LoaderCircle className="h-5 w-5 animate-spin" />
+            ) : (
+              <ShieldCheck className="h-5 w-5" />
+            )}{" "}
+            {authLoading ? "Entrando..." : "Entrar no painel"}
+          </button>
+          <a
+            href="/"
+            className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4" /> Voltar ao site
+          </a>
         </section>
       </main>
     );
   }
 
-  const answerEntries = Object.entries(briefing?.answers ?? {}).filter(([key]) => key !== "briefing_text");
+  const answerEntries = Object.entries(briefing?.answers ?? {}).filter(
+    ([key]) => key !== "briefing_text",
+  );
   const technicalSummary = selectedProject ? buildTechnicalSummary(selectedProject, briefing) : "";
 
   const copySummary = async () => {
@@ -404,14 +590,24 @@ export default function OrionAdmin() {
 
 ${technicalSummary}`;
     try {
-      if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(prompt);
+      if (navigator.clipboard && window.isSecureContext)
+        await navigator.clipboard.writeText(prompt);
       else {
-        const textarea = document.createElement("textarea"); textarea.value = prompt; textarea.style.position = "fixed"; textarea.style.opacity = "0";
-        document.body.appendChild(textarea); textarea.focus(); textarea.select(); const copied = document.execCommand("copy"); textarea.remove();
+        const textarea = document.createElement("textarea");
+        textarea.value = prompt;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        const copied = document.execCommand("copy");
+        textarea.remove();
         if (!copied) throw new Error("Cópia não suportada.");
       }
       setCopyFeedback("Resumo copiado para o ChatGPT!");
-    } catch { setCopyFeedback("O navegador bloqueou a cópia. Use o botão Baixar resumo (.txt)."); }
+    } catch {
+      setCopyFeedback("O navegador bloqueou a cópia. Use o botão Baixar resumo (.txt).");
+    }
     window.setTimeout(() => setCopyFeedback(""), 3500);
   };
 
@@ -431,56 +627,102 @@ ${technicalSummary}`;
   const downloadAsset = async (asset: ProjectAsset, index: number) => {
     if (!selectedProject || !supabase) return;
     try {
-      const categoryIndex = projectAssets.filter((item) => item.category === asset.category).findIndex((item) => item.storagePath === asset.storagePath);
-      await downloadProjectAsset(supabase, asset, selectedProject.project_code, categoryIndex >= 0 ? categoryIndex : index);
+      const categoryIndex = projectAssets
+        .filter((item) => item.category === asset.category)
+        .findIndex((item) => item.storagePath === asset.storagePath);
+      await downloadProjectAsset(
+        supabase,
+        asset,
+        selectedProject.project_code,
+        categoryIndex >= 0 ? categoryIndex : index,
+      );
       setAssetFeedback("Imagem baixada com o nome padrão Orion.");
-    } catch (downloadError) { setAssetFeedback(downloadError instanceof Error ? downloadError.message : "Não foi possível baixar a imagem."); }
+    } catch (downloadError) {
+      setAssetFeedback(
+        downloadError instanceof Error
+          ? downloadError.message
+          : "Não foi possível baixar a imagem.",
+      );
+    }
     window.setTimeout(() => setAssetFeedback(""), 3500);
   };
-
 
   const removeProjectCompletely = async (project: Project) => {
     if (!supabase) return;
     await deleteAllProjectAssets(supabase, project.project_code);
-    const { error: deleteError } = await supabase.rpc("orion_delete_project", { p_project_id: project.id });
+    const { error: deleteError } = await supabase.rpc("orion_delete_project", {
+      p_project_id: project.id,
+    });
     if (deleteError) throw new Error(deleteError.message);
   };
 
   const deleteSingleProject = async (project: Project) => {
-    if (deleting || !window.confirm(`Excluir definitivamente ${project.project_code} — ${project.company_name}?\n\nO projeto, briefing, timeline e todos os arquivos do Supabase serão removidos.`)) return;
-    setDeleting(true); setError("");
+    if (
+      deleting ||
+      !window.confirm(
+        `Excluir definitivamente ${project.project_code} — ${project.company_name}?\n\nO projeto, briefing, timeline e todos os arquivos do Supabase serão removidos.`,
+      )
+    )
+      return;
+    setDeleting(true);
+    setError("");
     try {
       await removeProjectCompletely(project);
       setProjects((current) => current.filter((item) => item.id !== project.id));
-      setSelectedProject(null); setBriefing(null); setProjectAssets([]);
+      setSelectedProject(null);
+      setBriefing(null);
+      setProjectAssets([]);
     } catch (deleteError) {
-      setError(`Não foi possível excluir o projeto. ${deleteError instanceof Error ? deleteError.message : "Erro desconhecido."}`);
-    } finally { setDeleting(false); }
+      setError(
+        `Não foi possível excluir o projeto. ${deleteError instanceof Error ? deleteError.message : "Erro desconhecido."}`,
+      );
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const deleteSelectedProjects = async () => {
     const targets = projects.filter((project) => selectedProjectIds.includes(project.id));
-    if (!targets.length || deleting || !window.confirm(`Excluir definitivamente ${targets.length} projeto(s) selecionado(s)?\n\nOs registros e arquivos do Supabase serão apagados.`)) return;
-    setDeleting(true); setError("");
+    if (
+      !targets.length ||
+      deleting ||
+      !window.confirm(
+        `Excluir definitivamente ${targets.length} projeto(s) selecionado(s)?\n\nOs registros e arquivos do Supabase serão apagados.`,
+      )
+    )
+      return;
+    setDeleting(true);
+    setError("");
     try {
       for (const project of targets) await removeProjectCompletely(project);
-      setProjects((current) => current.filter((project) => !selectedProjectIds.includes(project.id)));
+      setProjects((current) =>
+        current.filter((project) => !selectedProjectIds.includes(project.id)),
+      );
       setSelectedProjectIds([]);
     } catch (deleteError) {
-      setError(`A exclusão foi interrompida. ${deleteError instanceof Error ? deleteError.message : "Erro desconhecido."}`);
+      setError(
+        `A exclusão foi interrompida. ${deleteError instanceof Error ? deleteError.message : "Erro desconhecido."}`,
+      );
       await loadProjects();
-    } finally { setDeleting(false); }
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const removeAsset = async (asset: ProjectAsset) => {
-    if (!supabase || !window.confirm(`Excluir o arquivo ${asset.originalName} do Supabase?`)) return;
+    if (!supabase || !window.confirm(`Excluir o arquivo ${asset.originalName} do Supabase?`))
+      return;
     setAssetFeedback("Excluindo arquivo...");
     try {
       await deleteProjectAsset(supabase, asset.storagePath);
-      setProjectAssets((current) => current.filter((item) => item.storagePath !== asset.storagePath));
+      setProjectAssets((current) =>
+        current.filter((item) => item.storagePath !== asset.storagePath),
+      );
       setAssetFeedback("Arquivo excluído definitivamente do Supabase.");
     } catch (deleteError) {
-      setAssetFeedback(deleteError instanceof Error ? deleteError.message : "Não foi possível excluir o arquivo.");
+      setAssetFeedback(
+        deleteError instanceof Error ? deleteError.message : "Não foi possível excluir o arquivo.",
+      );
     }
     window.setTimeout(() => setAssetFeedback(""), 3500);
   };
@@ -492,112 +734,397 @@ ${technicalSummary}`;
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_15%_0%,rgba(14,165,233,0.10),transparent_28%),radial-gradient(circle_at_90%_30%,rgba(124,58,237,0.10),transparent_32%)]" />
       <header className="relative z-20 border-b border-cyan-300/10 bg-slate-950/72 shadow-[0_10px_40px_rgba(0,0,0,0.18)] backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4">
-          <div className="flex items-center gap-5"><Logo compact /><div className="hidden border-l border-white/10 pl-5 sm:block"><p className="text-xs uppercase tracking-[0.2em] text-cyan-300">Painel administrativo</p><h1 className="text-lg font-bold">Central de comando</h1></div></div>
+          <div className="flex items-center gap-5">
+            <Logo compact />
+            <div className="hidden border-l border-white/10 pl-5 sm:block">
+              <p className="text-xs uppercase tracking-[0.2em] text-cyan-300">
+                Painel administrativo
+              </p>
+              <h1 className="text-lg font-bold">Central de comando</h1>
+            </div>
+          </div>
           <div className="flex items-center gap-2">
-            <button type="button" onClick={loadProjects} className="inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-white/[0.025] px-4 py-2 text-sm shadow-[0_0_18px_rgba(34,211,238,0.04)] transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07]"><RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /> Atualizar</button>
-            <button type="button" onClick={logout} className="inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-white/[0.025] px-4 py-2 text-sm shadow-[0_0_18px_rgba(34,211,238,0.04)] transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07]"><LogOut className="h-4 w-4" /> Sair</button>
+            <button
+              type="button"
+              onClick={loadProjects}
+              className="inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-white/[0.025] px-4 py-2 text-sm shadow-[0_0_18px_rgba(34,211,238,0.04)] transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07]"
+            >
+              <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /> Atualizar
+            </button>
+            <button
+              type="button"
+              onClick={logout}
+              className="inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-white/[0.025] px-4 py-2 text-sm shadow-[0_0_18px_rgba(34,211,238,0.04)] transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07]"
+            >
+              <LogOut className="h-4 w-4" /> Sair
+            </button>
           </div>
         </div>
       </header>
 
       <section className="relative z-10 mx-auto max-w-7xl px-5 py-8">
-        {error && <div role="alert" className="mb-5 rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200">{error}</div>}
+        {error && (
+          <div
+            role="alert"
+            className="mb-5 rounded-2xl border border-red-400/25 bg-red-500/[0.07] p-4 text-sm text-red-200"
+          >
+            {error}
+          </div>
+        )}
 
         {!selectedProject ? (
           <>
             <div className="mb-6 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><p className="text-sm text-muted-foreground">Projetos cadastrados</p><p className="mt-2 text-3xl font-bold">{projects.length}</p></div>
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><p className="text-sm text-muted-foreground">Novos</p><p className="mt-2 text-3xl font-bold">{projects.filter((p) => !p.status || p.status === "new" || p.status === "novo").length}</p></div>
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><p className="text-sm text-muted-foreground">Último protocolo</p><p className="mt-2 font-mono text-xl font-bold">{projects[0]?.project_code ?? "—"}</p></div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                <p className="text-sm text-muted-foreground">Projetos cadastrados</p>
+                <p className="mt-2 text-3xl font-bold">{projects.length}</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                <p className="text-sm text-muted-foreground">Novos</p>
+                <p className="mt-2 text-3xl font-bold">
+                  {
+                    projects.filter((p) => !p.status || p.status === "new" || p.status === "novo")
+                      .length
+                  }
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                <p className="text-sm text-muted-foreground">Último protocolo</p>
+                <p className="mt-2 font-mono text-xl font-bold">
+                  {projects[0]?.project_code ?? "—"}
+                </p>
+              </div>
             </div>
 
             <div className="mb-5 flex flex-col gap-3 sm:flex-row">
-              <div className="flex min-w-0 flex-1 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3"><Search className="h-5 w-5 text-muted-foreground" /><input value={query} onChange={(event) => setQuery(event.target.value)} className="w-full bg-transparent text-sm outline-none" placeholder="Buscar por protocolo, empresa, contato, WhatsApp, segmento ou cidade..." /></div>
-              {selectedProjectIds.length > 0 && <button type="button" onClick={() => void deleteSelectedProjects()} disabled={deleting} className="inline-flex items-center justify-center gap-2 rounded-2xl border border-red-400/30 bg-red-500/10 px-5 py-3 text-sm font-semibold text-red-200 shadow-[0_0_22px_rgba(239,68,68,0.10)] transition hover:bg-red-500/20 disabled:opacity-60"><Trash2 className="h-4 w-4" /> Excluir selecionados ({selectedProjectIds.length})</button>}
+              <div className="flex min-w-0 flex-1 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
+                <Search className="h-5 w-5 text-muted-foreground" />
+                <input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  className="w-full bg-transparent text-sm outline-none"
+                  placeholder="Buscar por protocolo, empresa, contato, WhatsApp, segmento ou cidade..."
+                />
+              </div>
+              {selectedProjectIds.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => void deleteSelectedProjects()}
+                  disabled={deleting}
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-red-400/30 bg-red-500/10 px-5 py-3 text-sm font-semibold text-red-200 shadow-[0_0_22px_rgba(239,68,68,0.10)] transition hover:bg-red-500/20 disabled:opacity-60"
+                >
+                  <Trash2 className="h-4 w-4" /> Excluir selecionados ({selectedProjectIds.length})
+                </button>
+              )}
             </div>
 
             <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02]">
               {loading && !projects.length ? (
-                <div className="flex items-center justify-center gap-2 p-12 text-muted-foreground"><LoaderCircle className="h-5 w-5 animate-spin" /> Carregando projetos...</div>
+                <div className="flex items-center justify-center gap-2 p-12 text-muted-foreground">
+                  <LoaderCircle className="h-5 w-5 animate-spin" /> Carregando projetos...
+                </div>
               ) : filteredProjects.length ? (
                 <div className="divide-y divide-white/10">
                   {filteredProjects.map((project) => (
-                    <div key={project.id} className="grid w-full gap-4 p-5 text-left transition hover:bg-white/[0.04] md:grid-cols-[34px_150px_1fr_180px_130px_24px] md:items-center">
-                      <input type="checkbox" aria-label={`Selecionar ${project.project_code}`} checked={selectedProjectIds.includes(project.id)} onChange={(event) => setSelectedProjectIds((current) => event.target.checked ? [...current, project.id] : current.filter((id) => id !== project.id))} className="h-4 w-4 accent-cyan-400" />
-                      <button type="button" onClick={() => void openProject(project)} className="contents">
-                      <span className="font-mono text-sm font-semibold text-cyan-300">{project.project_code}</span>
-                      <span><strong className="block">{project.company_name}</strong><span className="mt-1 block text-sm text-muted-foreground">{project.segment || "Segmento não informado"}</span></span>
-                      <span className="text-sm"><span className="block">{project.contact_name || "Sem responsável"}</span><span className="mt-1 block text-muted-foreground">{project.city ? `${project.city}${project.state ? `/${project.state}` : ""}` : "Cidade não informada"}</span></span>
-                      <span className="w-fit rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300">{project.status || "novo"}</span>
-                      <ChevronRight className="hidden h-5 w-5 text-muted-foreground md:block" />
+                    <div
+                      key={project.id}
+                      className="grid w-full gap-4 p-5 text-left transition hover:bg-white/[0.04] md:grid-cols-[34px_150px_1fr_180px_130px_24px] md:items-center"
+                    >
+                      <input
+                        type="checkbox"
+                        aria-label={`Selecionar ${project.project_code}`}
+                        checked={selectedProjectIds.includes(project.id)}
+                        onChange={(event) =>
+                          setSelectedProjectIds((current) =>
+                            event.target.checked
+                              ? [...current, project.id]
+                              : current.filter((id) => id !== project.id),
+                          )
+                        }
+                        className="h-4 w-4 accent-cyan-400"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => void openProject(project)}
+                        className="contents"
+                      >
+                        <span className="font-mono text-sm font-semibold text-cyan-300">
+                          {project.project_code}
+                        </span>
+                        <span>
+                          <strong className="block">{project.company_name}</strong>
+                          <span className="mt-1 block text-sm text-muted-foreground">
+                            {project.segment || "Segmento não informado"}
+                          </span>
+                        </span>
+                        <span className="text-sm">
+                          <span className="block">{project.contact_name || "Sem responsável"}</span>
+                          <span className="mt-1 block text-muted-foreground">
+                            {project.city
+                              ? `${project.city}${project.state ? `/${project.state}` : ""}`
+                              : "Cidade não informada"}
+                          </span>
+                        </span>
+                        <span className="w-fit rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300">
+                          {project.status || "novo"}
+                        </span>
+                        <ChevronRight className="hidden h-5 w-5 text-muted-foreground md:block" />
                       </button>
                     </div>
                   ))}
                 </div>
-              ) : <div className="p-12 text-center text-muted-foreground">Nenhum projeto encontrado.</div>}
+              ) : (
+                <div className="p-12 text-center text-muted-foreground">
+                  Nenhum projeto encontrado.
+                </div>
+              )}
             </div>
           </>
         ) : (
           <div className="space-y-6">
-            <button type="button" onClick={() => { setSelectedProject(null); setBriefing(null); setProjectAssets([]); }} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Voltar aos projetos</button>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedProject(null);
+                setBriefing(null);
+                setProjectAssets([]);
+              }}
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4" /> Voltar aos projetos
+            </button>
 
             <div className="rounded-3xl border border-cyan-400/20 bg-cyan-400/[0.05] p-6">
               <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
-                <div><p className="font-mono text-sm font-semibold text-cyan-300">{selectedProject.project_code}</p><h2 className="mt-2 text-3xl font-bold">{selectedProject.company_name}</h2><p className="mt-2 text-muted-foreground">{selectedProject.segment || "Segmento não informado"}</p></div>
+                <div>
+                  <p className="font-mono text-sm font-semibold text-cyan-300">
+                    {selectedProject.project_code}
+                  </p>
+                  <h2 className="mt-2 text-3xl font-bold">{selectedProject.company_name}</h2>
+                  <p className="mt-2 text-muted-foreground">
+                    {selectedProject.segment || "Segmento não informado"}
+                  </p>
+                </div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <button type="button" onClick={() => setSummaryOpen(true)} disabled={!briefing} className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-[0_0_22px_rgba(34,211,238,0.16)] transition hover:-translate-y-0.5 hover:from-cyan-300 hover:to-violet-400 disabled:cursor-not-allowed disabled:opacity-50">
+                  <button
+                    type="button"
+                    onClick={() => setSummaryOpen(true)}
+                    disabled={!briefing}
+                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-[0_0_22px_rgba(34,211,238,0.16)] transition hover:-translate-y-0.5 hover:from-cyan-300 hover:to-violet-400 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
                     <Sparkles className="h-4 w-4" /> Gerar Resumo Técnico
                   </button>
-                  <button type="button" onClick={() => void deleteSingleProject(selectedProject)} disabled={deleting} className="inline-flex items-center gap-2 rounded-full border border-red-400/30 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-200 transition hover:bg-red-500/20 disabled:opacity-60"><Trash2 className="h-4 w-4" /> {deleting ? "Excluindo..." : "Excluir projeto"}</button>
-                  <span className="w-fit rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-300">{selectedProject.status || "novo"}</span>
+                  <button
+                    type="button"
+                    onClick={() => void deleteSingleProject(selectedProject)}
+                    disabled={deleting}
+                    className="inline-flex items-center gap-2 rounded-full border border-red-400/30 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-200 transition hover:bg-red-500/20 disabled:opacity-60"
+                  >
+                    <Trash2 className="h-4 w-4" /> {deleting ? "Excluindo..." : "Excluir projeto"}
+                  </button>
+                  <span className="w-fit rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-300">
+                    {selectedProject.status || "novo"}
+                  </span>
                 </div>
               </div>
               <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="flex gap-3"><UserRound className="mt-0.5 h-5 w-5 text-cyan-300" /><div><p className="text-xs text-muted-foreground">Responsável</p><p className="mt-1 text-sm">{selectedProject.contact_name || "Não informado"}</p></div></div>
-                <div className="flex gap-3"><Phone className="mt-0.5 h-5 w-5 text-cyan-300" /><div><p className="text-xs text-muted-foreground">Telefone</p><p className="mt-1 text-sm">{selectedProject.phone || "Não informado"}</p></div></div>
-                <div className="flex gap-3"><Mail className="mt-0.5 h-5 w-5 text-cyan-300" /><div><p className="text-xs text-muted-foreground">E-mail</p><p className="mt-1 break-all text-sm">{selectedProject.email || "Não informado"}</p></div></div>
-                <div className="flex gap-3"><MapPin className="mt-0.5 h-5 w-5 text-cyan-300" /><div><p className="text-xs text-muted-foreground">Localização</p><p className="mt-1 text-sm">{selectedProject.city ? `${selectedProject.city}${selectedProject.state ? `/${selectedProject.state}` : ""}` : "Não informada"}</p></div></div>
+                <div className="flex gap-3">
+                  <UserRound className="mt-0.5 h-5 w-5 text-cyan-300" />
+                  <div>
+                    <p className="text-xs text-muted-foreground">Responsável</p>
+                    <p className="mt-1 text-sm">
+                      {selectedProject.contact_name || "Não informado"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <Phone className="mt-0.5 h-5 w-5 text-cyan-300" />
+                  <div>
+                    <p className="text-xs text-muted-foreground">Telefone</p>
+                    <p className="mt-1 text-sm">{selectedProject.phone || "Não informado"}</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <Mail className="mt-0.5 h-5 w-5 text-cyan-300" />
+                  <div>
+                    <p className="text-xs text-muted-foreground">E-mail</p>
+                    <p className="mt-1 break-all text-sm">
+                      {selectedProject.email || "Não informado"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <MapPin className="mt-0.5 h-5 w-5 text-cyan-300" />
+                  <div>
+                    <p className="text-xs text-muted-foreground">Localização</p>
+                    <p className="mt-1 text-sm">
+                      {selectedProject.city
+                        ? `${selectedProject.city}${selectedProject.state ? `/${selectedProject.state}` : ""}`
+                        : "Não informada"}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
             <ProjectTrackingAdmin
               project={selectedProject}
               onProjectUpdated={(changes) => {
-                setSelectedProject((current) => current ? { ...current, ...changes } : current);
-                setProjects((current) => current.map((project) =>
-                  project.id === selectedProject.id ? { ...project, ...changes } : project,
-                ));
+                setSelectedProject((current) => (current ? { ...current, ...changes } : current));
+                setProjects((current) =>
+                  current.map((project) =>
+                    project.id === selectedProject.id ? { ...project, ...changes } : project,
+                  ),
+                );
               }}
             />
 
             <section className="rounded-3xl border border-white/10 bg-white/[0.02] p-6">
-              <div className="mb-5 flex items-center justify-between gap-3"><div><p className="text-xs uppercase tracking-[0.18em] text-cyan-300">Arquivos do projeto</p><h3 className="mt-1 text-xl font-bold">Logo, fachada e galeria</h3><p className="mt-2 text-sm text-muted-foreground">Visualize ou baixe o arquivo original no padrão Orion.</p></div><Images className="h-7 w-7 text-cyan-300" /></div>
-              {assetsLoading ? <div className="flex items-center gap-2 py-8 text-muted-foreground"><LoaderCircle className="h-5 w-5 animate-spin" /> Carregando imagens...</div> : projectAssets.length ? (
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{projectAssets.map((asset, index) => (
-                  <article key={asset.storagePath} className="overflow-hidden rounded-2xl border border-white/10 bg-black/20">
-                    <button type="button" onClick={() => window.open(asset.signedUrl, "_blank", "noopener,noreferrer")} className="group relative block aspect-video w-full overflow-hidden bg-black/30"><img src={asset.signedUrl} alt={asset.originalName} className="h-full w-full object-cover transition group-hover:scale-105" /><span className="absolute inset-0 grid place-items-center opacity-0 transition group-hover:bg-black/45 group-hover:opacity-100"><Eye className="h-7 w-7 text-white" /></span></button>
-                    <div className="p-4"><p className="truncate text-sm font-semibold">{asset.originalName}</p><p className="mt-1 text-xs text-muted-foreground">{fileCategoryLabel(asset.category)} · {humanFileSize(asset.sizeBytes)}</p><div className="mt-4 grid grid-cols-3 gap-2"><button type="button" onClick={() => window.open(asset.signedUrl, "_blank", "noopener,noreferrer")} className="inline-flex items-center justify-center gap-1 rounded-xl border border-white/10 px-2 py-2 text-[11px]"><Eye className="h-3.5 w-3.5" /> Ver</button><button type="button" onClick={() => void downloadAsset(asset, index)} className="inline-flex items-center justify-center gap-1 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 px-2 py-2 text-[11px] font-semibold text-slate-950"><Download className="h-3.5 w-3.5" /> Baixar</button><button type="button" onClick={() => void removeAsset(asset)} className="inline-flex items-center justify-center gap-1 rounded-xl border border-red-400/30 bg-red-500/10 px-2 py-2 text-[11px] text-red-200 hover:bg-red-500/20"><Trash2 className="h-3.5 w-3.5" /> Excluir</button></div></div>
-                  </article>))}</div>
-              ) : <div className="rounded-2xl border border-dashed border-white/10 px-5 py-8 text-center text-sm text-muted-foreground">Nenhuma imagem armazenada para este projeto.</div>}
+              <div className="mb-5 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.18em] text-cyan-300">
+                    Arquivos do projeto
+                  </p>
+                  <h3 className="mt-1 text-xl font-bold">Logo, fachada e galeria</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Visualize ou baixe o arquivo original no padrão Orion.
+                  </p>
+                </div>
+                <Images className="h-7 w-7 text-cyan-300" />
+              </div>
+              {assetsLoading ? (
+                <div className="flex items-center gap-2 py-8 text-muted-foreground">
+                  <LoaderCircle className="h-5 w-5 animate-spin" /> Carregando imagens...
+                </div>
+              ) : projectAssets.length ? (
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {projectAssets.map((asset, index) => (
+                    <article
+                      key={asset.storagePath}
+                      className="overflow-hidden rounded-2xl border border-white/10 bg-black/20"
+                    >
+                      <button
+                        type="button"
+                        onClick={() =>
+                          window.open(asset.signedUrl, "_blank", "noopener,noreferrer")
+                        }
+                        className="group relative block aspect-video w-full overflow-hidden bg-black/30"
+                      >
+                        <img
+                          src={asset.signedUrl}
+                          alt={asset.originalName}
+                          className="h-full w-full object-cover transition group-hover:scale-105"
+                        />
+                        <span className="absolute inset-0 grid place-items-center opacity-0 transition group-hover:bg-black/45 group-hover:opacity-100">
+                          <Eye className="h-7 w-7 text-white" />
+                        </span>
+                      </button>
+                      <div className="p-4">
+                        <p className="truncate text-sm font-semibold">{asset.originalName}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {fileCategoryLabel(asset.category)} · {humanFileSize(asset.sizeBytes)}
+                        </p>
+                        <div className="mt-4 grid grid-cols-3 gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              window.open(asset.signedUrl, "_blank", "noopener,noreferrer")
+                            }
+                            className="inline-flex items-center justify-center gap-1 rounded-xl border border-white/10 px-2 py-2 text-[11px]"
+                          >
+                            <Eye className="h-3.5 w-3.5" /> Ver
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => void downloadAsset(asset, index)}
+                            className="inline-flex items-center justify-center gap-1 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 px-2 py-2 text-[11px] font-semibold text-slate-950"
+                          >
+                            <Download className="h-3.5 w-3.5" /> Baixar
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => void removeAsset(asset)}
+                            className="inline-flex items-center justify-center gap-1 rounded-xl border border-red-400/30 bg-red-500/10 px-2 py-2 text-[11px] text-red-200 hover:bg-red-500/20"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" /> Excluir
+                          </button>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-dashed border-white/10 px-5 py-8 text-center text-sm text-muted-foreground">
+                  Nenhuma imagem armazenada para este projeto.
+                </div>
+              )}
               <div className="mt-3 min-h-5 text-sm text-emerald-300">{assetFeedback}</div>
             </section>
 
             <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
               <section className="rounded-3xl border border-white/10 bg-white/[0.02] p-6">
-                <div className="mb-5 flex items-center justify-between gap-3"><div><p className="text-xs uppercase tracking-[0.18em] text-cyan-300">Levantamento de requisitos</p><h3 className="mt-1 text-xl font-bold">Briefing completo</h3></div><FileText className="h-6 w-6 text-cyan-300" /></div>
-                {loading && !briefing ? <div className="flex items-center gap-2 py-10 text-muted-foreground"><LoaderCircle className="h-5 w-5 animate-spin" /> Carregando briefing...</div> : briefing ? (
+                <div className="mb-5 flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.18em] text-cyan-300">
+                      Levantamento de requisitos
+                    </p>
+                    <h3 className="mt-1 text-xl font-bold">Briefing completo</h3>
+                  </div>
+                  <FileText className="h-6 w-6 text-cyan-300" />
+                </div>
+                {loading && !briefing ? (
+                  <div className="flex items-center gap-2 py-10 text-muted-foreground">
+                    <LoaderCircle className="h-5 w-5 animate-spin" /> Carregando briefing...
+                  </div>
+                ) : briefing ? (
                   <div className="divide-y divide-white/10">
                     {answerEntries.map(([key, value]) => (
-                      <div key={key} className="grid gap-2 py-4 md:grid-cols-[220px_1fr]"><dt className="text-sm font-medium text-muted-foreground">{readableKey(key)}</dt><dd className="whitespace-pre-wrap break-words text-sm leading-relaxed">{renderAnswerValue(key, value)}</dd></div>
+                      <div key={key} className="grid gap-2 py-4 md:grid-cols-[220px_1fr]">
+                        <dt className="text-sm font-medium text-muted-foreground">
+                          {readableKey(key)}
+                        </dt>
+                        <dd className="whitespace-pre-wrap break-words text-sm leading-relaxed">
+                          {renderAnswerValue(key, value)}
+                        </dd>
+                      </div>
                     ))}
                   </div>
-                ) : <p className="py-10 text-muted-foreground">Nenhum briefing foi encontrado para este projeto.</p>}
+                ) : (
+                  <p className="py-10 text-muted-foreground">
+                    Nenhum briefing foi encontrado para este projeto.
+                  </p>
+                )}
               </section>
 
               <aside className="space-y-4">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><div className="flex gap-3"><Building2 className="h-5 w-5 text-cyan-300" /><div><p className="text-xs text-muted-foreground">Tipo de projeto</p><p className="mt-1 text-sm">{selectedProject.project_type || "website"}</p></div></div></div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><div className="flex gap-3"><CalendarDays className="h-5 w-5 text-cyan-300" /><div><p className="text-xs text-muted-foreground">Recebido em</p><p className="mt-1 text-sm">{formatDate(selectedProject.created_at)}</p></div></div></div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><p className="text-xs text-muted-foreground">Conclusão do briefing</p><p className="mt-2 text-3xl font-bold">{briefing?.completion_percentage ?? 0}%</p><div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-cyan-400" style={{ width: `${briefing?.completion_percentage ?? 0}%` }} /></div></div>
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                  <div className="flex gap-3">
+                    <Building2 className="h-5 w-5 text-cyan-300" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">Tipo de projeto</p>
+                      <p className="mt-1 text-sm">{selectedProject.project_type || "website"}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                  <div className="flex gap-3">
+                    <CalendarDays className="h-5 w-5 text-cyan-300" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">Recebido em</p>
+                      <p className="mt-1 text-sm">{formatDate(selectedProject.created_at)}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                  <p className="text-xs text-muted-foreground">Conclusão do briefing</p>
+                  <p className="mt-2 text-3xl font-bold">{briefing?.completion_percentage ?? 0}%</p>
+                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+                    <div
+                      className="h-full rounded-full bg-cyan-400"
+                      style={{ width: `${briefing?.completion_percentage ?? 0}%` }}
+                    />
+                  </div>
+                </div>
               </aside>
             </div>
           </div>
@@ -605,25 +1132,63 @@ ${technicalSummary}`;
       </section>
 
       {summaryOpen && selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-950/80 px-4 py-8 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="summary-title">
+        <div
+          className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-950/80 px-4 py-8 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="summary-title"
+        >
           <section className="w-full max-w-5xl overflow-hidden rounded-3xl border border-cyan-400/20 bg-background shadow-2xl">
             <header className="flex flex-col gap-4 border-b border-white/10 p-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-cyan-300">Base para o Prompt Master</p>
-                <h2 id="summary-title" className="mt-1 text-2xl font-bold">Resumo Técnico · {selectedProject.project_code}</h2>
+                <p className="text-xs uppercase tracking-[0.18em] text-cyan-300">
+                  Base para o Prompt Master
+                </p>
+                <h2 id="summary-title" className="mt-1 text-2xl font-bold">
+                  Resumo Técnico · {selectedProject.project_code}
+                </h2>
               </div>
-              <button type="button" onClick={() => setSummaryOpen(false)} className="inline-flex h-10 w-10 items-center justify-center self-end rounded-full border border-white/10 hover:bg-white/[0.06] sm:self-auto" aria-label="Fechar resumo"><X className="h-5 w-5" /></button>
+              <button
+                type="button"
+                onClick={() => setSummaryOpen(false)}
+                className="inline-flex h-10 w-10 items-center justify-center self-end rounded-full border border-white/10 hover:bg-white/[0.06] sm:self-auto"
+                aria-label="Fechar resumo"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </header>
 
             <div className="p-5">
               <div className="mb-4 rounded-2xl border border-cyan-400/20 bg-cyan-400/[0.05] p-4 text-sm leading-relaxed text-muted-foreground">
-                Este texto organiza automaticamente os dados coletados. Use <strong className="text-foreground">Copiar para ChatGPT</strong> para levar o briefing completo e solicitar o Prompt Master da Orion.
+                Este texto organiza automaticamente os dados coletados. Use{" "}
+                <strong className="text-foreground">Copiar para ChatGPT</strong> para levar o
+                briefing completo e solicitar o Prompt Master da Orion.
               </div>
-              <pre className="max-h-[55vh] overflow-auto whitespace-pre-wrap break-words rounded-2xl border border-white/10 bg-black/25 p-5 font-mono text-sm leading-relaxed text-foreground">{technicalSummary}</pre>
-              <div aria-live="polite" className="mt-3 min-h-6 text-sm text-emerald-300">{copyFeedback && <span className="inline-flex items-center gap-2"><Check className="h-4 w-4" /> {copyFeedback}</span>}</div>
+              <pre className="max-h-[55vh] overflow-auto whitespace-pre-wrap break-words rounded-2xl border border-white/10 bg-black/25 p-5 font-mono text-sm leading-relaxed text-foreground">
+                {technicalSummary}
+              </pre>
+              <div aria-live="polite" className="mt-3 min-h-6 text-sm text-emerald-300">
+                {copyFeedback && (
+                  <span className="inline-flex items-center gap-2">
+                    <Check className="h-4 w-4" /> {copyFeedback}
+                  </span>
+                )}
+              </div>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                <button type="button" onClick={() => void copySummary()} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-5 py-4 font-semibold text-white shadow-[0_0_28px_rgba(59,130,246,0.20)] transition hover:-translate-y-0.5"><ClipboardCopy className="h-5 w-5" /> Copiar para ChatGPT</button>
-                <button type="button" onClick={downloadSummary} className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-5 py-4 font-semibold transition hover:bg-white/[0.06]"><Download className="h-5 w-5" /> Baixar resumo (.txt)</button>
+                <button
+                  type="button"
+                  onClick={() => void copySummary()}
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-5 py-4 font-semibold text-white shadow-[0_0_28px_rgba(59,130,246,0.20)] transition hover:-translate-y-0.5"
+                >
+                  <ClipboardCopy className="h-5 w-5" /> Copiar para ChatGPT
+                </button>
+                <button
+                  type="button"
+                  onClick={downloadSummary}
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-5 py-4 font-semibold transition hover:bg-white/[0.06]"
+                >
+                  <Download className="h-5 w-5" /> Baixar resumo (.txt)
+                </button>
               </div>
             </div>
           </section>

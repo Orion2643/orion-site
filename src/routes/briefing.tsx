@@ -8,7 +8,8 @@ export const Route = createFileRoute("/briefing")({
       { title: "Levantamento de Requisitos | Orion" },
       {
         name: "description",
-        content: "Portal Orion para levantamento de requisitos e geração de briefing de projetos digitais.",
+        content:
+          "Portal Orion para levantamento de requisitos e geração de briefing de projetos digitais.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

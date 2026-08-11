@@ -156,9 +156,9 @@ function Hero() {
             Transformamos ideias em <span className="text-gradient">tecnologia inteligente</span>
           </h1>
           <p className="mt-6 max-w-xl text-base md:text-lg text-muted-foreground leading-relaxed">
-            A Orion desenvolve sites profissionais, sistemas personalizados e soluções digitais
-            sob medida para empresas que desejam organizar processos, fortalecer sua presença online
-            e crescer com tecnologia.
+            A Orion desenvolve sites profissionais, sistemas personalizados e soluções digitais sob
+            medida para empresas que desejam organizar processos, fortalecer sua presença online e
+            crescer com tecnologia.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
@@ -239,10 +239,26 @@ function SectionHeader({
 /* ---------- SOBRE ---------- */
 function About() {
   const pillars = [
-    { icon: Globe, title: "Presença digital", desc: "Sites profissionais alinhados à identidade do seu negócio." },
-    { icon: LayoutDashboard, title: "Sistemas sob medida", desc: "Ferramentas desenvolvidas conforme a rotina de cada empresa." },
-    { icon: Palette, title: "Design responsivo", desc: "Experiências claras e modernas em computadores e celulares." },
-    { icon: Compass, title: "Consultoria", desc: "Orientação prática para escolher e aplicar a tecnologia certa." },
+    {
+      icon: Globe,
+      title: "Presença digital",
+      desc: "Sites profissionais alinhados à identidade do seu negócio.",
+    },
+    {
+      icon: LayoutDashboard,
+      title: "Sistemas sob medida",
+      desc: "Ferramentas desenvolvidas conforme a rotina de cada empresa.",
+    },
+    {
+      icon: Palette,
+      title: "Design responsivo",
+      desc: "Experiências claras e modernas em computadores e celulares.",
+    },
+    {
+      icon: Compass,
+      title: "Consultoria",
+      desc: "Orientação prática para escolher e aplicar a tecnologia certa.",
+    },
   ];
   return (
     <section id="sobre" className="relative py-28">
@@ -397,8 +413,18 @@ function Process() {
 function Projects() {
   const projects = [
     { icon: Scissors, title: "Sistema para Barbearia", tag: "Agendamentos", device: "laptop" },
-    { icon: Sparkles, title: "Sistema para Manicure", tag: "Agenda e clientes", device: "smartphone" },
-    { icon: Wrench, title: "Sistema para Oficina Mecânica", tag: "Ordens de serviço", device: "desktop" },
+    {
+      icon: Sparkles,
+      title: "Sistema para Manicure",
+      tag: "Agenda e clientes",
+      device: "smartphone",
+    },
+    {
+      icon: Wrench,
+      title: "Sistema para Oficina Mecânica",
+      tag: "Ordens de serviço",
+      device: "desktop",
+    },
     { icon: Hammer, title: "Sistema para Serralheria", tag: "Orçamentos", device: "tablet" },
     { icon: Package, title: "Gestão de Estoque", tag: "Inventário", device: "tablet" },
   ];
@@ -475,7 +501,11 @@ function Technologies() {
   return (
     <section id="tecnologias" className="relative py-28">
       <div className="mx-auto max-w-7xl px-6">
-        <SectionHeader eyebrow="Stack" title="Tecnologias que utilizamos" subtitle="Ferramentas que já fazem parte do nosso processo de desenvolvimento e aprendizado contínuo." />
+        <SectionHeader
+          eyebrow="Stack"
+          title="Tecnologias que utilizamos"
+          subtitle="Ferramentas que já fazem parte do nosso processo de desenvolvimento e aprendizado contínuo."
+        />
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
           {techs.map((t, i) => (
             <motion.div
@@ -514,7 +544,8 @@ function AISection() {
             <Sparkles className="h-3 w-3" /> Inteligência Artificial
           </div>
           <h2 className="mt-5 font-display text-3xl md:text-5xl font-bold leading-tight">
-            Tecnologia com <span className="text-gradient">Inteligência Artificial</span> aplicada com propósito
+            Tecnologia com <span className="text-gradient">Inteligência Artificial</span> aplicada
+            com propósito
           </h2>
           <p className="mt-5 text-muted-foreground leading-relaxed">
             A Inteligência Artificial já faz parte das ferramentas que utilizamos para apoiar o
@@ -554,15 +585,51 @@ function AISection() {
 /* ---------- POR QUE ---------- */
 function WhyUs() {
   const items = [
-    { icon: Target, title: "Desenvolvimento personalizado", desc: "Cada projeto nasce das necessidades reais do seu negócio." },
-    { icon: MessageCircle, title: "Comunicação transparente", desc: "Você acompanha as etapas e entende o que está sendo desenvolvido." },
-    { icon: CheckCircle2, title: "Entrega organizada", desc: "Planejamento, testes e publicação seguindo um processo claro." },
-    { icon: Smartphone, title: "Design responsivo", desc: "Experiência bem apresentada em computadores, tablets e celulares." },
-    { icon: Search, title: "SEO desde o início", desc: "Estrutura preparada para facilitar a descoberta do site nos buscadores." },
-    { icon: ShieldCheck, title: "Segurança e backup", desc: "Boas práticas e cópias de segurança durante o desenvolvimento." },
-    { icon: Users, title: "Atendimento próximo", desc: "Contato direto, escuta ativa e suporte compatível com o projeto." },
-    { icon: LineChart, title: "Soluções que podem evoluir", desc: "Estrutura pensada para receber melhorias conforme o negócio cresce." },
-    { icon: Sparkles, title: "Aprendizado contínuo", desc: "Acompanhamos novas tecnologias para oferecer soluções cada vez melhores." },
+    {
+      icon: Target,
+      title: "Desenvolvimento personalizado",
+      desc: "Cada projeto nasce das necessidades reais do seu negócio.",
+    },
+    {
+      icon: MessageCircle,
+      title: "Comunicação transparente",
+      desc: "Você acompanha as etapas e entende o que está sendo desenvolvido.",
+    },
+    {
+      icon: CheckCircle2,
+      title: "Entrega organizada",
+      desc: "Planejamento, testes e publicação seguindo um processo claro.",
+    },
+    {
+      icon: Smartphone,
+      title: "Design responsivo",
+      desc: "Experiência bem apresentada em computadores, tablets e celulares.",
+    },
+    {
+      icon: Search,
+      title: "SEO desde o início",
+      desc: "Estrutura preparada para facilitar a descoberta do site nos buscadores.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Segurança e backup",
+      desc: "Boas práticas e cópias de segurança durante o desenvolvimento.",
+    },
+    {
+      icon: Users,
+      title: "Atendimento próximo",
+      desc: "Contato direto, escuta ativa e suporte compatível com o projeto.",
+    },
+    {
+      icon: LineChart,
+      title: "Soluções que podem evoluir",
+      desc: "Estrutura pensada para receber melhorias conforme o negócio cresce.",
+    },
+    {
+      icon: Sparkles,
+      title: "Aprendizado contínuo",
+      desc: "Acompanhamos novas tecnologias para oferecer soluções cada vez melhores.",
+    },
   ];
   return (
     <section className="relative py-28">
@@ -596,10 +663,26 @@ function WhyUs() {
 /* ---------- COMPROMISSOS ---------- */
 function Metrics() {
   const commitments = [
-    { icon: Target, title: "Projetos sob medida", desc: "Soluções pensadas para a realidade de cada cliente." },
-    { icon: Code2, title: "13 tecnologias", desc: "Ferramentas utilizadas em nosso processo de desenvolvimento." },
-    { icon: Users, title: "Atendimento humanizado", desc: "Contato direto e acompanhamento durante o projeto." },
-    { icon: ShieldCheck, title: "Compromisso com a qualidade", desc: "Cuidado com testes, organização e entrega." },
+    {
+      icon: Target,
+      title: "Projetos sob medida",
+      desc: "Soluções pensadas para a realidade de cada cliente.",
+    },
+    {
+      icon: Code2,
+      title: "13 tecnologias",
+      desc: "Ferramentas utilizadas em nosso processo de desenvolvimento.",
+    },
+    {
+      icon: Users,
+      title: "Atendimento humanizado",
+      desc: "Contato direto e acompanhamento durante o projeto.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Compromisso com a qualidade",
+      desc: "Cuidado com testes, organização e entrega.",
+    },
   ];
   return (
     <section className="relative py-20">
@@ -732,12 +815,10 @@ function EvaluationForm() {
       `*Tipo de serviço:* ${form.service}`,
       `*Descrição do projeto:* ${form.description.trim()}`,
     ].join("\n");
-    
-    const whatsappLink = `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(
-  message,
-)}`;
 
-window.open(whatsappLink, "_blank", "noopener,noreferrer");
+    const whatsappLink = `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappLink, "_blank", "noopener,noreferrer");
 
     setForm({
       name: "",
@@ -809,7 +890,9 @@ window.open(whatsappLink, "_blank", "noopener,noreferrer");
                     onChange={(event) => updateField("service", event.target.value)}
                     className={inputClass}
                   >
-                    <option value="" className="bg-background">Selecione</option>
+                    <option value="" className="bg-background">
+                      Selecione
+                    </option>
                     {services.map((service) => (
                       <option key={service} value={service} className="bg-background">
                         {service}
@@ -830,14 +913,18 @@ window.open(whatsappLink, "_blank", "noopener,noreferrer");
               </label>
 
               {error && (
-                <p role="alert" className="rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-200">
+                <p
+                  role="alert"
+                  className="rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-200"
+                >
                   {error}
                 </p>
               )}
 
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                  Ao enviar, você será direcionado ao WhatsApp da Orion com as informações preenchidas.
+                  Ao enviar, você será direcionado ao WhatsApp da Orion com as informações
+                  preenchidas.
                 </p>
                 <button
                   type="submit"

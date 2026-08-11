@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  ArrowRight,
-  CheckCircle2,
-  Clock3,
-  LoaderCircle,
-  Search,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock3, LoaderCircle, Search, ShieldCheck } from "lucide-react";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { OrionMark } from "./OrionMark";
 import { AnimatePresence, motion } from "framer-motion";
@@ -64,10 +57,9 @@ export function ProjectTrackingSection() {
     setError("");
     setTracking(null);
 
-    const { data, error: lookupError } = await supabase.rpc(
-      "get_project_tracking",
-      { p_project_code: normalized },
-    );
+    const { data, error: lookupError } = await supabase.rpc("get_project_tracking", {
+      p_project_code: normalized,
+    });
 
     if (lookupError) {
       setError(`Não foi possível consultar o projeto. ${lookupError.message}`);
@@ -103,11 +95,11 @@ export function ProjectTrackingSection() {
                 <span className="eyebrow">Acompanhe seu projeto</span>
               </div>
               <h2 className="mt-3 text-2xl font-bold leading-tight sm:text-3xl">
-                Consulte seu andamento{" "}
-                <span className="text-gradient">pelo protocolo</span>
+                Consulte seu andamento <span className="text-gradient">pelo protocolo</span>
               </h2>
               <p className="mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
-                Digite o código recebido ao finalizar o briefing. A consulta mostra somente o andamento e as atualizações liberadas pela Orion.
+                Digite o código recebido ao finalizar o briefing. A consulta mostra somente o
+                andamento e as atualizações liberadas pela Orion.
               </p>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -213,7 +205,9 @@ export function ProjectTrackingSection() {
                       </div>
                       <div className="rounded-xl border border-white/10 bg-black/15 p-4">
                         <p className="text-xs text-muted-foreground">Última atualização</p>
-                        <p className="mt-2 text-sm font-medium">{formatDate(tracking.updated_at)}</p>
+                        <p className="mt-2 text-sm font-medium">
+                          {formatDate(tracking.updated_at)}
+                        </p>
                       </div>
                     </div>
                   </motion.div>
@@ -231,7 +225,10 @@ export function ProjectTrackingSection() {
                       </span>
                     </div>
                     {tracking.timeline?.length ? (
-                      <StaggerGroup className="max-h-[430px] space-y-3 overflow-y-auto pr-1" stagger={0.08}>
+                      <StaggerGroup
+                        className="max-h-[430px] space-y-3 overflow-y-auto pr-1"
+                        stagger={0.08}
+                      >
                         {tracking.timeline.map((item) => (
                           <StaggerItem key={item.id} y={12}>
                             <article className="rounded-xl border border-white/10 bg-white/[0.025] p-4">

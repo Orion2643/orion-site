@@ -34,9 +34,12 @@ export function ShootingStars() {
         duration: 0.7 + Math.random() * 0.3,
       };
       setShots((prev) => [...prev, shot]);
-      window.setTimeout(() => {
-        setShots((prev) => prev.filter((s) => s.id !== shot.id));
-      }, shot.duration * 1000 + 200);
+      window.setTimeout(
+        () => {
+          setShots((prev) => prev.filter((s) => s.id !== shot.id));
+        },
+        shot.duration * 1000 + 200,
+      );
 
       timeout = setTimeout(spawn, 8000 + Math.random() * 10000);
     };
@@ -46,10 +49,7 @@ export function ShootingStars() {
   }, []);
 
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none fixed inset-0 z-[5] overflow-hidden"
-    >
+    <div aria-hidden className="pointer-events-none fixed inset-0 z-[5] overflow-hidden">
       {shots.map((s) => (
         <span
           key={s.id}

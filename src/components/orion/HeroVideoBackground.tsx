@@ -27,7 +27,8 @@ export function HeroVideoBackground() {
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const syncMobile = (event: MediaQueryList | MediaQueryListEvent) => setIsMobile(event.matches);
-    const syncMotion = (event: MediaQueryList | MediaQueryListEvent) => setReducedMotion(event.matches);
+    const syncMotion = (event: MediaQueryList | MediaQueryListEvent) =>
+      setReducedMotion(event.matches);
 
     syncMobile(mobileQuery);
     syncMotion(motionQuery);
@@ -43,11 +44,7 @@ export function HeroVideoBackground() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
       {reducedMotion || isMobile ? (
-        <img
-          src={SOURCES.poster}
-          alt=""
-          className="h-full w-full object-cover opacity-45"
-        />
+        <img src={SOURCES.poster} alt="" className="h-full w-full object-cover opacity-45" />
       ) : (
         <video
           key={isMobile ? "mobile" : "desktop"}

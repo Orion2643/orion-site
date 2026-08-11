@@ -80,8 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "google", content: "notranslate" },
       { name: "theme-color", content: "#050816" },
       {
-        title:
-          "Orion Soluções em Tecnologia | Sites Profissionais, Sistemas Web, Automação e IA",
+        title: "Orion Soluções em Tecnologia | Sites Profissionais, Sistemas Web, Automação e IA",
       },
       {
         name: "description",

@@ -24,16 +24,29 @@ export function Footer() {
     <footer className="relative overflow-hidden border-t border-border/60 bg-space-deep/80 pt-16 pb-8">
       <VideoBackdrop opacity={0.24} tintOpacity={0.85} />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-        <StaggerGroup className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]" stagger={0.1} amount={0.3}>
+        <StaggerGroup
+          className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]"
+          stagger={0.1}
+          amount={0.3}
+        >
           <StaggerItem y={16}>
             <Logo />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Sites profissionais, sistemas personalizados e automações inteligentes para empresas que querem crescer com tecnologia.
+              Sites profissionais, sistemas personalizados e automações inteligentes para empresas
+              que querem crescer com tecnologia.
             </p>
             <div className="mt-6 flex items-center gap-3">
               {[
-                { Icon: Linkedin, href: "https://www.linkedin.com/company/orion-solu%C3%A7%C3%B5es-em-tecnologia/about/?viewAsMember=true", label: "LinkedIn" },
-                { Icon: Instagram, href: "https://www.instagram.com/orionai2643/", label: "Instagram" },
+                {
+                  Icon: Linkedin,
+                  href: "https://www.linkedin.com/company/orion-solu%C3%A7%C3%B5es-em-tecnologia/about/?viewAsMember=true",
+                  label: "LinkedIn",
+                },
+                {
+                  Icon: Instagram,
+                  href: "https://www.instagram.com/orionai2643/",
+                  label: "Instagram",
+                },
                 { Icon: Github, href: "https://github.com/Orion2643", label: "GitHub" },
                 { Icon: Mail, href: "mailto:orionai2643@gmail.com", label: "E-mail" },
               ].map(({ Icon, href, label }) => (
@@ -89,7 +102,11 @@ export function Footer() {
             <ul className="mt-5 space-y-3 text-sm text-foreground/80">
               <li className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-primary" />
-                <a href="tel:+5515976043100" aria-label="Ligar para a Orion" className="hover:text-foreground">
+                <a
+                  href="tel:+5515976043100"
+                  aria-label="Ligar para a Orion"
+                  className="hover:text-foreground"
+                >
                   (15) 97604-3100
                 </a>
               </li>

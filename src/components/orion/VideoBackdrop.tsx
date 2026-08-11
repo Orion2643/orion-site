@@ -43,7 +43,8 @@ export function VideoBackdrop({
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const syncMobile = (event: MediaQueryList | MediaQueryListEvent) => setIsMobile(event.matches);
-    const syncMotion = (event: MediaQueryList | MediaQueryListEvent) => setReducedMotion(event.matches);
+    const syncMotion = (event: MediaQueryList | MediaQueryListEvent) =>
+      setReducedMotion(event.matches);
 
     syncMobile(mobileQuery);
     syncMotion(motionQuery);
@@ -57,9 +58,17 @@ export function VideoBackdrop({
   }, []);
 
   return (
-    <div aria-hidden className={`pointer-events-none absolute inset-0 z-0 overflow-hidden ${className}`}>
+    <div
+      aria-hidden
+      className={`pointer-events-none absolute inset-0 z-0 overflow-hidden ${className}`}
+    >
       {reducedMotion || isMobile ? (
-        <img src={SOURCES.poster} alt="" className="h-full w-full object-cover" style={{ opacity }} />
+        <img
+          src={SOURCES.poster}
+          alt=""
+          className="h-full w-full object-cover"
+          style={{ opacity }}
+        />
       ) : (
         <video
           key={isMobile ? "mobile" : "desktop"}
@@ -92,7 +101,9 @@ export function VideoBackdrop({
         <>
           <div
             className="absolute inset-x-0 top-0 h-1/3"
-            style={{ background: "linear-gradient(180deg, var(--background) 0%, transparent 100%)" }}
+            style={{
+              background: "linear-gradient(180deg, var(--background) 0%, transparent 100%)",
+            }}
           />
           <div
             className="absolute inset-x-0 bottom-0 h-1/2"
@@ -104,7 +115,9 @@ export function VideoBackdrop({
           />
           <div
             className="absolute inset-y-0 right-0 w-1/4"
-            style={{ background: "linear-gradient(270deg, var(--background) 0%, transparent 100%)" }}
+            style={{
+              background: "linear-gradient(270deg, var(--background) 0%, transparent 100%)",
+            }}
           />
         </>
       )}

@@ -2,20 +2,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/orion/Header";
 import { HeroSection } from "@/components/orion/HeroSection";
 import { MainCards } from "@/components/orion/MainCards";
-import { ProcessSection } from "@/components/orion/ProcessSection";
+import { ProcessSticky } from "@/components/orion/ProcessSticky";
+import { StackedProjects } from "@/components/orion/StackedProjects";
+import { MetricsBand } from "@/components/orion/CountUp";
 import { ProjectTrackingSection } from "@/components/orion/ProjectTrackingSection";
 import { FinalCTA } from "@/components/orion/FinalCTA";
 import { Footer } from "@/components/orion/Footer";
 import { WhatsAppFloat } from "@/components/orion/WhatsAppFloat";
 import { ScrollProgressBar } from "@/components/orion/motion";
+import { useLenis } from "@/lib/useLenis";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      {
-        title:
-          "Orion Soluções em Tecnologia | Sites Profissionais, Sistemas Web, Automação e IA",
-      },
+      { title: "Orion Soluções em Tecnologia | Sites Profissionais, Sistemas Web, Automação e IA" },
       {
         name: "description",
         content:
@@ -35,10 +35,7 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "https://orion-sistemas.info" },
       { property: "og:image", content: "https://orion-sistemas.info/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      {
-        name: "twitter:title",
-        content: "Orion | Sites Profissionais, Sistemas Web e Automação",
-      },
+      { name: "twitter:title", content: "Orion | Sites Profissionais, Sistemas Web e Automação" },
       {
         name: "twitter:description",
         content:
@@ -52,6 +49,7 @@ export const Route = createFileRoute("/")({
 });
 
 function LandingPage() {
+  useLenis();
   return (
     <div className="relative min-h-screen bg-background text-foreground">
       <ScrollProgressBar />
@@ -59,7 +57,9 @@ function LandingPage() {
       <main>
         <HeroSection />
         <MainCards />
-        <ProcessSection />
+        <ProcessSticky />
+        <StackedProjects />
+        <MetricsBand />
         <ProjectTrackingSection />
         <FinalCTA />
       </main>
