@@ -47,7 +47,6 @@ export function Footer() {
                   href: "https://www.instagram.com/orionai2643/",
                   label: "Instagram",
                 },
-                { Icon: Github, href: "https://github.com/Orion2643", label: "GitHub" },
                 { Icon: Mail, href: "mailto:orionai2643@gmail.com", label: "E-mail" },
               ].map(({ Icon, href, label }) => (
                 <a

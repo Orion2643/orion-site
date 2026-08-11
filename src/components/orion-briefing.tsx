@@ -356,6 +356,7 @@ export default function OrionBriefing() {
   const [submitError, setSubmitError] = useState("");
   const [uploadError, setUploadError] = useState("");
   const [projectCode, setProjectCode] = useState("");
+  const pct = Math.round(((step + 1) / steps.length) * 100);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("orion-briefing-v1");
@@ -1439,8 +1440,8 @@ ${briefing}`,
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-white/10">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-violet-400 transition-all duration-500"
-              style={{ width: `${((step + 1) / steps.length) * 100}%` }}
+              className="h-full rounded-full bg-gradient-to-r from-[#f2d691] via-[#dcb763] to-[#c9a24d]"
+              style={{ width: `${pct}%`, background: "linear-gradient(90deg, #f2d691, #c9a24d)" }}
             />
           </div>
           <div className="mt-4 hidden grid-cols-8 gap-2 lg:grid">

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -1480,4 +1481,139 @@ a[class*="gradient"]::after {
     animation: none !important;
     filter: none !important;
   }
+}
+/* =========================================================
+   ORION V15 — SILVER CHROME (FINAL)
+   Prata dominante + dourado exclusivo nos CTAs
+   ========================================================= */
+
+:root {
+  /* Tipografia espacial */
+  --font-sans: "Exo 2", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Orbitron", "Exo 2", sans-serif;
+
+  /* Tokens prata */
+  --orion-blue: oklch(0.88 0.02 250);
+  --orion-cyan: oklch(0.93 0.01 250);
+  --orion-violet: oklch(0.80 0.03 250);
+
+  /* Dourado SOMENTE para ações */
+  --primary: oklch(0.80 0.13 80);
+  --primary-foreground: oklch(0.16 0.04 80);
+  --ring: oklch(0.90 0.02 250);
+
+  /* Gradientes */
+  --gradient-brand: linear-gradient(135deg, oklch(0.90 0.10 92), oklch(0.78 0.13 78));
+  --gradient-text: linear-gradient(180deg, oklch(0.99 0 0), oklch(0.82 0.02 250) 55%, oklch(0.96 0.01 250));
+  --gradient-hero: radial-gradient(ellipse at 50% 28%, oklch(0.30 0.02 250 / 0.40), transparent 62%),
+    radial-gradient(ellipse at 82% 58%, oklch(0.26 0.02 250 / 0.30), transparent 58%),
+    linear-gradient(180deg, oklch(0.12 0.015 260), oklch(0.16 0.02 260));
+  --shadow-glow: 0 0 40px oklch(0.90 0.02 250 / 0.30);
+
+  /* Vidro prateado */
+  --orion-glass: linear-gradient(145deg, rgba(22, 26, 34, .62), rgba(14, 17, 24, .42));
+  --orion-glass-strong: linear-gradient(145deg, rgba(14, 17, 24, .82), rgba(10, 12, 18, .67));
+  --orion-glass-border: rgba(214, 224, 238, .20);
+  --orion-neon: rgba(214, 224, 238, .38);
+  --orion-purple-neon: rgba(160, 175, 200, .30);
+}
+
+/* Nebulosa cromada prateada */
+body {
+  background:
+    radial-gradient(ellipse at 12% 18%, rgba(220, 228, 240, .15), transparent 38%),
+    radial-gradient(ellipse at 76% 14%, rgba(160, 175, 200, .13), transparent 44%),
+    radial-gradient(ellipse at 55% 72%, rgba(120, 135, 165, .11), transparent 48%),
+    linear-gradient(155deg, #05070c 0%, #0a0d16 44%, #060810 100%);
+}
+body::before {
+  background:
+    radial-gradient(ellipse at 25% 30%, rgba(214, 224, 238, .11), transparent 28%),
+    radial-gradient(ellipse at 72% 38%, rgba(160, 175, 200, .11), transparent 32%),
+    radial-gradient(ellipse at 48% 85%, rgba(120, 135, 165, .09), transparent 35%);
+}
+body::after {
+  background-image:
+    radial-gradient(circle at 12% 22%, rgba(255,255,255,.95) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 68% 12%, rgba(224,232,244,.9) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 84% 64%, rgba(255,255,255,.75) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 38% 78%, rgba(200,212,228,.8) 0 1px, transparent 1.5px);
+}
+
+/* Títulos chrome com brilho prateado */
+h1, h2, h3, h4 { text-shadow: 0 0 26px rgba(226, 232, 240, .16); }
+h1 { letter-spacing: -0.01em; }
+
+/* Logo com fonte display */
+.orion-brand-name, [data-orion-brand] { font-family: var(--font-display); }
+
+/* Texto em chrome prata */
+.text-gradient { background: var(--gradient-text); }
+.text-gradient-violet { background: linear-gradient(180deg, oklch(0.99 0 0), oklch(0.80 0.02 250) 60%, oklch(0.95 0.01 250)); }
+.text-gradient-blue { background: linear-gradient(90deg, oklch(0.97 0.005 250), oklch(0.85 0.02 250)); }
+
+/* Eyebrow prata */
+.eyebrow { background: linear-gradient(90deg, oklch(0.95 0.01 250), oklch(0.80 0.03 250)); }
+
+/* BOTÕES: o único dourado da página (guia a conversão) */
+.btn-primary-glow {
+  background: var(--gradient-brand);
+  color: oklch(0.16 0.04 80);
+  box-shadow: 0 8px 24px oklch(0.80 0.13 80 / .35), 0 0 0 1px oklch(0.90 0.10 92 / .4) inset;
+}
+.btn-primary-glow:hover {
+  box-shadow: 0 12px 32px oklch(0.80 0.13 80 / .5), 0 0 0 1px oklch(0.92 0.10 92 / .55) inset;
+}
+
+/* Cards com hover prata */
+.card-space:hover {
+  border-color: oklch(0.90 0.01 250 / .45);
+  box-shadow: 0 20px 60px oklch(0.05 0.02 260 / .7), 0 0 0 1px oklch(0.90 0.01 250 / .35) inset, 0 0 40px oklch(0.90 0.01 250 / .12);
+}
+
+/* Inputs com foco prata */
+input:focus, textarea:focus, select:focus {
+  border-color: rgba(214, 224, 238, .7) !important;
+  box-shadow: 0 0 0 3px rgba(214, 224, 238, .12), 0 0 24px rgba(214, 224, 238, .18) !important;
+}
+
+/* Linha do tempo prateada */
+.orion-process-track, .process-mobile-line {
+  background: linear-gradient(180deg, oklch(0.90 0.01 250 / .14), oklch(0.90 0.02 250 / .5) 18%, oklch(0.80 0.03 250 / .38) 82%, oklch(0.90 0.01 250 / .12));
+}
+.process-desktop-line {
+  background: linear-gradient(90deg, transparent, oklch(0.90 0.02 250 / .6), transparent);
+}
+.orion-process-energy, .process-mobile-energy {
+  background: linear-gradient(180deg, transparent, oklch(0.97 0.005 250), oklch(0.85 0.02 250), transparent);
+  filter: drop-shadow(0 0 8px oklch(0.93 0.01 250 / .9)) drop-shadow(0 0 18px oklch(0.85 0.02 250 / .6));
+}
+.process-desktop-energy {
+  background: linear-gradient(90deg, transparent, oklch(0.97 0.005 250), oklch(0.85 0.02 250), transparent);
+  filter: drop-shadow(0 0 8px oklch(0.93 0.01 250 / .9)) drop-shadow(0 0 18px oklch(0.85 0.02 250 / .55));
+}
+@media (min-width: 1024px) {
+  .orion-process-energy {
+    background: linear-gradient(90deg, transparent, oklch(0.97 0.005 250), oklch(0.85 0.02 250), transparent);
+  }
+}
+.orion-process-icon {
+  color: oklch(0.90 0.01 250);
+  border-color: oklch(0.88 0.02 250 / .55);
+}
+/* =========================================================
+   ORION V15.1 — FIX texto gradiente (efeito "barra")
+   ========================================================= */
+.text-gradient { background-image: var(--gradient-text); }
+.text-gradient-violet { background-image: linear-gradient(180deg, oklch(0.99 0 0), oklch(0.80 0.02 250) 60%, oklch(0.95 0.01 250)); }
+.text-gradient-blue { background-image: linear-gradient(90deg, oklch(0.97 0.005 250), oklch(0.85 0.02 250)); }
+.eyebrow { background-image: linear-gradient(90deg, oklch(0.95 0.01 250), oklch(0.80 0.03 250)); }
+
+.text-gradient,
+.text-gradient-violet,
+.text-gradient-blue,
+.eyebrow {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
