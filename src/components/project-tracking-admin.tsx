@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { CheckCircle2, Clock3, History, LoaderCircle, Save, Send } from "lucide-react";
 import { supabase } from "../lib/supabase";
 
@@ -70,7 +70,7 @@ export default function ProjectTrackingAdmin({
 
   const progress = useMemo(() => statusProgress(status), [status]);
 
-  const loadTimeline = async () => {
+  const loadTimeline = useCallback(async () => {
     if (!supabase) return;
     setLoading(true);
     setError("");
@@ -83,14 +83,14 @@ export default function ProjectTrackingAdmin({
     if (timelineError) setError(`Não foi possível carregar a timeline. ${timelineError.message}`);
     else setTimeline((data ?? []) as TimelineItem[]);
     setLoading(false);
-  };
+  }, [project.id]);
 
   useEffect(() => {
     setStatus(project.status || "novo");
     setNextStep(project.next_step || "");
     setNote("");
     void loadTimeline();
-  }, [project.id]);
+  }, [loadTimeline, project.next_step, project.status]);
 
   const saveTracking = async () => {
     if (!supabase || saving) return;

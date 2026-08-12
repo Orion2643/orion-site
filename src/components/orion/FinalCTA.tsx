@@ -30,7 +30,7 @@ export function FinalCTA() {
               Começar agora →
             </a>
             <a
-              href="https://wa.me/5500000000000"
+              href="https://wa.me/5515976043100?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Orion%20e%20quero%20iniciar%20um%20projeto.%20%F0%9F%9A%80"
               target="_blank"
               rel="noreferrer"
               className="rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold backdrop-blur transition hover:bg-white/10"

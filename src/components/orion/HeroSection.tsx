@@ -162,7 +162,7 @@ export function HeroSection() {
 
               <Magnetic strength={10} className="w-full sm:w-auto">
                 <a
-                  href="#como-funciona"
+                  href="briefing"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border/70 bg-card/25 px-7 py-3.5 text-sm font-semibold text-foreground/90 backdrop-blur transition-all hover:-translate-y-0.5 hover:border-primary/60 hover:bg-card/50 hover:text-foreground hover:shadow-[0_10px_30px_oklch(0.55_0.22_275/0.25)] sm:w-auto"
                 >
                   <Play className="h-4 w-4" />
