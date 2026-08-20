@@ -7,8 +7,9 @@ export function FinalCTA() {
         <VideoLazy
           poster="/video/alone.webp"
           sources={[
-            { src: "/video/alone.webm", type: "video/webm" },
-            { src: "/video/alone.mp4", type: "video/mp4" },
+            { src: "/video/alone-mobile.webm", type: "video/webm", media: "(max-width: 767px)" },
+            { src: "/video/alone-mobile.mp4", type: "video/mp4", media: "(max-width: 767px)" },
+            { src: "/video/alone.webm", type: "video/webm", media: "(min-width: 768px)" },
           ]}
           className="absolute inset-0 h-full w-full object-cover"
         />

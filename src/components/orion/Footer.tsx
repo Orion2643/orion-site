@@ -1,7 +1,7 @@
 import { Linkedin, Instagram, Github, Mail, Phone, MapPin, Globe } from "lucide-react";
 import { Logo } from "./Logo";
 import { Reveal, StaggerGroup, StaggerItem } from "./motion";
-import { VideoBackdrop } from "./VideoBackdrop";
+import LightBloom from "./LightBloom";
 
 const NAV = [
   { label: "Serviços", href: "#servicos" },
@@ -21,9 +21,22 @@ const SOLUTIONS = [
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-border/60 bg-space-deep/80 pt-16 pb-8">
-      <VideoBackdrop opacity={0.24} tintOpacity={0.85} />
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+    <footer className="relative overflow-hidden border-t border-violet-400/15 bg-black pt-16 pb-8">
+      <LightBloom
+        variant="shafts"
+        direction="bottom"
+        background="#020006"
+        baseColor="#6B2BF5"
+        accentColor="#EFE6FF"
+        speed={58}
+        hover={72}
+        light={{ rise: 82, spread: 76 }}
+        shafts={{ count: 18, amount: 58, drift: 62 }}
+        finish={{ grain: 8, vignette: 30 }}
+        style={{ opacity: 0.78 }}
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/55 via-black/25 to-black/10" />
+      <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
         <StaggerGroup
           className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]"
           stagger={0.1}

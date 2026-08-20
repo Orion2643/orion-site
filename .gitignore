@@ -38,3 +38,12 @@ dist-ssr
 bun.lock
 bun.lockb
 bunfig.toml
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+.env.local
+dist/
+.output/

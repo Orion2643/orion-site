@@ -25,6 +25,7 @@ import {
   X,
 } from "lucide-react";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
+import type { User } from "@supabase/supabase-js";
 import {
   deleteAllProjectAssets,
   deleteProjectAsset,
@@ -66,6 +67,10 @@ type Briefing = {
 
 const inputClass =
   "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/60 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/15";
+
+function isAdminUser(user: User | null | undefined) {
+  return user?.app_metadata?.role === "admin";
+}
 
 function formatDate(value?: string | null) {
   if (!value) return "Não informado";
@@ -371,13 +376,13 @@ export default function OrionAdmin() {
       return;
     }
 
-    supabase.auth.getSession().then(({ data }) => {
-      setAuthenticated(Boolean(data.session));
+    supabase.auth.getUser().then(({ data }) => {
+      setAuthenticated(isAdminUser(data.user));
       setCheckingSession(false);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setAuthenticated(Boolean(session));
+      setAuthenticated(isAdminUser(session?.user));
     });
 
     return () => listener.subscription.unsubscribe();
@@ -465,11 +470,17 @@ export default function OrionAdmin() {
     }
     setAuthLoading(true);
     setError("");
-    const { error: loginError } = await supabase.auth.signInWithPassword({
+    const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
       email: email.trim(),
       password,
     });
-    if (loginError) setError(`Não foi possível entrar. ${loginError.message}`);
+    if (loginError) {
+      setError("Credenciais inválidas ou acesso não autorizado.");
+    } else if (!isAdminUser(loginData.user)) {
+      await supabase.auth.signOut();
+      setError("Esta conta não possui permissão administrativa.");
+    }
+    setPassword("");
     setAuthLoading(false);
   };
 

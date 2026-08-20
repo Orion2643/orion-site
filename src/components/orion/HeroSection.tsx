@@ -1,4 +1,5 @@
 import { ArrowRight, Play } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Magnetic, EASE_ORION } from "./motion";
 
@@ -13,6 +14,25 @@ const headline = ["Sites", "profissionais,", "sistemas", "web", "e"];
  * computadores e celulares e evita que textos disputem atenção com a marca.
  */
 export function HeroSection() {
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video) return;
+    const play = () => video.play().catch(() => undefined);
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && document.visibilityState === "visible") play();
+      else video.pause();
+    }, { threshold: 0.08 });
+    io.observe(video);
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") video.pause();
+      else if (video.getBoundingClientRect().bottom > 0) play();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => { io.disconnect(); document.removeEventListener("visibilitychange", onVisibility); };
+  }, []);
+
   return (
     <>
       <section
@@ -22,6 +42,7 @@ export function HeroSection() {
       >
         <div className="relative mx-auto w-full overflow-hidden bg-black">
           <video
+            ref={heroVideoRef}
             className="block h-auto w-full object-contain"
             autoPlay
             muted
@@ -33,7 +54,7 @@ export function HeroSection() {
           >
             <source
               media="(max-width: 767px)"
-              src="/video/orion-top-logo-mobile.mp4"
+              src="/video/orion-top-logo-mobile-optimized.mp4"
               type="video/mp4"
             />
             <source src="/video/orion-top-logo.mp4" type="video/mp4" />

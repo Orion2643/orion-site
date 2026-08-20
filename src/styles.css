@@ -1617,3 +1617,57 @@ input:focus, textarea:focus, select:focus {
   background-clip: text;
   color: transparent;
 }
+
+/* ORION V15.1 — MOBILE RUNTIME PERFORMANCE */
+@media (max-width: 767px) {
+  .card-space, .card-space-static, [data-orion-glass], .rounded-3xl.border, .rounded-2xl.border {
+    -webkit-backdrop-filter: blur(5px) saturate(108%) !important;
+    backdrop-filter: blur(5px) saturate(108%) !important;
+  }
+  header, nav, footer {
+    -webkit-backdrop-filter: blur(6px) saturate(110%) !important;
+    backdrop-filter: blur(6px) saturate(110%) !important;
+  }
+  main > section:not(:first-child) { content-visibility: auto; contain-intrinsic-size: 1px 760px; }
+  .card-space, .card-space-static { will-change: auto !important; }
+  .card-space, .card-space-static, a, button { transition-duration: 220ms !important; }
+}
+
+
+/* ORION V15.2 — LightBloom resiliente no rodapé
+   Fallback visual fica atrás do WebGL e assume automaticamente em celulares
+   ou quando o navegador perde o contexto gráfico. */
+.orion-light-bloom-fallback {
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 92% 86% at 50% 118%, var(--orion-bloom-accent) 0%, var(--orion-bloom-base) 24%, transparent 61%),
+    repeating-conic-gradient(from 258deg at 50% 118%, transparent 0deg 7deg, color-mix(in srgb, var(--orion-bloom-accent) 13%, transparent) 8deg 10deg, transparent 11deg 18deg),
+    linear-gradient(var(--orion-bloom-bg), var(--orion-bloom-bg));
+  opacity: .88;
+  transform: scale(1.03);
+  transform-origin: 50% 100%;
+  animation: orion-light-bloom-breathe 7.5s ease-in-out infinite alternate;
+}
+.orion-light-bloom-top { transform-origin: 50% 0%; }
+.orion-light-bloom-left { transform-origin: 0% 50%; }
+.orion-light-bloom-right { transform-origin: 100% 50%; }
+
+@keyframes orion-light-bloom-breathe {
+  from { opacity: .76; transform: scale(1.015); }
+  to { opacity: .94; transform: scale(1.055); }
+}
+
+@media (max-width: 767px) {
+  .orion-light-bloom-fallback {
+    opacity: .92;
+    animation-duration: 9s;
+    background:
+      radial-gradient(ellipse 110% 90% at 50% 115%, var(--orion-bloom-accent) 0%, var(--orion-bloom-base) 27%, transparent 66%),
+      repeating-conic-gradient(from 260deg at 50% 116%, transparent 0deg 8deg, color-mix(in srgb, var(--orion-bloom-accent) 11%, transparent) 9deg 11deg, transparent 12deg 20deg),
+      linear-gradient(var(--orion-bloom-bg), var(--orion-bloom-bg));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orion-light-bloom-fallback { animation: none !important; }
+}
